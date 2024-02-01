@@ -9,3 +9,4 @@
 | Christin Saji | christin.saji@dal.ca  |
 | Geerthana Kanagalingame | gr964904@dal.ca |
 | Raisa Gandi Putri | rgputri@dal.ca |
+| Ajaykumar Premkumar Nair | ajay.nair@dal.ca |
