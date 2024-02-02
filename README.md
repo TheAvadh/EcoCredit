@@ -11,6 +11,10 @@
 | Raisa Gandi Putri | rgputri@dal.ca |
 | Ajaykumar Premkumar Nair | ajay.nair@dal.ca |
 
+### Technical Stack
+
+Backend: Java 21, Spring Boot version 3.2.2, and Maven
+
 ### References
 
 | Topic | URL |
