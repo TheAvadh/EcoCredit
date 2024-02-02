@@ -1,4 +1,4 @@
-# EcoCredit
+# Eco Credit
 ## Developed by: Group 1
 
 
@@ -10,3 +10,9 @@
 | Geerthana Kanagalingame | gr964904@dal.ca |
 | Raisa Gandi Putri | rgputri@dal.ca |
 | Ajaykumar Premkumar Nair | ajay.nair@dal.ca |
+
+### References
+
+| Topic | URL |
+| ----------- | ----------- |
+| | |
