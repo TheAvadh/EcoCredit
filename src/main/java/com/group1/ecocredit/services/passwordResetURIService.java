@@ -25,11 +25,11 @@ public class passwordResetURIService {
      */
     public String getPasswordResetURI(User user) {
 
-        passwordResetToken reetToken = new passwordResetToken();
+        passwordResetToken resetToken = new passwordResetToken();
 
-        reetToken.setUser(user);
-        reetToken.setExpirationTime(LocalDateTime.now().plusYears(1000));
-        reetToken.setToken(UUID.randomUUID().toString());
+        resetToken.setUser(user);
+        resetToken.setExpirationTime(LocalDateTime.now().plusYears(1000));
+        resetToken.setToken(UUID.randomUUID().toString());
 
         String BASE_URI = env.getProperty("base.uri");
 
@@ -39,7 +39,7 @@ public class passwordResetURIService {
 
         // TODO: invalidate token once used 
 
-        return BASE_URI + reetToken.getToken();
+        return BASE_URI + resetToken.getToken();
 
     }
 
