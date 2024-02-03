@@ -1,11 +1,16 @@
 package com.group1.ecocredit.services;
 
 import com.group1.ecocredit.models.User;
+import com.group1.ecocredit.models.passwordResetToken;
 
+import org.hibernate.grammars.hql.HqlParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Random;
+import java.util.UUID;
 
 public class passwordResetURIService {
 
@@ -19,22 +24,22 @@ public class passwordResetURIService {
      * 
      */
     public String getPasswordResetURI(User user) {
-        
-        String CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        StringBuilder salt = new StringBuilder();
-        
-        Random random = new Random();
+
+        passwordResetToken reetToken = new passwordResetToken();
+
+        reetToken.setUser(user);
+        reetToken.setExpirationTime(LocalDateTime.now().plusYears(1000));
+        reetToken.setToken(UUID.randomUUID().toString());
 
         String BASE_URI = env.getProperty("base.uri");
-        
-        int uriLength = Integer.parseInt(env.getProperty("password.reset.uri.length"));
-        
-        for(int i = 0; i < uriLength; i++) {
-            salt.append(random.nextInt(CHARS.length()));
-        }
-        
-        System.out.println(BASE_URI + salt.toString());
-        return BASE_URI + salt.toString();
+
+        // TODO: use passwordResetToken object to generate a jwt token
+
+        // TODO: store url link to DB table - passwordResetTickets
+
+        // TODO: invalidate token once used 
+
+        return BASE_URI + reetToken.getToken();
 
     }
 
