@@ -43,7 +43,7 @@ public class PasswordResetController {
 
             // return the page for password reset page
 
-            System.out.println("Password return page");
+            return "password return page";
         }
         // Returning null for now, ideally should be a re-direct
         return null;
@@ -53,8 +53,6 @@ public class PasswordResetController {
     public EcoCreditUser resetPasswordPost(
             @PathVariable(required = true) String token,
             @RequestBody(required = true) PasswordResetNewPassword passwordResetNewPasswordModel) {
-
-        // TODO: get user by email
 
         if (!Objects.equals(passwordResetNewPasswordModel.getNewPassword(), passwordResetNewPasswordModel.getNewPasswordRepeat()))
             return null;
@@ -66,7 +64,7 @@ public class PasswordResetController {
         if (user != null) {
 
             Password password = passwordRepository.findByUser(user);
-            
+
             password.setPassword(Utils.hash(passwordResetNewPasswordModel.getNewPassword()));
 
             passwordRepository.save(password);
@@ -75,6 +73,8 @@ public class PasswordResetController {
             userRepository.save(user);
 
             passwordResetURIService.inValidateToken(token);
+
+            return user;
         }
 
         return null;
