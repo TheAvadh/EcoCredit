@@ -34,8 +34,6 @@ public class PasswordResetController {
     @GetMapping("api/reset-password/{token}")
     public String resetPasswordGet(@PathVariable(required = true) String token) {
 
-        System.out.println(token);
-
         String hashedToken = Utils.hash(token);
 
         // TODO: Get data from token repository
@@ -63,13 +61,12 @@ public class PasswordResetController {
 
         String email = passwordResetNewPasswordModel.getEmail();
 
-        System.out.println(email);
-
         EcoCreditUser user = userRepository.findByEmail(email);
 
         if (user != null) {
-            Password password = new Password();
-            password.setUser(user);
+
+            Password password = passwordRepository.findByUser(user);
+            
             password.setPassword(Utils.hash(passwordResetNewPasswordModel.getNewPassword()));
 
             passwordRepository.save(password);

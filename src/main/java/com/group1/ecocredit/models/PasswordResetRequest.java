@@ -10,9 +10,6 @@ import lombok.*;
 @Getter
 @Setter
 public class PasswordResetRequest {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String requestId;
 
     String email;
 }
