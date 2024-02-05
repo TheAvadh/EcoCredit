@@ -8,11 +8,7 @@ import com.group1.ecocredit.services.PasswordResetURIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.google.common.hash.Hashing;
-
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import java.util.Optional;
 
 import com.group1.ecocredit.utils.Utils;
 
@@ -56,6 +52,8 @@ public class PasswordResetController {
 
         if (!Objects.equals(passwordResetNewPasswordModel.getNewPassword(), passwordResetNewPasswordModel.getNewPasswordRepeat()))
             return null;
+
+        if(tokenRepository.findByToken(Utils.hash(token)) == null) return null;
 
         String email = passwordResetNewPasswordModel.getEmail();
 

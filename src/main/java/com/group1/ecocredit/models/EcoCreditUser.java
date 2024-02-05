@@ -20,6 +20,6 @@ public class EcoCreditUser {
 
     String lastName;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     Password password;
 }
