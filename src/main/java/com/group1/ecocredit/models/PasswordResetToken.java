@@ -22,7 +22,6 @@ public class PasswordResetToken {
     private LocalDateTime expirationTime;
 
     @Setter
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private EcoCreditUser user;
+    boolean used = false;
 
 }

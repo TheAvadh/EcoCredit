@@ -61,7 +61,7 @@ public class PasswordResetController {
 
         EcoCreditUser user = userRepository.findByEmail(email);
 
-        if (user != null) {
+        if (user != null && !tokenRepository.findByToken(Utils.hash(token)).isUsed()) {
 
             Password password = passwordRepository.findByUser(user);
 
@@ -72,7 +72,7 @@ public class PasswordResetController {
             user.setPassword(password);
             userRepository.save(user);
 
-            passwordResetURIService.inValidateToken(token);
+            passwordResetURIService.inValidateToken(Utils.hash(token));
 
             return user;
         }

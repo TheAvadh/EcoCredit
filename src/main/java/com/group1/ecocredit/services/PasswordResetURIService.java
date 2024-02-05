@@ -34,8 +34,6 @@ public class PasswordResetURIService {
 
         PasswordResetToken resetToken = new PasswordResetToken();
 
-
-        resetToken.setUser(user);
         resetToken.setExpirationTime(LocalDateTime.now().plusMinutes(validMinutes));
         resetToken.setToken(UUID.randomUUID().toString());
 
@@ -56,10 +54,11 @@ public class PasswordResetURIService {
 
     public void inValidateToken(String token) {
 
-        PasswordResetToken tokenToDelete = new PasswordResetToken();
-        tokenToDelete.setToken(token);
+        PasswordResetToken tokenToInvalidate = tokenRepository.findByToken(token);
 
-        tokenRepository.delete(tokenToDelete);
+        tokenToInvalidate.setUsed(true);
+
+        tokenRepository.save(tokenToInvalidate);
 
     }
 
