@@ -1,14 +1,10 @@
 package com.group1.ecocredit.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Getter
 @Entity
@@ -16,7 +12,8 @@ import java.util.UUID;
 public class PasswordResetToken {
 
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long Id;
 
     @Setter
     private String token;
@@ -25,7 +22,7 @@ public class PasswordResetToken {
     private LocalDateTime expirationTime;
 
     @Setter
-    @OneToOne
-    private User user;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private EcoCreditUser user;
 
 }

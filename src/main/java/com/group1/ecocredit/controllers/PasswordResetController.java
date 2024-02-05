@@ -1,7 +1,8 @@
 package com.group1.ecocredit.controllers;
 
+import com.group1.ecocredit.models.PasswordResetRequest;
 import com.group1.ecocredit.models.PasswordResetToken;
-import com.group1.ecocredit.models.User;
+import com.group1.ecocredit.models.EcoCreditUser;
 import com.group1.ecocredit.repositories.TokenRepository;
 import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.PasswordResetURIService;
@@ -44,7 +45,7 @@ public class PasswordResetController {
     }
 
     @PostMapping("/resetpassword/{token}")
-    public User resetPasswordPost(@ModelAttribute User userModel) {
+    public EcoCreditUser resetPasswordPost(@ModelAttribute EcoCreditUser userModel) {
 
         // TODO: get user by email
 
@@ -52,13 +53,13 @@ public class PasswordResetController {
 
 
         if(userID.isPresent()) {
-            Optional<User> userSearch = userRepository.findById(userID.get());
+            Optional<EcoCreditUser> userSearch = userRepository.findById(userID.get());
 
             if(userSearch.isPresent()) {
 
-                User user = userSearch.get();
+                EcoCreditUser user = userSearch.get();
 
-                user.setPasswordHash(userModel.getPasswordHash());
+                // TODO: Set new password
 
                 // save acts as update
                 userRepository.save(user);
@@ -71,17 +72,24 @@ public class PasswordResetController {
     }
 
     @GetMapping("/resetpassword/request")
-    public String resetPasssword(@RequestParam String email) {
+    public String resetPasssword(@RequestBody PasswordResetRequest passwordResetInput) {
 
         // TODO: get user by email
-        // TODO: Generate URI
 
-        User user = new User();
-        String passwordResetURI = passwordResetURIService.getPasswordResetURI(user);
+        EcoCreditUser user = userRepository.findByEmail(passwordResetInput.getEmail());
 
-        // Call send email and pass the URI
+        System.out.println(user.getFirstName());
 
-        return passwordResetURI;
 
+        if(user != null) {
+            // TODO: Generate URI
+            PasswordResetToken resetToken = passwordResetURIService.getPasswordResetToken(user);
+            // Call send email and pass the URI
+
+            return resetToken.getToken();
+        }
+
+
+        return null;
     }
 }

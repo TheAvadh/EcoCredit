@@ -1,7 +1,7 @@
 package com.group1.ecocredit.services;
 
 import com.group1.ecocredit.models.PasswordResetToken;
-import com.group1.ecocredit.models.User;
+import com.group1.ecocredit.models.EcoCreditUser;
 import com.group1.ecocredit.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -28,26 +28,23 @@ public class PasswordResetURIService {
      * 
      * 
      */
-    public String getPasswordResetURI(User user) {
+    public PasswordResetToken getPasswordResetToken(EcoCreditUser user) {
 
+        Long validMinutes = Long.parseLong(Objects.requireNonNull(env.getProperty("validity.minutes")));
 
         PasswordResetToken resetToken = new PasswordResetToken();
 
+
         resetToken.setUser(user);
-        Long validMinutes = Long.parseLong(Objects.requireNonNull(env.getProperty("validity.minutes")));
         resetToken.setExpirationTime(LocalDateTime.now().plusMinutes(validMinutes));
         resetToken.setToken(UUID.randomUUID().toString());
-
-        String BASE_URI = env.getProperty("base.uri");
 
         // TODO: use passwordResetToken object to generate a jwt token
 
         // TODO: store url link to DB table - passwordResetTickets
         tokenRepository.save(resetToken);
 
-        // TODO: invalidate token once used 
-
-        return BASE_URI + resetToken.getToken();
+        return resetToken;
 
     }
 

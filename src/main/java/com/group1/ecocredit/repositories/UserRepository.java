@@ -1,8 +1,11 @@
 package com.group1.ecocredit.repositories;
 
-import com.group1.ecocredit.models.User;
-import org.springframework.data.repository.CrudRepository;
+import com.group1.ecocredit.models.EcoCreditUser;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+@Repository
+public interface UserRepository extends JpaRepository<EcoCreditUser, Long> {
 
+    EcoCreditUser findByEmail(String email);
 }
