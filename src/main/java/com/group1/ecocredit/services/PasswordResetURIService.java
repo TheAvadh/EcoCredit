@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -36,7 +37,7 @@ public class PasswordResetURIService {
         PasswordResetToken resetToken = new PasswordResetToken();
 
         resetToken.setUser(user);
-        resetToken.setExpirationTime(LocalDateTime.now().plusYears(1000));
+        resetToken.setExpirationTime(LocalDateTime.now().plusMinutes(Objects.requireNonNull(env.getProperty("validity.minutes")).));
         resetToken.setToken(UUID.randomUUID().toString());
 
         String BASE_URI = env.getProperty("base.uri");
