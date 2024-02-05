@@ -23,10 +23,10 @@ public class PasswordResetURIService {
 
     /*
      * TODO: Switch from randomizing the uri to jwt token
-     * 
+     *
      * Need to get user object completed to generate the token for it
-     * 
-     * 
+     *
+     *
      */
     public PasswordResetToken getPasswordResetToken(EcoCreditUser user) {
 
@@ -51,6 +51,16 @@ public class PasswordResetURIService {
     public boolean isValidToken(PasswordResetToken token) {
 
         return token.getExpirationTime().isAfter(LocalDateTime.now());
+    }
+
+
+    public void inValidateToken(String token) {
+
+        PasswordResetToken tokenToDelete = new PasswordResetToken();
+        tokenToDelete.setToken(token);
+
+        tokenRepository.delete(tokenToDelete);
+
     }
 
 }

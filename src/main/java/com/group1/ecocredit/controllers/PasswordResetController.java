@@ -1,5 +1,6 @@
 package com.group1.ecocredit.controllers;
 
+import com.group1.ecocredit.models.PasswordResetNewPassword;
 import com.group1.ecocredit.models.PasswordResetRequest;
 import com.group1.ecocredit.models.PasswordResetToken;
 import com.group1.ecocredit.models.EcoCreditUser;
@@ -9,7 +10,12 @@ import com.group1.ecocredit.services.PasswordResetURIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.google.common.hash.Hashing;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
+
+import com.group1.ecocredit.utils.Utils;
 
 @RestController
 public class PasswordResetController {
@@ -23,72 +29,40 @@ public class PasswordResetController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping("/resetpassword/{token}")
+    @GetMapping("api/reset-password/{token}")
     public String resetPasswordGet(String token) {
 
+        String hashedToken = Utils.hash(token);
+
         // TODO: Get data from token repository
-        PasswordResetToken passwordResetToken = tokenRepository.findByToken(token);
+        PasswordResetToken passwordResetToken = tokenRepository.findByToken(hashedToken);
 
+        if (passwordResetToken != null && passwordResetURIService.isValidToken(passwordResetToken)) {
+
+            // return the page for password reset page
+        }
         // Returning null for now, ideally should be a re-direct
-        if(passwordResetToken == null) return null;
-
-        // TODO: Check token expiry
-
-        if(passwordResetURIService.isValidToken(passwordResetToken)) {
-            // decipher the token and verify if the user is enabled
-            // return the reset password page
-        }
-
-        // TODO: return reset password page
-
-        return "";
-    }
-
-    @PostMapping("/resetpassword/{token}")
-    public EcoCreditUser resetPasswordPost(@ModelAttribute EcoCreditUser userModel) {
-
-        // TODO: get user by email
-
-        Optional<Long> userID = userModel.getId().describeConstable();
-
-
-        if(userID.isPresent()) {
-            Optional<EcoCreditUser> userSearch = userRepository.findById(userID.get());
-
-            if(userSearch.isPresent()) {
-
-                EcoCreditUser user = userSearch.get();
-
-                // TODO: Set new password
-
-                // save acts as update
-                userRepository.save(user);
-
-                return user;
-            }
-        }
-
         return null;
     }
 
-    @GetMapping("/resetpassword/request")
-    public String resetPasssword(@RequestBody PasswordResetRequest passwordResetInput) {
+    @PostMapping("api/reset-password/{token}")
+    public EcoCreditUser resetPasswordPost(String token, @ModelAttribute PasswordResetNewPassword passwordResetNewPasswordModel) {
 
         // TODO: get user by email
 
-        EcoCreditUser user = userRepository.findByEmail(passwordResetInput.getEmail());
 
-        System.out.println(user.getFirstName());
+        String email = passwordResetNewPasswordModel.getEmail();
 
+        EcoCreditUser user = userRepository.findByEmail(email);
 
-        if(user != null) {
-            // TODO: Generate URI
-            PasswordResetToken resetToken = passwordResetURIService.getPasswordResetToken(user);
-            // Call send email and pass the URI
+        if (user != null) {
+            user.setPasswordHash(Utils.hash(passwordResetNewPasswordModel.getNewPassword()));
 
-            return resetToken.getToken();
+            userRepository.save(user);
+
+            passwordResetURIService.inValidateToken(token);
+
         }
-
 
         return null;
     }
