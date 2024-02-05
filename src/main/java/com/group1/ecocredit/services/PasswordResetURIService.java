@@ -4,10 +4,7 @@ import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.models.PasswordResetToken;
 import com.group1.ecocredit.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -37,7 +34,8 @@ public class PasswordResetURIService {
         PasswordResetToken resetToken = new PasswordResetToken();
 
         resetToken.setUser(user);
-        resetToken.setExpirationTime(LocalDateTime.now().plusMinutes(Objects.requireNonNull(env.getProperty("validity.minutes")).));
+        Long validMinutes = Long.parseLong(Objects.requireNonNull(env.getProperty("validity.minutes")));
+        resetToken.setExpirationTime(LocalDateTime.now().plusMinutes(validMinutes));
         resetToken.setToken(UUID.randomUUID().toString());
 
         String BASE_URI = env.getProperty("base.uri");
