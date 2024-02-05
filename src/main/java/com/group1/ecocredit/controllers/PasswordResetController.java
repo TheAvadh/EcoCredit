@@ -1,9 +1,7 @@
 package com.group1.ecocredit.controllers;
 
-import com.group1.ecocredit.models.PasswordResetNewPassword;
-import com.group1.ecocredit.models.PasswordResetRequest;
-import com.group1.ecocredit.models.PasswordResetToken;
-import com.group1.ecocredit.models.EcoCreditUser;
+import com.group1.ecocredit.models.*;
+import com.group1.ecocredit.repositories.PasswordRepository;
 import com.group1.ecocredit.repositories.TokenRepository;
 import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.PasswordResetURIService;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.google.common.hash.Hashing;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.group1.ecocredit.utils.Utils;
@@ -29,8 +28,13 @@ public class PasswordResetController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    PasswordRepository passwordRepository;
+
     @GetMapping("api/reset-password/{token}")
-    public String resetPasswordGet(String token) {
+    public String resetPasswordGet(@PathVariable(required = true) String token) {
+
+        System.out.println(token);
 
         String hashedToken = Utils.hash(token);
 
@@ -40,28 +44,40 @@ public class PasswordResetController {
         if (passwordResetToken != null && passwordResetURIService.isValidToken(passwordResetToken)) {
 
             // return the page for password reset page
+
+            System.out.println("Password return page");
         }
         // Returning null for now, ideally should be a re-direct
         return null;
     }
 
     @PostMapping("api/reset-password/{token}")
-    public EcoCreditUser resetPasswordPost(String token, @ModelAttribute PasswordResetNewPassword passwordResetNewPasswordModel) {
+    public EcoCreditUser resetPasswordPost(
+            @PathVariable(required = true) String token,
+            @RequestBody(required = true) PasswordResetNewPassword passwordResetNewPasswordModel) {
 
         // TODO: get user by email
 
+        if (!Objects.equals(passwordResetNewPasswordModel.getNewPassword(), passwordResetNewPasswordModel.getNewPasswordRepeat()))
+            return null;
 
         String email = passwordResetNewPasswordModel.getEmail();
+
+        System.out.println(email);
 
         EcoCreditUser user = userRepository.findByEmail(email);
 
         if (user != null) {
-            user.setPasswordHash(Utils.hash(passwordResetNewPasswordModel.getNewPassword()));
+            Password password = new Password();
+            password.setUser(user);
+            password.setPassword(Utils.hash(passwordResetNewPasswordModel.getNewPassword()));
 
+            passwordRepository.save(password);
+
+            user.setPassword(password);
             userRepository.save(user);
 
             passwordResetURIService.inValidateToken(token);
-
         }
 
         return null;

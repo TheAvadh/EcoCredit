@@ -41,7 +41,7 @@ public class PasswordResetURIService {
 
         // TODO: use passwordResetToken object to generate a jwt token
 
-        // TODO: store url link to DB table - passwordResetTickets
+        // TODO: store url link to DB table - passwordresettoken
         tokenRepository.save(resetToken);
 
         return resetToken;

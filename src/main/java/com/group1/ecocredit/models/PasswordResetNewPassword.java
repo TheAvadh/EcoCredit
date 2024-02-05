@@ -9,4 +9,5 @@ public class PasswordResetNewPassword {
 
     String email;
     String newPassword;
+    String newPasswordRepeat;
 }

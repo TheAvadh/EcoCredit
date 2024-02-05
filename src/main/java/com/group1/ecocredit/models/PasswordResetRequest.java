@@ -7,8 +7,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "ecocredit_password_reset_requests")
 @Getter
 @Setter
 public class PasswordResetRequest {

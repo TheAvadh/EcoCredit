@@ -4,22 +4,16 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
-@Getter
 @Entity
-@Table(name = "ecocredit_user")
-public class EcoCreditUser {
+@Setter
+public class Password {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-
-    String email;
-
-    String firstName;
-
-    String lastName;
+    Long Id;
 
     @OneToOne
-    Password password;
+    EcoCreditUser user;
+
+    String password;
 }
