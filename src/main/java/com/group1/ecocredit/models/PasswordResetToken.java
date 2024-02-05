@@ -1,26 +1,31 @@
 package com.group1.ecocredit.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class passwordResetToken {
+@Getter
+@Entity
+@Table(name="passwordresettoken")
+public class PasswordResetToken {
 
-    @Getter
+    @Id
     private UUID id;
 
     @Setter
-    @Getter
     private String token;
 
     @Setter
-    @Getter
     private LocalDateTime expirationTime;
 
     @Setter
-    @Getter
+    @OneToOne
     private User user;
 
 }

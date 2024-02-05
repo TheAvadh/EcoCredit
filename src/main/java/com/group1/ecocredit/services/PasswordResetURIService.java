@@ -1,20 +1,27 @@
 package com.group1.ecocredit.services;
 
 import com.group1.ecocredit.models.User;
-import com.group1.ecocredit.models.passwordResetToken;
-
-import org.hibernate.grammars.hql.HqlParser;
+import com.group1.ecocredit.models.PasswordResetToken;
+import com.group1.ecocredit.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.Random;
 import java.util.UUID;
 
-public class passwordResetURIService {
+@Service
+public class PasswordResetURIService {
 
-    @Autowired Environment env;
+
+    @Autowired
+    Environment env;
+
+    @Autowired
+    TokenRepository tokenRepository;
 
     /*
      * TODO: Switch from randomizing the uri to jwt token
@@ -25,7 +32,8 @@ public class passwordResetURIService {
      */
     public String getPasswordResetURI(User user) {
 
-        passwordResetToken resetToken = new passwordResetToken();
+
+        PasswordResetToken resetToken = new PasswordResetToken();
 
         resetToken.setUser(user);
         resetToken.setExpirationTime(LocalDateTime.now().plusYears(1000));
@@ -36,6 +44,7 @@ public class passwordResetURIService {
         // TODO: use passwordResetToken object to generate a jwt token
 
         // TODO: store url link to DB table - passwordResetTickets
+        tokenRepository.save(resetToken);
 
         // TODO: invalidate token once used 
 
@@ -43,5 +52,9 @@ public class passwordResetURIService {
 
     }
 
+    public boolean isValidToken(PasswordResetToken token) {
+
+        return token.getExpirationTime().isAfter(LocalDateTime.now());
+    }
 
 }

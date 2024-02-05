@@ -34,3 +34,6 @@ build/
 
 ### DS Store MacOS ###
 **/.DS_Store
+
+# removing application.properties (has custom configs for local DB)
+src/main/resources
