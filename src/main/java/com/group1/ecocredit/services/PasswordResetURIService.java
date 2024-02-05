@@ -1,7 +1,7 @@
 package com.group1.ecocredit.services;
 
-import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.models.PasswordResetToken;
+import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;

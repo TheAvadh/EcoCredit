@@ -2,13 +2,11 @@ package com.group1.ecocredit.controllers;
 
 import com.group1.ecocredit.models.PasswordResetToken;
 import com.group1.ecocredit.models.User;
-
 import com.group1.ecocredit.repositories.TokenRepository;
 import com.group1.ecocredit.repositories.UserRepository;
+import com.group1.ecocredit.services.PasswordResetURIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import com.group1.ecocredit.services.PasswordResetURIService;
 
 import java.util.Optional;
 
