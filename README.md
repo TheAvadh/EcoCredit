@@ -24,6 +24,8 @@
 
 ### References
 
-| Topic           | URL                                                                   |
-| --------------- | --------------------------------------------------------------------- |
-| React Bootstrap | https://react-bootstrap.netlify.app/docs/getting-started/introduction |
+| Topic                      | URL                                                                                       |
+| -------------------------- | ----------------------------------------------------------------------------------------- |
+| Forgot Password Flow       | https://supertokens.com/blog/implementing-a-forgot-password-flow                          |
+| Forgot Password Psuedocode | https://stackoverflow.com/questions/1102781/best-way-for-a-forgot-password-implementation |
+| React Bootstrap            | https://react-bootstrap.netlify.app/docs/getting-started/introduction                     |
