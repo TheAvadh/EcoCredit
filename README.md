@@ -13,8 +13,14 @@
 
 ### Technical Stack
 
-Frontend: React 18.2.0, React Bootstrap 2.10.0, and Bootstrap 5.3.2
-Backend: Java 21, Spring Boot version 3.2.2, and Maven
+- Frontend:
+  - React 18.2.0
+  - React Bootstrap 2.10.0
+  - Bootstrap 5.3.2
+- Backend:
+  - Java 21
+  - Spring Boot version 3.2.2
+  - Maven
 
 ### References
 
