@@ -2,7 +2,12 @@ package com.group1.ecocredit.models;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +16,9 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="user")
 
@@ -20,9 +28,15 @@ public class User implements UserDetails {
     private Integer id;
 
     private String firstName;
+
     private String lastName;
+
+    @Column(unique = true)
+    @NotNull
     private String email;
+
     private String password;
+
     private Role role;
 
     @Override
@@ -56,3 +70,4 @@ public class User implements UserDetails {
     }
 
 }
+
