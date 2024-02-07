@@ -30,11 +30,11 @@ public class PasswordResetURIService {
      */
     public PasswordResetToken getPasswordResetToken(EcoCreditUser user) {
 
-        Long validMinutes = Long.parseLong(Objects.requireNonNull(env.getProperty("validity.minutes")));
+        Long validityHours = Long.parseLong(Objects.requireNonNull(env.getProperty("password.reset.validity.hours")));
 
         PasswordResetToken resetToken = new PasswordResetToken();
 
-        resetToken.setExpirationTime(LocalDateTime.now().plusMinutes(validMinutes));
+        resetToken.setExpirationTime(LocalDateTime.now().plusHours(validityHours));
         resetToken.setToken(UUID.randomUUID().toString());
 
         // TODO: use passwordResetToken object to generate a jwt token

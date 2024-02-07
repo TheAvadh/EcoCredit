@@ -4,6 +4,7 @@ import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.repositories.PasswordRepository;
 import com.group1.ecocredit.repositories.TokenRepository;
 import com.group1.ecocredit.repositories.EcoCreditUserRepository;
+import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.PasswordResetURIService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import com.group1.ecocredit.utils.Utils;
 
@@ -24,7 +26,7 @@ public class PasswordResetController {
     TokenRepository tokenRepository;
 
     @Autowired
-    EcoCreditUserRepository userRepository;
+    UserRepository userRepository;
 
     @Autowired
     PasswordRepository passwordRepository;
@@ -49,7 +51,7 @@ public class PasswordResetController {
 
     @Transactional
     @PostMapping("api/reset-password/{token}")
-    public ResponseEntity<EcoCreditUser> resetPasswordPost(
+    public ResponseEntity<User> resetPasswordPost(
             @PathVariable(required = true) String token,
             @RequestBody(required = true) PasswordResetNewPassword passwordResetNewPasswordModel) {
 
@@ -62,17 +64,18 @@ public class PasswordResetController {
 
         String email = passwordResetNewPasswordModel.getEmail();
 
-        EcoCreditUser user = userRepository.findByEmail(email);
+        Optional<User> userOptional = userRepository.findByEmail(email);
 
-        if (user != null && !tokenRepository.findByToken(Utils.hash(token)).isUsed()) {
+        if(userOptional.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
 
-            Password password = passwordRepository.findByUser(user);
+        User user = userOptional.get();
 
-            password.setPassword(Utils.hash(passwordResetNewPasswordModel.getNewPassword()));
+        if (!tokenRepository.findByToken(Utils.hash(token)).isUsed()) {
 
-            passwordRepository.save(password);
+            user.setPassword(Utils.hash(passwordResetNewPasswordModel.getNewPassword()));
 
-            user.setPassword(password);
             userRepository.save(user);
 
             passwordResetURIService.inValidateToken(Utils.hash(token));

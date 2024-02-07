@@ -13,7 +13,7 @@ public class Password {
     Long Id;
 
     @OneToOne
-    EcoCreditUser user;
+    User user;
 
     String password;
 }
