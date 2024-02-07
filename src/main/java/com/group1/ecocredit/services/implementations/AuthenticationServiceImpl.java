@@ -31,8 +31,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User signup(SignUpRequest signUpRequest){
         User user=new User();
         user.setEmail(signUpRequest.getEmail());
-        user.setFirstname(signUpRequest.getFirstName());
-        user.setSecondname(signUpRequest.getLastName());
+        user.setFirstName(signUpRequest.getFirstName());
+        user.setLastName(signUpRequest.getLastName());
         user.setRole(Role.USER);
 //        done to encrypt raw password to hash password
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
