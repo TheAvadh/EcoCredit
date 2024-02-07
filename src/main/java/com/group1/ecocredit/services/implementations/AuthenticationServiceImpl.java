@@ -23,18 +23,17 @@ import java.util.HashMap;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
-
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
+
     public User signup(SignUpRequest signUpRequest){
         User user=new User();
         user.setEmail(signUpRequest.getEmail());
         user.setFirstName(signUpRequest.getFirstName());
         user.setLastName(signUpRequest.getLastName());
         user.setRole(Role.USER);
-//        done to encrypt raw password to hash password
+        //  encrypt raw password to hash password
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
 
         return userRepository.save(user);

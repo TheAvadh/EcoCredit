@@ -19,4 +19,5 @@ Backend: Java 21, Spring Boot version 3.2.2, and Maven
 
 | Topic | URL |
 | ----------- | ----------- |
-| | |
+| Forgot Password Flow | https://supertokens.com/blog/implementing-a-forgot-password-flow |
+| Forgot Password Psuedocode | https://stackoverflow.com/questions/1102781/best-way-for-a-forgot-password-implementation |
