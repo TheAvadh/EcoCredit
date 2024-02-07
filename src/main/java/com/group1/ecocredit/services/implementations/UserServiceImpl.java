@@ -6,8 +6,11 @@ import com.group1.ecocredit.dto.UpdateProfileResponse;
 import com.group1.ecocredit.models.Address;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.UserRepository;
+import com.group1.ecocredit.services.EmailService;
 import com.group1.ecocredit.services.UserService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,7 +22,12 @@ import com.group1.ecocredit.dto.UpdateProfileRequest;
 @RequiredArgsConstructor
 
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public UserDetailsService userDetailsService(){
@@ -65,7 +73,13 @@ public class UserServiceImpl implements UserService {
 
             userRepository.save(user);
 
-            updateProfileResponse.setResponse("User profile updated");
+            try {
+                emailService.sendProfileUpdateNotification(user);
+                updateProfileResponse.setResponse("User profile updated. Email sent successfully");
+            } catch (MessagingException e) {
+                e.printStackTrace();
+                updateProfileResponse.setResponse("User profile updated. Email sending failed: " + e.getMessage());
+            }
         } else {
             updateProfileResponse.setResponse("User not found");
         }

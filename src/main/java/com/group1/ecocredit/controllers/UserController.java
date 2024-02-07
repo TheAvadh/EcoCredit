@@ -6,6 +6,7 @@ import com.group1.ecocredit.dto.UpdateProfileResponse;
 import com.group1.ecocredit.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,7 +21,8 @@ public class UserController {
         return ResponseEntity.ok("Hi user");
     }
 
-    @PutMapping("/updateProfile")
+    @PreAuthorize("#userId == authentication.principal.id")
+    @PutMapping("/updateProfile/{id}")
     public ResponseEntity<UpdateProfileResponse> updateProfile(@RequestBody UpdateProfileRequest updateProfileRequest) {
         return ResponseEntity.ok(userService.updateProfile(updateProfileRequest));
     }
