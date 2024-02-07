@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
-@Table(name="passwordresettoken")
+@Table(name="password_reset_token")
 public class PasswordResetToken {
 
     @Id
@@ -22,8 +22,8 @@ public class PasswordResetToken {
     private LocalDateTime expirationTime;
 
     @Setter
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private EcoCreditUser user;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private User user;
 
     @Setter
     boolean used = false;

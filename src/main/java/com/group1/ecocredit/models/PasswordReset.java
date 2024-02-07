@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-public class PasswordResetNewPassword {
+public class PasswordReset {
 
     String email;
     String newPassword;
