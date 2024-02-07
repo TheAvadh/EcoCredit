@@ -1,7 +1,7 @@
 package com.group1.ecocredit.controllers;
 
 import com.group1.ecocredit.dto.*;
-import com.group1.ecocredit.models.PasswordReset;
+import com.group1.ecocredit.dto.PasswordResetRequest;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.AuthenticationService;
@@ -78,7 +78,7 @@ public class AuthenticationController {
     @PostMapping("reset-password/{token}")
     public ResponseEntity<?> resetPasswordPost(
             @PathVariable(required = true) String token,
-            @RequestBody(required = true) PasswordReset passwordResetNewPasswordModel) {
+            @RequestBody(required = true) PasswordResetRequest passwordResetNewPasswordModel) {
 
 
         try {

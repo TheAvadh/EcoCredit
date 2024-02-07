@@ -1,12 +1,13 @@
 package com.group1.ecocredit.services.implementations;
 
 import com.group1.ecocredit.dto.ForgetPasswordRequest;
-import com.group1.ecocredit.models.PasswordReset;
+import com.group1.ecocredit.dto.PasswordResetRequest;
 import com.group1.ecocredit.models.PasswordResetToken;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.TokenRepository;
 import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.EmailService;
+import com.group1.ecocredit.services.JWTService;
 import com.group1.ecocredit.services.PasswordService;
 import com.group1.ecocredit.services.TokenService;
 import com.group1.ecocredit.utils.Utils;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class PasswordServiceImpl implements PasswordService {
@@ -25,6 +25,7 @@ public class PasswordServiceImpl implements PasswordService {
     private final UserRepository userRepository;
     private final TokenService tokenService;
     private final EmailService emailService;
+
     @Autowired
     private TokenRepository tokenRepository;
     @Autowired
@@ -33,7 +34,8 @@ public class PasswordServiceImpl implements PasswordService {
 
     public PasswordServiceImpl(UserRepository userRepository,
                                TokenService tokenService,
-                               EmailService emailService) {
+                               EmailService emailService,
+                               JWTService jwtService) {
         this.userRepository = userRepository;
         this.tokenService = tokenService;
         this.emailService = emailService;
@@ -65,39 +67,6 @@ public class PasswordServiceImpl implements PasswordService {
 
 
     @Override
-    public PasswordResetToken getPasswordResetToken(User user) {
-
-        Long validityHours = Long.parseLong(Objects.requireNonNull(env.getProperty("password.reset.validity.hours")));
-
-        PasswordResetToken resetToken = new PasswordResetToken();
-
-        resetToken.setExpirationTime(LocalDateTime.now().plusHours(validityHours));
-        resetToken.setToken(UUID.randomUUID().toString());
-
-        // TODO: use passwordResetToken object to generate a jwt token
-
-        // TODO: store url link to DB table - passwordresettoken
-        tokenRepository.save(resetToken);
-
-        return resetToken;
-    }
-
-    @Override
-    public boolean isValidToken(PasswordResetToken token) {
-        return token.getExpirationTime().isAfter(LocalDateTime.now());
-    }
-
-    @Override
-    public void inValidateToken(String token) {
-
-        PasswordResetToken tokenToInvalidate = tokenRepository.findByToken(token);
-
-        tokenToInvalidate.setUsed(true);
-
-        tokenRepository.save(tokenToInvalidate);
-    }
-
-    @Override
     public boolean validPasswordResetRequest(String token) {
 
         String hashedToken = Utils.hash(token);
@@ -105,11 +74,11 @@ public class PasswordServiceImpl implements PasswordService {
 
         if(optionalToken == null) return false;
 
-        return isValidToken(optionalToken);
+        return tokenService.isValidToken(optionalToken);
     }
 
     @Override
-    public boolean resetPassword(String token, PasswordReset request) {
+    public boolean resetPassword(String token, PasswordResetRequest request) {
 
         try {
             if (!Objects.equals(request.getNewPassword(), request.getNewPasswordRepeat())) return false;
@@ -128,7 +97,7 @@ public class PasswordServiceImpl implements PasswordService {
 
             userRepository.save(userToChangePassword);
 
-            inValidateToken(token);
+            tokenService.inValidateToken(token);
 
             return true;
         } catch (Exception e) {
