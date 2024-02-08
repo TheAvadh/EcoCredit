@@ -1,8 +1,9 @@
 package com.group1.ecocredit.services.implementations;
 
 import com.google.common.hash.Hashing;
-import com.group1.ecocredit.models.PasswordResetRequest;
-import com.group1.ecocredit.repositories.PasswordResetRepository;
+import com.group1.ecocredit.models.PasswordResetToken;
+import com.group1.ecocredit.models.User;
+import com.group1.ecocredit.repositories.PasswordResetTokenRepository;
 import com.group1.ecocredit.services.TokenService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,11 @@ public class TokenServiceImpl implements TokenService {
     @Value("${password.reset.validity.hours}")
     private Integer validityInHours;
 
-    PasswordResetRepository passwordResetRepository;
+    PasswordResetTokenRepository passwordResetTokenRepository;
 
-    public TokenServiceImpl(PasswordResetRepository passwordResetRepository) {
-        this.passwordResetRepository = passwordResetRepository;
+    public TokenServiceImpl(
+            PasswordResetTokenRepository passwordResetTokenRepository) {
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
     }
 
     @Override
@@ -26,20 +28,37 @@ public class TokenServiceImpl implements TokenService {
         return java.util.UUID.randomUUID().toString();
     }
 
+
     @Override
-    public void savePasswordResetRequest(String token, Integer userId) {
+    public boolean isValidToken(PasswordResetToken token) {
+        return token.getExpirationTime().isAfter(LocalDateTime.now());
+    }
+
+    @Override
+    public void inValidateToken(String token) {
+
+        PasswordResetToken tokenToInvalidate = passwordResetTokenRepository.findByToken(token);
+
+        tokenToInvalidate.setUsed(true);
+
+        passwordResetTokenRepository.save(tokenToInvalidate);
+    }
+
+    @Override
+    public void savePasswordResetToken(String token, User user) {
 
         var hashedToken = Hashing.sha256()
                 .hashString(token, StandardCharsets.UTF_8)
                 .toString();
 
-        var passwordResetRequest = PasswordResetRequest
+        var passwordResetToken = PasswordResetToken
                 .builder()
-                .requestId(hashedToken)
-                .userId(userId)
-                .expiry(LocalDateTime.now().plusHours(validityInHours))
+                .token(hashedToken)
+                .user(user)
+                .used(false)
+                .expirationTime(LocalDateTime.now().plusHours(validityInHours))
                 .build();
 
-        passwordResetRepository.save(passwordResetRequest);
+        passwordResetTokenRepository.save(passwordResetToken);
     }
 }

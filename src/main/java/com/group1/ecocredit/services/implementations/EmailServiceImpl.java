@@ -50,7 +50,7 @@ public class EmailServiceImpl implements EmailService {
         var subject = "Reset your Eco Credit password";
         var text = """
             <div>
-              Click <a href="http://localhost:8080/api/reset-password?ID=%s" target="_blank">here</a>
+              Click <a href="http://localhost:8080/api/reset-password/%s" target="_blank">here</a>
                to reset your Eco Credit password
             </div>
             """.formatted(token);
