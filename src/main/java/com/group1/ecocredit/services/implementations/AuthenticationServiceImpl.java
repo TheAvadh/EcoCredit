@@ -28,6 +28,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JWTService jwtService;
 
     public User signup(SignUpRequest signUpRequest){
+
+        if (signUpRequest.getPassword().length() < 8) {
+            throw new IllegalArgumentException("Password must be at least 8 characters long");
+        }
+        
         User user=new User();
         user.setEmail(signUpRequest.getEmail());
         user.setFirstName(signUpRequest.getFirstName());
