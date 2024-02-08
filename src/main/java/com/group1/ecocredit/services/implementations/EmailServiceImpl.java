@@ -14,22 +14,16 @@ import org.springframework.stereotype.Service;
 public class EmailServiceImpl implements EmailService {
 
     @Override
-    public void sendProfileUpdateNotification(User user) {
-        JavaMailSender javaMailSender = emailConfig.javaMailSender();
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        try {
-            MimeMessageHelper mimeMessageHelper  = new MimeMessageHelper(mimeMessage, true); // 'true' indicates multipart message for attachments
+    public void sendProfileUpdateEmail(User user) throws MessagingException{
+        var subject = "Eco Credit Profile Updated";
+        var text = """
+            <div>
+              Dear %s %s, your profile has been successfully updated.
+            </div>
+            """.formatted(user.getFirstName(), user.getLastName());
+        var isHtml = true;
 
-            mimeMessageHelper.setTo(user.getEmail());
-            mimeMessageHelper.setSubject("Profile Updated Notification");
-
-            String htmlContent = "Dear " + user.getFirstname() + " " + user.getLastname() + ",<br><br>Your profile has been successfully updated.";
-            mimeMessageHelper.setText(htmlContent, true);
-
-            javaMailSender.send(mimeMessage);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+        sendEmail(user.getEmail(), subject, text, isHtml);
     }
     private final EmailConfig emailConfig;
 

@@ -26,9 +26,9 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String firstname;
+    private String firstName;
 
-    private String lastname;
+    private String lastName;
 
     @Column(unique = true)
     @NotNull
@@ -36,7 +36,7 @@ public class User implements UserDetails {
 
     private String password;
 
-    private String phone_number;
+    private String phoneNumber;
     @Embedded
     private Address address;
 

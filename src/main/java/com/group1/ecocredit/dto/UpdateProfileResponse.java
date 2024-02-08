@@ -4,5 +4,11 @@ import lombok.Data;
 
 @Data
 public class UpdateProfileResponse {
-    private String response;
+    public enum ResponseType {
+        SUCCESS,
+        USER_NOT_FOUND,
+        INTERNAL_SERVER_ERROR
+    }
+
+    private ResponseType response;
 }

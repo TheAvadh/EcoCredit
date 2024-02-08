@@ -11,12 +11,12 @@ import com.group1.ecocredit.services.UserService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import com.group1.ecocredit.dto.UpdateProfileRequest;
+
+import static com.group1.ecocredit.dto.UpdateProfileResponse.ResponseType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -49,39 +49,46 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findById(Integer.valueOf(updateProfileRequest.getId())).orElse(null);
 
-        if (user != null) {
-            user.setFirstname(updateProfileRequest.getFirstname());
-            user.setLastname(updateProfileRequest.getLastname());
-            user.setEmail(updateProfileRequest.getEmail());
-            user.setPhone_number(updateProfileRequest.getPhone_number());
-            UpdateProfileRequest.AddressDTO addressDTO = updateProfileRequest.getAddress();
-            if (addressDTO != null) {
-                Address userAddress = user.getAddress();
+        try
+        {
+            if (user == null)
+            {
+                updateProfileResponse.setResponse(USER_NOT_FOUND);
+            }
+            else
+            {
+                user.setFirstName(updateProfileRequest.getFirstName());
+                user.setLastName(updateProfileRequest.getLastName());
+                user.setEmail(updateProfileRequest.getEmail());
+                user.setPhoneNumber(updateProfileRequest.getPhoneNumber());
+                UpdateProfileRequest.AddressDTO addressDTO = updateProfileRequest.getAddress();
+                if (addressDTO != null)
+                {
+                    Address userAddress = user.getAddress();
 
-                if (userAddress == null) {
-                    userAddress = new Address();
+                    if (userAddress == null)
+                    {
+                        userAddress = new Address();
+                    }
+
+                    userAddress.setStreet(addressDTO.getStreet());
+                    userAddress.setCity(addressDTO.getCity());
+                    userAddress.setProvince(addressDTO.getProvince());
+                    userAddress.setPostalCode(addressDTO.getPostalCode());
+                    userAddress.setCountry(addressDTO.getCountry());
+
+                    user.setAddress(userAddress);
                 }
 
-                userAddress.setStreet(addressDTO.getStreet());
-                userAddress.setCity(addressDTO.getCity());
-                userAddress.setProvince(addressDTO.getProvince());
-                userAddress.setPostalCode(addressDTO.getPostalCode());
-                userAddress.setCountry(addressDTO.getCountry());
-
-                user.setAddress(userAddress);
+                userRepository.save(user);
+                emailService.sendProfileUpdateEmail(user);
+                updateProfileResponse.setResponse(SUCCESS);
             }
-
-            userRepository.save(user);
-
-            try {
-                emailService.sendProfileUpdateNotification(user);
-                updateProfileResponse.setResponse("User profile updated. Email sent successfully");
-            } catch (MessagingException e) {
-                e.printStackTrace();
-                updateProfileResponse.setResponse("User profile updated. Email sending failed: " + e.getMessage());
-            }
-        } else {
-            updateProfileResponse.setResponse("User not found");
+        }
+        catch (MessagingException e)
+        {
+            e.printStackTrace();
+            updateProfileResponse.setResponse(INTERNAL_SERVER_ERROR);
         }
         return updateProfileResponse;
     }
