@@ -5,7 +5,6 @@ import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.services.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import com.group1.ecocredit.config.EmailConfig;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -14,11 +13,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailServiceImpl implements EmailService {
 
-    @Autowired
-    private JavaMailSender javaMailSender;
-
     @Override
     public void sendProfileUpdateNotification(User user) {
+        JavaMailSender javaMailSender = emailConfig.javaMailSender();
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper mimeMessageHelper  = new MimeMessageHelper(mimeMessage, true); // 'true' indicates multipart message for attachments
