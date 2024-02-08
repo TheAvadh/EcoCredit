@@ -64,12 +64,3 @@ public class SecurityConfiguration {
 
 }
 
-
-// In simple terms, this configuration sets up security rules for different API paths, defines how authentication
-// should be performed (e.g., using JWT), and specifies how to encode and decode passwords.
-
-// The DaoAuthenticationProvider is used to authenticate users based on a user details service and a
-// password encoder. The application is designed to be stateless, handling authentication through JWTs.
-
-// Requests to specific paths require certain authorities, and other requests require authentication.
-// The code configures the necessary components to enforce these security measures in the Spring Boot application.

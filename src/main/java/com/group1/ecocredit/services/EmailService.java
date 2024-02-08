@@ -5,4 +5,7 @@ import jakarta.mail.MessagingException;
 
 public interface EmailService {
     void sendProfileUpdateNotification(User user) throws MessagingException;
+    void sendVerifyAccountEmail(String email) throws MessagingException;
+    void sendResetPasswordEmail(String email, String token) throws MessagingException;
+
 }
