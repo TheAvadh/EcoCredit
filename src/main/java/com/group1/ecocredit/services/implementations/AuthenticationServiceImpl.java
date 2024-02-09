@@ -9,7 +9,9 @@ import com.group1.ecocredit.models.Role;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.AuthenticationService;
+import com.group1.ecocredit.services.EmailService;
 import com.group1.ecocredit.services.JWTService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,8 +30,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
+    private final EmailServiceImpl emailServiceImpl;
 
-    public User signup(SignUpRequest signUpRequest){
+    public User signup(SignUpRequest signUpRequest) throws MessagingException {
+
+        if (signUpRequest.getPassword().length() < 8) {
+            throw new IllegalArgumentException("Password must be at least 8 characters long");
+        }
+
         User user=new User();
         user.setEmail(signUpRequest.getEmail());
         user.setFirstName(signUpRequest.getFirstName());
@@ -37,6 +46,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setRole(Role.USER);
         //  encrypt raw password to hash password
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+
+        String verificationToken = UUID.randomUUID().toString();
+        user.setVerificationToken(verificationToken);
+        emailServiceImpl.sendVerifyAccountEmail(user.getEmail());
 
         return userRepository.save(user);
 
