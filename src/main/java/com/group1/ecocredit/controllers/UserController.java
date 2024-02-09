@@ -21,7 +21,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/updateProfile/{id}")
+    @PutMapping("/update-profile/{id}")
     public ResponseEntity<?> updateProfile(@RequestBody UpdateProfileRequest updateProfileRequest) {
         UpdateProfileResponse updateProfileResponse = userService.updateProfile(updateProfileRequest);
 

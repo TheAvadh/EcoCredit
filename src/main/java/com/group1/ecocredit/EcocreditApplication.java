@@ -21,15 +21,15 @@ public class EcocreditApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args){
-		User adminAccount = userRepository.findByRole(Role.ADMIN);
+		User adminAccount = userRepository.findByRole(Role.USER);
 		if(null==adminAccount){
 			User user=new User();
 
-			user.setEmail("rgputri@dal.ca");
-			user.setFirstname("admin");
-			user.setLastname("admin");
-			user.setRole(Role.ADMIN);
-			user.setPassword(new BCryptPasswordEncoder().encode("admin"));
+			user.setEmail("geerthk@dal.ca");
+			user.setFirstName("user");
+			user.setLastName("user");
+			user.setRole(Role.USER);
+			user.setPassword(new BCryptPasswordEncoder().encode("user"));
 			userRepository.save(user);
 		}
 	}
