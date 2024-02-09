@@ -12,6 +12,7 @@ import com.group1.ecocredit.services.AuthenticationService;
 import com.group1.ecocredit.services.JWTService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,13 +42,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     }
     public JwtAuthenticationResponse signIn(SignInRequest signInRequest){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getEmail(),
-                signInRequest.getPassword()));
+        try{
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getEmail(),
+                    signInRequest.getPassword()));
+        }
+        catch (BadCredentialsException e){
+            JwtAuthenticationResponse jwtAuthenticationResponse=new JwtAuthenticationResponse();
+            jwtAuthenticationResponse.setExceptionMessage("Invalid email or password");
+            return jwtAuthenticationResponse;
+        }
+        JwtAuthenticationResponse jwtAuthenticationResponse=new JwtAuthenticationResponse();
         var user=userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(()->new IllegalArgumentException("Invalid email or password."));
         var jwt=jwtService.generateToken(user);
         var refreshToken=jwtService.generateRefreshToken(new HashMap<>(),user);
 
-        JwtAuthenticationResponse jwtAuthenticationResponse=new JwtAuthenticationResponse();
         jwtAuthenticationResponse.setToken(jwt);
         jwtAuthenticationResponse.setRefreshToken(jwt);
         jwtAuthenticationResponse.setRole(user.getRole());

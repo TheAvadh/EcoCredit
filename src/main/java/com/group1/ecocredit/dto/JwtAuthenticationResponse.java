@@ -9,5 +9,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class JwtAuthenticationResponse {
     private String token;
     private String refreshToken;
+    private String exceptionMessage;
     private Role role;
 }
