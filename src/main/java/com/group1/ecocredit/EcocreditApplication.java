@@ -26,8 +26,8 @@ public class EcocreditApplication implements CommandLineRunner {
 			User user=new User();
 
 			user.setEmail("rgputri@dal.ca");
-			user.setFirstName("admin");
-			user.setLastName("admin");
+			user.setFirstname("admin");
+			user.setLastname("admin");
 			user.setRole(Role.ADMIN);
 			user.setPassword(new BCryptPasswordEncoder().encode("admin"));
 			userRepository.save(user);
