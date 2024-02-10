@@ -4,8 +4,6 @@ package com.group1.ecocredit.services.implementations;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.services.EmailService;
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import com.group1.ecocredit.config.EmailConfig;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -50,7 +48,7 @@ public class EmailServiceImpl implements EmailService {
         var subject = "Reset your Eco Credit password";
         var text = """
             <div>
-              Click <a href="http://localhost:8080/api/reset-password/%s" target="_blank">here</a>
+              Click <a href="http://localhost:8080/api/reset-password?token=%s" target="_blank">here</a>
                to reset your Eco Credit password
             </div>
             """.formatted(token);
