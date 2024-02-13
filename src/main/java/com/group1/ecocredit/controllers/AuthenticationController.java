@@ -55,7 +55,7 @@ public class AuthenticationController {
         }
     }
 
-    @GetMapping("reset-password/{token}")
+    @GetMapping("reset-password?token={token}")
     public ResponseEntity<String> resetPasswordGet(@PathVariable(required = true) String token) {
 
         try {
@@ -75,7 +75,7 @@ public class AuthenticationController {
     }
 
     @Transactional
-    @PostMapping("reset-password/{token}")
+    @PostMapping("reset-password?token={token}")
     public ResponseEntity<?> resetPasswordPost(
             @PathVariable(required = true) String token,
             @RequestBody(required = true) PasswordResetRequest passwordResetNewPasswordModel) {
