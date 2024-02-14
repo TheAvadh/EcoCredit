@@ -5,7 +5,7 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 const LoginForm = ({ onLogin }) => {
   return (
-    <Form className="form-container" onSubmit={onLogin}>
+    <Form className="form-container bg-ec-grey" onSubmit={onLogin}>
       <FloatingLabel
         controlId="loginEmail"
         label="Email Address"
@@ -16,7 +16,12 @@ const LoginForm = ({ onLogin }) => {
       <FloatingLabel controlId="loginPassword" label="Password">
         <Form.Control type="password" placeholder="Password" required />
       </FloatingLabel>
-      <Button variant="primary" type="submit" className="w-100 mt-4">
+      <Button
+        variant="ec-dark-green"
+        type="submit"
+        className="w-100 mt-4"
+        size="lg"
+      >
         Login
       </Button>
     </Form>

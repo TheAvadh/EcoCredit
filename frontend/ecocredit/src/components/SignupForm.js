@@ -7,7 +7,7 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 const SignupForm = ({ onSignup }) => {
   return (
-    <Form className="form-container" onSubmit={onSignup}>
+    <Form className="form-container bg-ec-grey" onSubmit={onSignup}>
       <Row className="g-2">
         <Col md>
           <FloatingLabel
@@ -81,7 +81,12 @@ const SignupForm = ({ onSignup }) => {
           </FloatingLabel>
         </Col>
       </Row>
-      <Button variant="primary" type="submit" className="w-100 mt-4">
+      <Button
+        variant="ec-dark-green"
+        type="submit"
+        className="w-100 mt-4"
+        size="lg"
+      >
         Signup
       </Button>
     </Form>

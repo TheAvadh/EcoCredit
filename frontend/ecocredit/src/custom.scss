@@ -1,0 +1,13 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+
+$theme-colors: map-merge($theme-colors, (
+    'ec-dark-green': #344E41, 
+    'ec-medium-green': #3A5A40,
+    'ec-green': #588157,
+    'ec-light-green': #A3B18A,
+    'ec-grey': #DAD7CD
+));
+
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/bootstrap';

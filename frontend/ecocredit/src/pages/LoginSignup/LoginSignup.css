@@ -19,3 +19,14 @@
   border-radius: 0.25rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
+
+.logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: #344e41;
+}
