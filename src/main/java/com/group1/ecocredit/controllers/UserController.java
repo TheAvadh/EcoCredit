@@ -21,23 +21,22 @@ public class UserController {
     }
 
 
-    @PutMapping("/update-profile/{id}")
-    public ResponseEntity<?> updateProfile(@RequestBody UpdateProfileRequest updateProfileRequest) {
+    @PutMapping("/update-profile")
+    public ResponseEntity<?> updateProfile(
+            @RequestBody UpdateProfileRequest updateProfileRequest) {
         UpdateProfileResponse updateProfileResponse = userService.updateProfile(updateProfileRequest);
 
-        switch (updateProfileResponse.getResponse()) {
-            case SUCCESS:
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body("{\n  \"message\": \"Update profile successful\"\n}");
-            case USER_NOT_FOUND:
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body("{\n  \"message\": \"User not found\"\n}");
-            case INTERNAL_SERVER_ERROR:
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("{\n  \"message\": \"Internal Server Error\"\n}");
-            default:
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("{\n  \"message\": \"Unexpected response type\"\n}");
-        }
+        return switch (updateProfileResponse.getResponse()) {
+            case SUCCESS -> ResponseEntity.status(HttpStatus.OK)
+                    .body("{\n  \"message\": \"Update profile successful\"\n}");
+            case USER_NOT_FOUND ->
+                    ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                            .body("{\n  \"message\": \"User not found\"\n}");
+            case INTERNAL_SERVER_ERROR ->
+                    ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .body("{\n  \"message\": \"Internal Server Error\"\n}");
+            default -> ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("{\n  \"message\": \"Unexpected response type\"\n}");
+        };
     }
 }
