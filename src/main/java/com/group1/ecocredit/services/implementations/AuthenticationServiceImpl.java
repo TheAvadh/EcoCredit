@@ -5,6 +5,7 @@ import com.group1.ecocredit.dto.JwtAuthenticationResponse;
 import com.group1.ecocredit.dto.RefreshTokenRequest;
 import com.group1.ecocredit.dto.SignInRequest;
 import com.group1.ecocredit.dto.SignUpRequest;
+import com.group1.ecocredit.enums.HttpMessage;
 import com.group1.ecocredit.models.Role;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.UserRepository;
@@ -46,9 +47,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     signInRequest.getPassword()));
         }
         catch (BadCredentialsException e){
-            JwtAuthenticationResponse jwtAuthenticationResponse=new JwtAuthenticationResponse();
-            jwtAuthenticationResponse.setExceptionMessage("Invalid email or password");
-            return jwtAuthenticationResponse;
+            throw e;
         }
         JwtAuthenticationResponse jwtAuthenticationResponse=new JwtAuthenticationResponse();
         var user=userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(()->new IllegalArgumentException("Invalid email or password."));
@@ -56,7 +55,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var refreshToken=jwtService.generateRefreshToken(new HashMap<>(),user);
 
         jwtAuthenticationResponse.setToken(jwt);
-        jwtAuthenticationResponse.setRefreshToken(jwt);
+        jwtAuthenticationResponse.setRefreshToken(refreshToken);
+        jwtAuthenticationResponse.setHttpMessage(HttpMessage.SUCCESS);
         jwtAuthenticationResponse.setRole(user.getRole());
 
         return jwtAuthenticationResponse;
