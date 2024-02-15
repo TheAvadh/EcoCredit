@@ -12,7 +12,7 @@ const LoginSignup = () => {
   const [activeView, setActiveView] = useState("login");
 
   return (
-    <Container className="d-flex vh-100 justify-content-center align-items-center">
+    <Container className="d-flex vh-100 justify-content-center align-items-center bg-ec-light-green">
       <Row className="w-100">
         <Col lg={6} className="mx-auto">
           <div className="mb-4 text-center">
@@ -22,7 +22,7 @@ const LoginSignup = () => {
           <div className="tabs-container">
             <Button
               variant={
-                activeView === "login" ? "ec-dark-green" : "ec-light-green"
+                activeView === "login" ? "ec-dark-green" : "ec-medium-green"
               }
               onClick={() => setActiveView("login")}
               className="tab-button"
@@ -31,7 +31,7 @@ const LoginSignup = () => {
             </Button>
             <Button
               variant={
-                activeView === "signup" ? "ec-dark-green" : "ec-light-green"
+                activeView === "signup" ? "ec-dark-green" : "ec-medium-green"
               }
               onClick={() => setActiveView("signup")}
               className="tab-button"

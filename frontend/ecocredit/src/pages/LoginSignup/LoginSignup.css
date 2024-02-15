@@ -1,3 +1,7 @@
+#root {
+  background-color: #344e41;
+}
+
 .tabs-container {
   display: flex;
   justify-content: space-between;
