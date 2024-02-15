@@ -1,14 +1,19 @@
 package com.group1.ecocredit.controllers;
 
 import com.group1.ecocredit.dto.*;
+import com.group1.ecocredit.models.ConfirmationToken;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.services.AuthenticationService;
 import com.group1.ecocredit.services.PasswordService;
+import com.group1.ecocredit.services.implementations.ConfirmationTokenService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,11 +23,17 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
     private final PasswordService passwordService;
+    private final ConfirmationTokenService confirmationTokenService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestBody SignUpRequest signUpRequest){
+    public ResponseEntity<User> signup(@RequestBody SignUpRequest signUpRequest) throws MessagingException {
         return ResponseEntity.ok(authenticationService.signup(signUpRequest));
     }
+
+/*    @GetMapping(path = "/confirm")
+    public Optional<ConfirmationToken> confirm(@RequestParam("token") String token){
+        return confirmationTokenService.confirmToken(token);
+    }*/
 
     @PostMapping("/signin")
     public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SignInRequest signinRequest){

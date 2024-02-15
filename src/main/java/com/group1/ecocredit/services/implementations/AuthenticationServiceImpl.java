@@ -29,13 +29,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
+    private final ConfirmationTokenService confirmationTokenService;
     private final EmailServiceImpl emailServiceImpl;
 
     public User signup(SignUpRequest signUpRequest) throws MessagingException {
-
-        if (signUpRequest.getPassword().length() < 8) {
-            throw new IllegalArgumentException("Password must be at least 8 characters long");
-        }
 
         User user=new User();
         user.setEmail(signUpRequest.getEmail());
@@ -45,9 +42,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         //  encrypt raw password to hash password
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
 
-        String verificationToken = UUID.randomUUID().toString();
-        user.setVerificationToken(verificationToken);
-        emailServiceImpl.sendVerifyAccountEmail(user.getEmail());
+        var token = confirmationTokenService.generateConfirmationToken(user.getId());
+        confirmationTokenService.saveConfirmationToken(token, user);
+
+//        emailServiceImpl.sendVerifyAccountEmail(user.getEmail());
 
         return userRepository.save(user);
 

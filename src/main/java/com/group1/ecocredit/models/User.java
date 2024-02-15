@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.checkerframework.common.aliasing.qual.Unique;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,11 +33,10 @@ public class User implements UserDetails {
     @NotNull
     private String email;
 
+    @Value("${password.minimum.length=8}")
     private String password;
 
     private Role role;
-
-    private String verificationToken;
 
 
     @Override
