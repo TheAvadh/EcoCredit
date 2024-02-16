@@ -49,6 +49,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         confirmationTokenService.saveConfirmationToken(token, user);
 
+        emailServiceImpl.sendVerifyAccountEmail(user.getEmail(), token);
+
         return userRepository.save(user);
 
     }
