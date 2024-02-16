@@ -3,6 +3,7 @@ package com.group1.ecocredit.services.implementations;
 
 import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.UserService;
+import com.group1.ecocredit.services.ConfirmationTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

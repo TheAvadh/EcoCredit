@@ -43,7 +43,7 @@ public class ConfirmationToken {
 
     @Column(nullable = false)
     @Setter
-    boolean isVerified = false;
+    boolean used = false;
 
     public ConfirmationToken(String token,
                              LocalDateTime createdTime,
@@ -53,6 +53,6 @@ public class ConfirmationToken {
         this.createdTime = createdTime;
         this.expirationTime = expirationTime;
         this.user = user;
-        this.isVerified = isVerified;
+        this.used = false;
     }
 }

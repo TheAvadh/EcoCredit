@@ -9,6 +9,7 @@ import com.group1.ecocredit.models.Role;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.AuthenticationService;
+import com.group1.ecocredit.services.ConfirmationTokenService;
 import com.group1.ecocredit.services.EmailService;
 import com.group1.ecocredit.services.JWTService;
 import jakarta.mail.MessagingException;
@@ -43,9 +44,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
 
         var token = confirmationTokenService.generateConfirmationToken(user.getId());
-        confirmationTokenService.saveConfirmationToken(token, user);
 
-//        emailServiceImpl.sendVerifyAccountEmail(user.getEmail());
+        System.out.println(token);
+
+        confirmationTokenService.saveConfirmationToken(token, user);
 
         return userRepository.save(user);
 

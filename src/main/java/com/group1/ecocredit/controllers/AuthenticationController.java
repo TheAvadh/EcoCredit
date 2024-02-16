@@ -5,7 +5,7 @@ import com.group1.ecocredit.models.ConfirmationToken;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.services.AuthenticationService;
 import com.group1.ecocredit.services.PasswordService;
-import com.group1.ecocredit.services.implementations.ConfirmationTokenService;
+import com.group1.ecocredit.services.ConfirmationTokenService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,11 +30,6 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.signup(signUpRequest));
     }
 
-/*    @GetMapping(path = "/confirm")
-    public Optional<ConfirmationToken> confirm(@RequestParam("token") String token){
-        return confirmationTokenService.confirmToken(token);
-    }*/
-
     @PostMapping("/signin")
     public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SignInRequest signinRequest){
         return ResponseEntity.ok(authenticationService.signIn(signinRequest));
@@ -43,6 +38,12 @@ public class AuthenticationController {
     @PostMapping("/refresh")
     public ResponseEntity<JwtAuthenticationResponse> refresh(@RequestBody RefreshTokenRequest refreshTokenRequest){
         return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequest));
+    }
+
+    @GetMapping(path = "/verify-account")
+    public ResponseEntity<Boolean> confirm(@RequestParam("token") String token){
+        return ResponseEntity.ok(confirmationTokenService.confirmToken(token));
+
     }
 
     @PostMapping("/forget-password")
