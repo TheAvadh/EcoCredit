@@ -2,6 +2,8 @@ package com.group1.ecocredit.controllers;
 
 import com.group1.ecocredit.dto.UpdateProfileRequest;
 import com.group1.ecocredit.dto.UpdateProfileResponse;
+import com.group1.ecocredit.dto.UserDetailsResponse;
+import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,5 +40,15 @@ public class UserController {
             default -> ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("{\n  \"message\": \"Unexpected response type\"\n}");
         };
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getUserById(@PathVariable Long userId) {
+        UserDetailsResponse userDTO = userService.getUserById(userId);
+        if (userDTO != null) {
+            return ResponseEntity.ok(userDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
