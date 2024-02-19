@@ -1,0 +1,26 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+$theme-colors: map-merge(
+  $theme-colors,
+  (
+    "ec-dark-green": #344e41,
+    "ec-medium-green": #3a5a40,
+    "ec-green": #588157,
+    "ec-light-green": #a3b18a,
+    "ec-grey": #dad7cd,
+  )
+);
+
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/bootstrap";
+
+.form-control,
+.form-select {
+  border-color: darken(map-get($theme-colors, "ec-dark-green"), 15%);
+
+  &:focus {
+    border-color: darken(map-get($theme-colors, "ec-dark-green"), 25%);
+    box-shadow: 0 0 0 0.2rem rgba(map-get($theme-colors, "ec-dark-green"), 0.25);
+  }
+}

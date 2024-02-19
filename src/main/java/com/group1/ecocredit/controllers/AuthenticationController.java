@@ -63,8 +63,8 @@ public class AuthenticationController {
         }
     }
 
-    @GetMapping("reset-password?token={token}")
-    public ResponseEntity<String> resetPasswordGet(@PathVariable(required = true) String token) {
+    @GetMapping("reset-password")
+    public ResponseEntity<String> resetPasswordGet(@RequestParam(required = true) String token) {
 
         try {
             boolean isValidPasswordResetRequest = passwordService.validPasswordResetRequest(token);
@@ -83,11 +83,10 @@ public class AuthenticationController {
     }
 
     @Transactional
-    @PostMapping("reset-password?token={token}")
+    @PostMapping("reset-password")
     public ResponseEntity<?> resetPasswordPost(
-            @PathVariable(required = true) String token,
+            @RequestParam(required = true) String token,
             @RequestBody(required = true) PasswordResetRequest passwordResetNewPasswordModel) {
-
 
         try {
             boolean success = passwordService.resetPassword(token, passwordResetNewPasswordModel);
