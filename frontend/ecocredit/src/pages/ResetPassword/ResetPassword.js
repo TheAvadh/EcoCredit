@@ -5,12 +5,43 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import FormContainer from "../../components/FormContainer";
 
 const ResetPassword = () => {
+  const [email, setEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [newPasswordRepeat, setNewPasswordRepeat] = useState("");
   const [validated, setValidated] = useState(false);
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   const handleSubmit = (event) => {
+    event.preventDefault();
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
+
+    const passwordsDoMatch = newPassword === newPasswordRepeat;
+    setPasswordsMatch(passwordsDoMatch);
+
+    if (form.checkValidity() === true && passwordsDoMatch) {
+      const formData = {
+        email,
+        newPassword,
+        newPasswordRepeat,
+      };
+
+      fetch("/api/v1/auth/reset-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
+      setValidated(false);
+    } else {
       event.stopPropagation();
     }
 
@@ -21,7 +52,14 @@ const ResetPassword = () => {
     <FormContainer title="Reset Your Password">
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <FloatingLabel controlId="email" label="Email Address" className="mb-3">
-          <Form.Control type="email" placeholder="Email Address" required />
+          <Form.Control
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <Form.Control.Feedback type="invalid">
             Please enter a valid email address.
           </Form.Control.Feedback>
@@ -29,9 +67,12 @@ const ResetPassword = () => {
         <FloatingLabel controlId="password" label="Password" className="mb-3">
           <Form.Control
             type="password"
+            name="newPassword"
             placeholder="Password"
             minLength={8}
             required
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
           />
           <Form.Control.Feedback type="invalid">
             Please enter a password that is at least 8 characters long.
@@ -40,13 +81,19 @@ const ResetPassword = () => {
         <FloatingLabel controlId="confirmPassword" label="Confirm Password">
           <Form.Control
             type="password"
+            name="newPasswordRepeat"
             placeholder="Confirm Password"
             minLength={8}
             required
+            value={newPasswordRepeat}
+            onChange={(e) => setNewPasswordRepeat(e.target.value)}
+            isInvalid={!passwordsMatch}
           />
-          <Form.Control.Feedback type="invalid">
-            Please enter the same password again for confirmation.
-          </Form.Control.Feedback>
+          {!passwordsMatch && (
+            <Form.Control.Feedback type="invalid">
+              Passwords do not match.
+            </Form.Control.Feedback>
+          )}
         </FloatingLabel>
         <div className="d-grid">
           <Button

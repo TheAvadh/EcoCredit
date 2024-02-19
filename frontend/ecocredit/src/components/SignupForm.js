@@ -7,11 +7,42 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 const SignupForm = () => {
   const [validated, setValidated] = useState(false);
+  const [signupData, setSignupData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    address: "",
+    city: "",
+    province: "",
+    postalCode: "",
+  });
 
-  const handleSubmit = (event) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setSignupData((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
+
+    if (form.checkValidity() === true) {
+      try {
+        const response = await fetch("/api", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(signupData),
+        });
+
+        if (!response.ok) throw new Error("Failed to signup");
+
+        const data = await response.json();
+        console.log("Signup Success:", data);
+      } catch (error) {
+        console.error("Signup Error:", error);
+      }
+    } else {
       event.stopPropagation();
     }
 
@@ -32,7 +63,14 @@ const SignupForm = () => {
             label="First Name"
             className="mb-3"
           >
-            <Form.Control type="text" placeholder="First Name" required />
+            <Form.Control
+              type="text"
+              name="firstName"
+              placeholder="First Name"
+              required
+              value={signupData.firstName}
+              onChange={handleInputChange}
+            />
             <Form.Control.Feedback type="invalid">
               Please enter your first name.
             </Form.Control.Feedback>
@@ -44,7 +82,14 @@ const SignupForm = () => {
             label="Last Name"
             className="mb-3"
           >
-            <Form.Control type="text" placeholder="Last Name" required />
+            <Form.Control
+              type="text"
+              name="lastName"
+              placeholder="Last Name"
+              required
+              value={signupData.lastName}
+              onChange={handleInputChange}
+            />
             <Form.Control.Feedback type="invalid">
               Please enter your last name.
             </Form.Control.Feedback>
@@ -56,7 +101,14 @@ const SignupForm = () => {
         label="Email Address"
         className="mb-3"
       >
-        <Form.Control type="email" placeholder="Email Address" required />
+        <Form.Control
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          required
+          value={signupData.email}
+          onChange={handleInputChange}
+        />
         <Form.Control.Feedback type="invalid">
           Please enter a valid email address.
         </Form.Control.Feedback>
@@ -68,16 +120,26 @@ const SignupForm = () => {
       >
         <Form.Control
           type="password"
+          name="password"
           placeholder="Password"
           minLength={8}
           required
+          value={signupData.password}
+          onChange={handleInputChange}
         />
         <Form.Control.Feedback type="invalid">
           Please enter a password that is at least 8 characters long.
         </Form.Control.Feedback>
       </FloatingLabel>
       <FloatingLabel controlId="signupAddress" label="Address" className="mb-3">
-        <Form.Control type="text" placeholder="Address" required />
+        <Form.Control
+          type="text"
+          name="address"
+          placeholder="Address"
+          required
+          value={signupData.address}
+          onChange={handleInputChange}
+        />
         <Form.Control.Feedback type="invalid">
           Please enter your address.
         </Form.Control.Feedback>
@@ -85,7 +147,14 @@ const SignupForm = () => {
       <Row className="g-2">
         <Col xl>
           <FloatingLabel controlId="signupCity" label="City">
-            <Form.Control type="text" placeholder="City" required />
+            <Form.Control
+              type="text"
+              name="city"
+              placeholder="City"
+              required
+              value={signupData.city}
+              onChange={handleInputChange}
+            />
             <Form.Control.Feedback type="invalid">
               Please enter your city.
             </Form.Control.Feedback>
@@ -93,7 +162,13 @@ const SignupForm = () => {
         </Col>
         <Col xl>
           <FloatingLabel controlId="signupProvince" label="Province">
-            <Form.Select aria-label="Province" required>
+            <Form.Select
+              name="province"
+              aria-label="Province"
+              required
+              value={signupData.province}
+              onChange={handleInputChange}
+            >
               <option value="">Select a province</option>
               <option value="Alberta">Alberta</option>
               <option value="British Columbia">British Columbia</option>
@@ -115,7 +190,14 @@ const SignupForm = () => {
         </Col>
         <Col xl>
           <FloatingLabel controlId="signupPostalCode" label="Postal Code">
-            <Form.Control type="text" placeholder="Postal Code" required />
+            <Form.Control
+              type="text"
+              name="postalCode"
+              placeholder="Postal Code"
+              required
+              value={signupData.postalCode}
+              onChange={handleInputChange}
+            />
             <Form.Control.Feedback type="invalid">
               Please select your postal code.
             </Form.Control.Feedback>

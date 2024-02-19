@@ -6,13 +6,34 @@ import { Link } from "react-router-dom";
 import "./LoginForm.css";
 
 const LoginForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [validated, setValidated] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+
+    if (form.checkValidity() === true) {
+      const loginData = {
+        email,
+        password,
+      };
+
+      try {
+        const response = await fetch("/api", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(loginData),
+        });
+
+        if (!response.ok) throw new Error("Failed to login");
+
+        const data = await response.json();
+        console.log("Login Success:", data);
+      } catch (error) {
+        console.error("Login Error:", error);
+      }
     }
 
     setValidated(true);
@@ -30,7 +51,14 @@ const LoginForm = () => {
         label="Email Address"
         className="mb-3"
       >
-        <Form.Control type="email" placeholder="Email Address" required />
+        <Form.Control
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <Form.Control.Feedback type="invalid">
           Please enter a valid email address.
         </Form.Control.Feedback>
@@ -40,7 +68,15 @@ const LoginForm = () => {
         label="Password"
         className="mb-3"
       >
-        <Form.Control type="password" placeholder="Password" required />
+        <Form.Control
+          type="password"
+          name="password"
+          placeholder="Password"
+          minLength={8}
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <Form.Control.Feedback type="invalid">
           Please enter a valid password.
         </Form.Control.Feedback>
