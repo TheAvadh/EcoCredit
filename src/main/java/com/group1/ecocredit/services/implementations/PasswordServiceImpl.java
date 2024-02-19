@@ -78,7 +78,8 @@ public class PasswordServiceImpl implements PasswordService {
         try {
             if (!Objects.equals(request.getNewPassword(), request.getNewPasswordRepeat())) return false;
 
-            if (validPasswordResetRequest(token)) return false;
+
+            if (!validPasswordResetRequest(token)) return false;
 
             String email = request.getEmail();
 
