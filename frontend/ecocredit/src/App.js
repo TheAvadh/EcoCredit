@@ -1,7 +1,12 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import { LoginSignup, ForgetPassword, ResetPassword } from "./pages";
+import {
+  LoginSignup,
+  ForgetPassword,
+  ResetPassword,
+  PickupSchedule,
+} from "./pages";
 
 function App() {
   return (
@@ -10,6 +15,7 @@ function App() {
         <Route path="/login-signup" element={<LoginSignup />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/pickup-schedule" element={<PickupSchedule />} />
       </Routes>
     </BrowserRouter>
   );
