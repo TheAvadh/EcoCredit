@@ -3,7 +3,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import LoginForm from "../../components/LoginForm";
+import LoginForm from "../../components/LoginForm/LoginForm";
 import SignupForm from "../../components/SignupForm";
 import logoUrl from "../../assets/images/logo.png";
 import "./LoginSignup.css";
