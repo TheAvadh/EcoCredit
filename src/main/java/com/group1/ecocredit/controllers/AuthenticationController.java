@@ -1,6 +1,8 @@
 package com.group1.ecocredit.controllers;
 
 import com.group1.ecocredit.dto.*;
+import com.group1.ecocredit.dto.PasswordResetRequest;
+import com.group1.ecocredit.enums.HttpMessage;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.AuthenticationService;
@@ -32,7 +34,14 @@ public class AuthenticationController {
 
     @PostMapping("/signin")
     public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SignInRequest signinRequest){
-        return ResponseEntity.ok(authenticationService.signIn(signinRequest));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(authenticationService.signIn(signinRequest));
+        }
+        catch(Exception e){
+            JwtAuthenticationResponse jwtAuthenticationResponse=new JwtAuthenticationResponse();
+            jwtAuthenticationResponse.setHttpMessage(HttpMessage.INVALID_EMAIL_OR_PASSWORD);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(jwtAuthenticationResponse);
+        }
     }
 
     @PostMapping("/refresh")
