@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetailsResponse getUserById(Long userId) {
+    public UserDetailsResponse getUserById(Integer userId) {
         try {
             User user = userRepository.findById(userId).orElse(null);
 

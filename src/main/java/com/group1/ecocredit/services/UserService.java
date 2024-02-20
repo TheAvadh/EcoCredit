@@ -12,6 +12,6 @@ public interface UserService {
 
     UpdateProfileResponse updateProfile(UpdateProfileRequest updateProfileRequest);
 
-    UserDetailsResponse getUserById(Long userId);
+    UserDetailsResponse getUserById(Integer userId);
 
 }
