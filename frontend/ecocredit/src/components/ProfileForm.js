@@ -4,9 +4,16 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-const ProfileForm = () => (
+const ProfileForm = ({
+  profileData,
+  handleInputChange,
+  handleAddressChange,
+  handleSave,
+  editMode,
+  setEditMode,
+}) => (
   <Col lg={8}>
-    <Form>
+    <Form onSubmit={handleSave}>
       <Row>
         <Col>
           <Form.Group
@@ -18,19 +25,25 @@ const ProfileForm = () => (
               className="text-ec-dark-green fs-5"
               type="text"
               name="firstName"
+              value={profileData.firstName}
+              onChange={handleInputChange}
+              disabled={!editMode}
             />
           </Form.Group>
         </Col>
         <Col>
           <Form.Group
             className="mb-3 text-ec-dark-green lead fs-4 fw-bold"
-            controlId="firstName"
+            controlId="lastName"
           >
             <Form.Label>Last Name :</Form.Label>
             <Form.Control
               className="text-ec-dark-green fs-5"
               type="text"
-              name="firstName"
+              name="lastName"
+              value={profileData.lastName}
+              onChange={handleInputChange}
+              disabled={!editMode}
             />
           </Form.Group>
         </Col>
@@ -38,25 +51,31 @@ const ProfileForm = () => (
 
       <Form.Group
         className="mb-3 text-ec-dark-green lead fs-4 fw-bold"
-        controlId="firstName"
+        controlId="email"
       >
         <Form.Label>Email Address :</Form.Label>
         <Form.Control
           className="text-ec-dark-green fs-5"
           type="text"
-          name="firstName"
+          name="email"
+          value={profileData.email}
+          onChange={handleInputChange}
+          disabled={!editMode}
         />
       </Form.Group>
 
       <Form.Group
         className="mb-3 text-ec-dark-green lead fs-4 fw-bold"
-        controlId="firstName"
+        controlId="phoneNumber"
       >
         <Form.Label>Phone Number :</Form.Label>
         <Form.Control
           className="text-ec-dark-green fs-5"
           type="text"
-          name="firstName"
+          name="phoneNumber"
+          value={profileData.phoneNumber}
+          onChange={handleInputChange}
+          disabled={!editMode}
         />
       </Form.Group>
 
@@ -69,6 +88,9 @@ const ProfileForm = () => (
           className="text-ec-dark-green fs-5"
           type="text"
           name="street"
+          value={profileData.address.street}
+          onChange={handleAddressChange}
+          disabled={!editMode}
         />
       </Form.Group>
 
@@ -76,39 +98,48 @@ const ProfileForm = () => (
         <Col md={4}>
           <Form.Group
             className="mb-3 text-ec-dark-green lead fs-4 fw-bold"
-            controlId="address.street"
+            controlId="address.city"
           >
             <Form.Label>City :</Form.Label>
             <Form.Control
               className="text-ec-dark-green fs-5"
               type="text"
-              name="street"
+              name="city"
+              value={profileData.address.city}
+              onChange={handleAddressChange}
+              disabled={!editMode}
             />
           </Form.Group>
         </Col>
         <Col md={4}>
           <Form.Group
             className="mb-3 text-ec-dark-green lead fs-4 fw-bold"
-            controlId="address.street"
+            controlId="address.province"
           >
             <Form.Label>Province :</Form.Label>
             <Form.Control
               className="text-ec-dark-green fs-5"
               type="text"
-              name="street"
+              name="province"
+              value={profileData.address.province}
+              onChange={handleAddressChange}
+              disabled={!editMode}
             />
           </Form.Group>
         </Col>
         <Col md={4}>
           <Form.Group
             className="mb-3 text-ec-dark-green lead fs-4 fw-bold"
-            controlId="address.street"
+            controlId="address.postalCode"
           >
             <Form.Label>Postal Code :</Form.Label>
             <Form.Control
               className="text-ec-dark-green fs-5"
               type="text"
-              name="street"
+              name="postalCode"
+              value={profileData.address.postalCode}
+              onChange={handleAddressChange}
+              disabled={!editMode}
             />
           </Form.Group>
         </Col>
@@ -116,13 +147,16 @@ const ProfileForm = () => (
 
       <Form.Group
         className="mb-3 text-ec-dark-green lead fs-4 fw-bold"
-        controlId="address.street"
+        controlId="address.country"
       >
         <Form.Label>Country :</Form.Label>
         <Form.Control
           className="text-ec-dark-green fs-5"
           type="text"
-          name="street"
+          name="country"
+          value={profileData.address.country}
+          onChange={handleAddressChange}
+          disabled={!editMode}
         />
       </Form.Group>
 
@@ -130,18 +164,21 @@ const ProfileForm = () => (
         variant="ec-grey"
         className="mt-2 me-2 text-ec-dark-green"
         size="lg"
+        onClick={() => setEditMode(!editMode)}
       >
-        Cancel
+        {editMode ? "Cancel" : "Edit"}
       </Button>
 
-      <Button
-        variant="ec-dark-green text-ec-grey"
-        className="mt-2"
-        size="lg"
-        type="submit"
-      >
-        Save
-      </Button>
+      {editMode && (
+        <Button
+          variant="ec-dark-green text-ec-grey"
+          className="mt-2"
+          size="lg"
+          type="submit"
+        >
+          Save
+        </Button>
+      )}
     </Form>
   </Col>
 );
