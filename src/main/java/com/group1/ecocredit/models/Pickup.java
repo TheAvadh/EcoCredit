@@ -20,14 +20,14 @@ public class Pickup {
     @Column(name = "datetime")
     private LocalDateTime dateTime;
 
-    @ManyToOne
+//    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy = "pickup")
-    private List<Waste> wastes;
+//    @OneToMany(mappedBy = "pickup")
+//    private List<Waste> wastes;
 
-    @ManyToOne
+//    @ManyToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
 
