@@ -8,6 +8,7 @@ import com.group1.ecocredit.services.ConfirmationTokenService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import com.group1.ecocredit.models.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 
 public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
 

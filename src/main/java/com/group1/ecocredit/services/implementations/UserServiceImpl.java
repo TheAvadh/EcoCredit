@@ -28,9 +28,6 @@ public class UserServiceImpl implements UserService {
     private final ConfirmationTokenService confirmationTokenService;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private EmailService emailService;
 
     @Override
