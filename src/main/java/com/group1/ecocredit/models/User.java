@@ -3,6 +3,9 @@ package com.group1.ecocredit.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.checkerframework.common.aliasing.qual.Unique;
+import org.springframework.beans.factory.annotation.Value;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,6 +37,7 @@ public class User implements UserDetails {
     @NotNull
     private String email;
 
+    @Value("${password.minimum.length=8}")
     private String password;
 
     private String phoneNumber;
@@ -41,6 +45,8 @@ public class User implements UserDetails {
     private Address address;
 
     private Role role;
+
+    private boolean isEnabled = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -69,7 +75,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.isEnabled;
     }
 
 }
