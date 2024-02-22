@@ -30,8 +30,12 @@ public class AuthenticationController {
     UserRepository userRepository;
 
     @PostMapping("/signup")
-    public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest signUpRequest) throws MessagingException {
-        return ResponseEntity.ok(authenticationService.signup(signUpRequest));
+    public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest signUpRequest) {
+        try {
+            return ResponseEntity.ok(authenticationService.signup(signUpRequest));
+        } catch (MessagingException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
     }
 
     @PostMapping("/signin")
@@ -53,8 +57,11 @@ public class AuthenticationController {
 
     @GetMapping(path = "/verify-account")
     public ResponseEntity<Boolean> confirm(@RequestParam("token") String token){
-        return ResponseEntity.ok(confirmationTokenService.confirmToken(token));
-
+        try {
+            return ResponseEntity.ok(confirmationTokenService.confirmToken(token));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
     }
 
     @PostMapping("/forget-password")

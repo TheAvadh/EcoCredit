@@ -21,7 +21,7 @@ public class EcocreditApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args){
-		User adminAccount = userRepository.findByRole(Role.USER);
+		/*User adminAccount = userRepository.findByRole(Role.USER);
 		if(null==adminAccount){
 			User user=new User();
 
@@ -31,6 +31,6 @@ public class EcocreditApplication implements CommandLineRunner {
 			user.setRole(Role.USER);
 			user.setPassword(new BCryptPasswordEncoder().encode("user"));
 			userRepository.save(user);
-		}
+		}*/
 	}
 }

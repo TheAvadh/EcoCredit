@@ -15,6 +15,8 @@ import com.group1.ecocredit.services.ConfirmationTokenService;
 import com.group1.ecocredit.services.JWTService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,8 +35,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JWTService jwtService;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailServiceImpl emailServiceImpl;
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
-    public JwtAuthenticationResponse signup(SignUpRequest signUpRequest) throws MessagingException {
+    public JwtAuthenticationResponse signup(SignUpRequest signUpRequest) {
 
         User user=new User();
         user.setEmail(signUpRequest.getEmail());
@@ -44,7 +47,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         //  encrypt raw password to hash password
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
 
-        /*Address userAddress = new Address();
+        Address userAddress = new Address();
         SignUpRequest.AddressBD addressBD = signUpRequest.getAddress();
 
         userAddress.setStreet(addressBD.getStreet());
@@ -52,18 +55,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userAddress.setProvince(addressBD.getProvince());
         userAddress.setPostalCode(addressBD.getPostalCode());
 
-        user.setAddress(userAddress);*/
+        user.setAddress(userAddress);
+        try{
+            var token = confirmationTokenService.generateConfirmationToken(user.getId());
+            confirmationTokenService.saveConfirmationToken(token, user);
+            emailServiceImpl.sendVerifyAccountEmail(user.getEmail(), token);
+        }
+        catch (MessagingException e){
+            logger.error("An error occurred while sending the verification email", e);
+        }
 
-        var token = confirmationTokenService.generateConfirmationToken(user.getId());
 
-        confirmationTokenService.saveConfirmationToken(token, user);
-
-        emailServiceImpl.sendVerifyAccountEmail(user.getEmail(), token);
-
-        confirmationTokenService.saveConfirmationToken(token, user);
-        emailServiceImpl.sendVerifyAccountEmail(user.getEmail(), token);
-
-        userRepository.save(user);
+        User theUser = userRepository.save(user);
 
         var jwt = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
