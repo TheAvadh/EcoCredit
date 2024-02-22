@@ -11,7 +11,6 @@ import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.AuthenticationService;
 import com.group1.ecocredit.services.ConfirmationTokenService;
-import com.group1.ecocredit.services.EmailService;
 import com.group1.ecocredit.services.JWTService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailServiceImpl emailServiceImpl;
 
-    public User signup(SignUpRequest signUpRequest) throws MessagingException {
+    public JwtAuthenticationResponse signup(SignUpRequest signUpRequest) throws MessagingException {
 
         User user=new User();
         user.setEmail(signUpRequest.getEmail());
@@ -53,7 +51,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         emailServiceImpl.sendVerifyAccountEmail(user.getEmail(), token);
 
-        return userRepository.save(user);
+        confirmationTokenService.saveConfirmationToken(token, user);
+        emailServiceImpl.sendVerifyAccountEmail(user.getEmail(), token);
+
+        User savedUser = userRepository.save(user);
+
+        var jwt = jwtService.generateToken(user);
+        var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
+
+        JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
+        jwtAuthenticationResponse.setToken(jwt);
+        jwtAuthenticationResponse.setRefreshToken(refreshToken);
+        jwtAuthenticationResponse.setRole(user.getRole());
+
+        return jwtAuthenticationResponse;
 
     }
     public JwtAuthenticationResponse signIn(SignInRequest signInRequest){

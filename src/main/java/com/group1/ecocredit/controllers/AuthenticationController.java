@@ -1,10 +1,8 @@
 package com.group1.ecocredit.controllers;
 
 import com.group1.ecocredit.dto.*;
-import com.group1.ecocredit.models.ConfirmationToken;
 import com.group1.ecocredit.dto.PasswordResetRequest;
 import com.group1.ecocredit.enums.HttpMessage;
-import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.AuthenticationService;
 import com.group1.ecocredit.services.PasswordService;
@@ -17,8 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,7 +30,7 @@ public class AuthenticationController {
     UserRepository userRepository;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestBody SignUpRequest signUpRequest) throws MessagingException {
+    public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest signUpRequest) throws MessagingException {
         return ResponseEntity.ok(authenticationService.signup(signUpRequest));
     }
 
