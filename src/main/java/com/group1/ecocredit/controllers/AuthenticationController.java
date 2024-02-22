@@ -58,7 +58,11 @@ public class AuthenticationController {
     @GetMapping(path = "/verify-account")
     public ResponseEntity<Boolean> confirm(@RequestParam("token") String token){
         try {
-            return ResponseEntity.ok(confirmationTokenService.confirmToken(token));
+            var success = confirmationTokenService.confirmToken(token);
+            if (!success) {
+                return ResponseEntity.status((HttpStatus.UNAUTHORIZED)).build();
+            }
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }

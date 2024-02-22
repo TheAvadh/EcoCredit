@@ -62,15 +62,11 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
 
         Optional<ConfirmationToken> confirmationTokenOptional = confirmationTokenRepository.findByToken(hashedToken);
 
-
-
         if(confirmationTokenOptional.isEmpty()) return false;
 
         ConfirmationToken tokenObj = confirmationTokenOptional.get();
-        System.out.println(tokenObj.getToken());
 
         tokenObj.setUsed(true);
-
 
         Optional<User> userOptional = userRepository.findByEmail(tokenObj.getUser().getEmail());
 
