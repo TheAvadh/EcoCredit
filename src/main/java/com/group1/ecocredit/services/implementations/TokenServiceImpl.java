@@ -5,6 +5,7 @@ import com.group1.ecocredit.models.PasswordResetToken;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.PasswordResetTokenRepository;
 import com.group1.ecocredit.services.TokenService;
+import com.group1.ecocredit.utils.Utils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,8 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public void inValidateToken(String token) {
 
-        PasswordResetToken tokenToInvalidate = passwordResetTokenRepository.findByToken(token);
+        String hashedToken = Utils.hash(token);
+        PasswordResetToken tokenToInvalidate = passwordResetTokenRepository.findByToken(hashedToken);
 
         tokenToInvalidate.setUsed(true);
 
