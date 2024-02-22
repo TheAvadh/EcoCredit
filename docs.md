@@ -24,7 +24,7 @@
 | ------------------------ | ---------------------------------|
 | id                       | INT, PK                          |
 | category_id              | INT, FK to category_lookup table |
-| pickup_id                | INT, FK to status_lookup table   |
+| pickup_id                | INT, FK to pickup table   |
 
 
 ### category_lookup table
