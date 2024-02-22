@@ -6,6 +6,7 @@ import com.group1.ecocredit.dto.RefreshTokenRequest;
 import com.group1.ecocredit.dto.SignInRequest;
 import com.group1.ecocredit.dto.SignUpRequest;
 import com.group1.ecocredit.enums.HttpMessage;
+import com.group1.ecocredit.models.Address;
 import com.group1.ecocredit.models.Role;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.UserRepository;
@@ -43,10 +44,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         //  encrypt raw password to hash password
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
 
+        /*Address userAddress = new Address();
+        SignUpRequest.AddressBD addressBD = signUpRequest.getAddress();
+
+        userAddress.setStreet(addressBD.getStreet());
+        userAddress.setCity(addressBD.getCity());
+        userAddress.setProvince(addressBD.getProvince());
+        userAddress.setPostalCode(addressBD.getPostalCode());
+
+        user.setAddress(userAddress);*/
+
         var token = confirmationTokenService.generateConfirmationToken(user.getId());
 
-        System.out.println(token);
-
         confirmationTokenService.saveConfirmationToken(token, user);
 
         emailServiceImpl.sendVerifyAccountEmail(user.getEmail(), token);
@@ -54,7 +63,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         confirmationTokenService.saveConfirmationToken(token, user);
         emailServiceImpl.sendVerifyAccountEmail(user.getEmail(), token);
 
-        User savedUser = userRepository.save(user);
+        userRepository.save(user);
 
         var jwt = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
