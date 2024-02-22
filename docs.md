@@ -24,7 +24,8 @@
 | ------------------------ | ---------------------------------|
 | id                       | INT, PK                          |
 | category_id              | INT, FK to category_lookup table |
-| pickup_id                | INT, FK to pickup table   |
+| pickup_id                | INT, FK to pickup table          |
+| weight                   | FLOAT                            |
 
 
 ### category_lookup table
