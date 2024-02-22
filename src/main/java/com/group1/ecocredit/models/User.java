@@ -6,6 +6,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.checkerframework.common.aliasing.qual.Unique;
 import org.springframework.beans.factory.annotation.Value;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,6 +39,10 @@ public class User implements UserDetails {
 
     @Value("${password.minimum.length=8}")
     private String password;
+
+    private String phoneNumber;
+    @Embedded
+    private Address address;
 
     private Role role;
 
@@ -69,7 +77,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return this.isEnabled;
     }
-
 
 }
 
