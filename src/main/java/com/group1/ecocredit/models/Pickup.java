@@ -22,14 +22,14 @@ public class Pickup {
 
 //    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user_id;
+    private int user_id;
 
 //    @OneToMany(mappedBy = "pickup")
 //    private List<Waste> wastes;
 
 //    @ManyToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
-    private Status status_id;
+    private int status_id;
 
 
 }
