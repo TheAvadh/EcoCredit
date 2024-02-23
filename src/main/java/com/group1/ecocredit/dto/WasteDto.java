@@ -1,6 +1,6 @@
 package com.group1.ecocredit.dto;
 
-public class Waste {
+public class WasteDto {
     private String category;
     private double weight;
 }

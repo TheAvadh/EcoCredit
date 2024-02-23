@@ -1,6 +1,6 @@
 package com.group1.ecocredit.models;
 
-import com.group1.ecocredit.dto.Waste;
+import com.group1.ecocredit.dto.WasteDto;
 import com.group1.ecocredit.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -22,14 +22,14 @@ public class Pickup {
 
 //    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private User user_id;
 
 //    @OneToMany(mappedBy = "pickup")
 //    private List<Waste> wastes;
 
 //    @ManyToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
-    private Status status;
+    private Status status_id;
 
 
 }
