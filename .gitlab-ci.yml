@@ -14,6 +14,7 @@
 
 variables:
   APP_NAME: ecocredit
+  APP_CONTAINER_NAME: ecocredit-backend-app
 
 image: maven:latest
 
@@ -25,6 +26,7 @@ stages:
   - build
   - test
   - publish
+  - deploy
 
 build:
   stage: build
@@ -61,3 +63,16 @@ publish:
     name: dev
   only:
     - dev
+
+deploy:
+  image: alpine:latest
+  stage: deploy
+  tags:
+    - deployment
+  script:
+    - chmod og= $ID_RSA
+    - apk update && apk add openssh-client
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull docker.io/$DOCKER_HUB_USER/$APP_NAME:$CI_COMMIT_SHORT_SHA"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker stop rm $APP_CONTAINER_NAME"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p $APP_PORT:$APP_PORT --name $APP_CONTAINER_NAME docker.io/$DOCKER_HUB_USER/$APP_NAME:$CI_COMMIT_SHORT_SHA"
