@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {useSearchParams} from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
@@ -10,6 +11,7 @@ const ResetPassword = () => {
   const [newPasswordRepeat, setNewPasswordRepeat] = useState("");
   const [validated, setValidated] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [searchParams,] = useSearchParams();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -25,7 +27,7 @@ const ResetPassword = () => {
         newPasswordRepeat,
       };
 
-      fetch("/api/v1/auth/reset-password", {
+      fetch(`${process.env.REACT_APP_API_URL}/auth/reset-password?token=${searchParams.get("token")}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

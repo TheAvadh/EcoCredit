@@ -66,7 +66,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
 
-        User theUser = userRepository.save(user);
+        user = userRepository.save(user);
 
         var jwt = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
