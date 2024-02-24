@@ -3,6 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 import "./LoginForm.css";
 
 const LoginForm = () => {
@@ -21,9 +22,12 @@ const LoginForm = () => {
       };
 
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/signin`, {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/signin`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+           },
           body: JSON.stringify(loginData),
         });
 
@@ -31,6 +35,8 @@ const LoginForm = () => {
 
         const data = await response.json();
         console.log("Login Success:", data);
+        Cookies.set('token', data.token, { secure: true });
+        localStorage.setItem("userId", data.userId);
       } catch (error) {
         console.error("Login Error:", error);
       }

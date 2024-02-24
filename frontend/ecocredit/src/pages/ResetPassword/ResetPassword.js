@@ -27,7 +27,7 @@ const ResetPassword = () => {
         newPasswordRepeat,
       };
 
-      fetch(`${process.env.REACT_APP_API_URL}/auth/reset-password?token=${searchParams.get("token")}`, {
+      fetch(`${process.env.REACT_APP_BASE_URL}/auth/reset-password?token=${searchParams.get("token")}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

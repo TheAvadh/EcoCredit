@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Data
 public class JwtAuthenticationResponse {
+    private Integer userId;
     private String token;
     private String refreshToken;
     private HttpMessage httpMessage;

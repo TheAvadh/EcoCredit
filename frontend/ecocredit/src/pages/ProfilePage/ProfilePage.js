@@ -6,6 +6,7 @@ import Image from "react-bootstrap/Image";
 import ProfileForm from "../../components/ProfileForm";
 import ProfileToast from "../../components/ProfileToast/ProfileToast";
 import profilePicURL from "../../assets/images/profilePic.jpg";
+import Cookies from "js-cookie";
 import "./ProfilePage.css";
 
 const ProfilePage = () => {
@@ -23,13 +24,20 @@ const ProfilePage = () => {
       country: "",
     },
   });
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(true);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("");
 
+  
   useEffect(() => {
-    fetch("/api")
+    fetch(`${process.env.REACT_APP_BASE_URL}/users/${localStorage.getItem("userId")}`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Authorization": `Bearer ${Cookies.get("token")}`,
+        "Accept": "application/json"
+      }})
       .then((response) => response.json())
       .then((data) => setProfileData(data))
       .catch((error) => console.error("Fetching profile data failed:", error));
@@ -56,10 +64,11 @@ const ProfilePage = () => {
 
   const handleSave = (event) => {
     event.preventDefault();
-    fetch("/api/v1/user/update-profile ", {
+    fetch(`${process.env.REACT_APP_BASE_URL}/users/update-profile`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${Cookies.get("token")}`
       },
       body: JSON.stringify(profileData),
     })
