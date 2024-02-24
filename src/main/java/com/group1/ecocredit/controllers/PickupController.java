@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/pickup")
+@RequestMapping("/api/v1/pickup")
 public class PickupController {
     @Autowired
     private PickupService pickUpService;

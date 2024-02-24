@@ -4,6 +4,7 @@ import com.group1.ecocredit.dto.WasteDto;
 import com.group1.ecocredit.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,7 +25,7 @@ public class Pickup {
     private int user_id;
 
     @JoinColumn(name = "status_id", referencedColumnName = "id")
-    private int status_id;
-
+    @Setter
+    private Status status;
 
 }

@@ -2,6 +2,7 @@ package com.group1.ecocredit.services.implementations;
 
 import com.group1.ecocredit.dto.PickupRequest;
 import com.group1.ecocredit.dto.WasteDto;
+import com.group1.ecocredit.enums.Status;
 import com.group1.ecocredit.models.Category;
 import com.group1.ecocredit.models.Pickup;
 import com.group1.ecocredit.models.User;
@@ -33,8 +34,10 @@ public class PickupServiceImpl implements PickupService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
     private CategoryRepository categoryRepository;
-    private Category category;
+    @Autowired
+    private StatusRepository stautsRepository;
 
     @Override
     public void schedulePickup(PickupRequest pickupRequest) {
@@ -45,7 +48,7 @@ public class PickupServiceImpl implements PickupService {
 
         Pickup pickup = new Pickup();
         pickup.setDateTime(pickupRequest.getDateTime());
-        pickup.setStatus_id(category.getId());
+        pickup.setStatus(Status.SCHEDULED);
         pickup.setUser_id(userId); // Set the user
 
         Pickup savedPickup = pickupRepository.save(pickup);
@@ -53,7 +56,7 @@ public class PickupServiceImpl implements PickupService {
         for (Waste w : pickupRequest.getWastes()) {
             Waste waste = new Waste();
             Optional<Category> categoryOptional = categoryRepository.findById(w.getCategory_id());
-            if (category == null) {
+            if (categoryOptional.isEmpty()) {
                 throw new IllegalArgumentException("Category not found: " + w.getCategory_id());
             }
             Category category = categoryOptional.get();
