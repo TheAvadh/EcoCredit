@@ -1,13 +1,10 @@
 package com.group1.ecocredit;
 
-import com.group1.ecocredit.models.Role;
-import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class EcocreditApplication implements CommandLineRunner {
@@ -21,16 +18,6 @@ public class EcocreditApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args){
-		User adminAccount = userRepository.findByRole(Role.USER);
-		if(null==adminAccount){
-			User user=new User();
 
-			user.setEmail("geerthk@dal.ca");
-			user.setFirstName("user");
-			user.setLastName("user");
-			user.setRole(Role.USER);
-			user.setPassword(new BCryptPasswordEncoder().encode("user"));
-			userRepository.save(user);
-		}
 	}
 }

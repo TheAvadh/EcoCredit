@@ -30,14 +30,14 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendVerifyAccountEmail(String email) throws MessagingException {
+    public void sendVerifyAccountEmail(String email, String token) throws MessagingException {
         var subject = "Verify your Eco Credit account";
         var text = """
             <div>
-              Click <a href="http://localhost:8080/api/verify-account?email=%s" target="_blank">here</a>
+              Click <a href="http://localhost:8080/api/v1/auth/verify-account?token=%s" target="_blank">here</a>
                to verify your Eco Credit account
             </div>
-            """.formatted(email);
+            """.formatted(token);
         var isHtml = true;
 
         sendEmail(email, subject, text, isHtml);
@@ -48,7 +48,7 @@ public class EmailServiceImpl implements EmailService {
         var subject = "Reset your Eco Credit password";
         var text = """
             <div>
-              Click <a href="http://localhost:8080/api/reset-password?token=%s" target="_blank">here</a>
+              Click <a href="http://localhost:8080/api/v1/auth/reset-password?token=%s" target="_blank">here</a>
                to reset your Eco Credit password
             </div>
             """.formatted(token);
@@ -68,4 +68,6 @@ public class EmailServiceImpl implements EmailService {
 
         javaMailSender.send(mimeMessage);
     }
+
+
 }
