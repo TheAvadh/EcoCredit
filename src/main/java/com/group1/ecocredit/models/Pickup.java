@@ -15,19 +15,14 @@ public class Pickup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     @Column(name = "datetime")
     private LocalDateTime dateTime;
 
-//    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private int user_id;
 
-//    @OneToMany(mappedBy = "pickup")
-//    private List<Waste> wastes;
-
-//    @ManyToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private int status_id;
 

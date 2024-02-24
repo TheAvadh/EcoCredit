@@ -12,12 +12,12 @@ public class Waste {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
-    private Category category;
+    @Column(name = "category_id")
+    private Integer category_id;
 
-    @ManyToOne
-    @JoinColumn(name = "pickup_id", referencedColumnName = "id")
-    private Pickup pickup;
+    @Column(name = "pickup_id")
+    private int pickup_id;
+
+    private float weight;
 
 }

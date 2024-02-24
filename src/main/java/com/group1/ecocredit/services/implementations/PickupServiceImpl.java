@@ -6,10 +6,7 @@ import com.group1.ecocredit.models.Category;
 import com.group1.ecocredit.models.Pickup;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.models.Waste;
-import com.group1.ecocredit.repositories.PickupRepository;
-import com.group1.ecocredit.repositories.StatusRepository;
-import com.group1.ecocredit.repositories.UserRepository;
-import com.group1.ecocredit.repositories.WasteRepository;
+import com.group1.ecocredit.repositories.*;
 import com.group1.ecocredit.services.PickupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -36,7 +33,7 @@ public class PickupServiceImpl implements PickupService {
     @Autowired
     private UserRepository userRepository;
 
-
+    private CategoryRepository categoryRepository;
     private Category category;
 
     @Override
@@ -51,9 +48,21 @@ public class PickupServiceImpl implements PickupService {
         pickup.setStatus_id(category.getId());
         pickup.setUser_id(userId); // Set the user
 
-        pickupRepository.save(pickup);
-        System.out.println("Pickup done");
+        Pickup savedPickup = pickupRepository.save(pickup);
 
+        for (Waste w : pickupRequest.getWastes()) {
+            Waste waste = new Waste();
+            Optional<Category> categoryOptional = categoryRepository.findById(w.getCategory_id());
+            if (category == null) {
+                throw new IllegalArgumentException("Category not found: " + w.getCategory_id());
+            }
+            Category category = categoryOptional.get();
+            waste.setCategory_id(category.getId()); // Set the category ID
+            waste.setPickup_id(savedPickup.getId()); // Set the pickup ID
+            waste.setWeight(w.getWeight());
+            wasteRepository.save(waste);
+        }
+        System.out.println("Pickup done");
 
 
     }
