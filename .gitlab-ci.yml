@@ -17,6 +17,10 @@ variables:
 
 image: maven:latest
 
+cache:
+  paths:
+    - "target/"
+
 stages:
   - build
   - test
@@ -26,6 +30,9 @@ build:
   stage: build
   script:
     - mvn clean package
+  artifacts:
+    paths:
+      - target/*.jar
 
 test:
   stage: test
