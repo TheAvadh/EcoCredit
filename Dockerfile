@@ -1,5 +1,5 @@
 # Use an official OpenJDK runtime as a parent image
-FROM amazoncorretto:17-al2023-jdk
+FROM amazoncorretto:21-al2023-jdk
 
 # Set the working directory inside the container
 WORKDIR /app
