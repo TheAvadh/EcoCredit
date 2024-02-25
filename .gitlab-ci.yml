@@ -87,3 +87,4 @@ deploy:
     url: http://$SERVER_IP:$APP_PORT
   only:
     - main
+    - dev
