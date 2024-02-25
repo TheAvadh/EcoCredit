@@ -6,6 +6,8 @@ import {
   ForgetPassword,
   ResetPassword,
   PickupSchedule,
+  RoleSelection,
+  ProfilePage,
 } from "./pages";
 
 function App() {
@@ -16,6 +18,8 @@ function App() {
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/pickup-schedule" element={<PickupSchedule />} />
+        <Route path="/role" element={<RoleSelection />} />
+        <Route path="/profile-page" element={<ProfilePage />} />
       </Routes>
     </BrowserRouter>
   );

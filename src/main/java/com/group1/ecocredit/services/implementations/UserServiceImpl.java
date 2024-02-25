@@ -3,11 +3,13 @@ package com.group1.ecocredit.services.implementations;
 
 import com.group1.ecocredit.dto.UpdateProfileRequest;
 import com.group1.ecocredit.dto.UpdateProfileResponse;
+import com.group1.ecocredit.dto.UserDetailsResponse;
 import com.group1.ecocredit.models.Address;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.EmailService;
 import com.group1.ecocredit.services.UserService;
+import com.group1.ecocredit.services.ConfirmationTokenService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +24,8 @@ import static com.group1.ecocredit.dto.UpdateProfileResponse.ResponseType.*;
 @RequiredArgsConstructor
 
 public class UserServiceImpl implements UserService {
-
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final ConfirmationTokenService confirmationTokenService;
 
     @Autowired
     private EmailService emailService;
@@ -37,7 +38,6 @@ public class UserServiceImpl implements UserService {
                 return userRepository.findByEmail(username)
                         .orElseThrow(()-> new UsernameNotFoundException("User not found"));
             }
-
         };
     }
 
@@ -91,5 +91,27 @@ public class UserServiceImpl implements UserService {
             updateProfileResponse.setResponse(INTERNAL_SERVER_ERROR);
         }
         return updateProfileResponse;
+    }
+
+    @Override
+    public UserDetailsResponse getUserById(Integer userId) {
+        try {
+            User user = userRepository.findById(userId).orElse(null);
+
+            if (user != null) {
+                UserDetailsResponse userDTO = new UserDetailsResponse();
+                userDTO.setId(user.getId());
+                userDTO.setFirstName(user.getFirstName());
+                userDTO.setLastName(user.getLastName());
+                userDTO.setEmail(user.getEmail());
+                userDTO.setPhoneNumber(user.getPhoneNumber());
+                userDTO.setAddress(user.getAddress());
+
+                return userDTO;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

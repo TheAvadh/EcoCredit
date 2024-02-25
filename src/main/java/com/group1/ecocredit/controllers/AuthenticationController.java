@@ -1,10 +1,13 @@
 package com.group1.ecocredit.controllers;
 
 import com.group1.ecocredit.dto.*;
-import com.group1.ecocredit.models.User;
+import com.group1.ecocredit.dto.PasswordResetRequest;
+import com.group1.ecocredit.enums.HttpMessage;
 import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.AuthenticationService;
 import com.group1.ecocredit.services.PasswordService;
+import com.group1.ecocredit.services.ConfirmationTokenService;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,23 +24,48 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
     private final PasswordService passwordService;
+    private final ConfirmationTokenService confirmationTokenService;
 
     @Autowired
     UserRepository userRepository;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestBody SignUpRequest signUpRequest){
-        return ResponseEntity.ok(authenticationService.signup(signUpRequest));
+    public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest signUpRequest) {
+        try {
+            return ResponseEntity.ok(authenticationService.signup(signUpRequest));
+        } catch (MessagingException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
     }
 
     @PostMapping("/signin")
     public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SignInRequest signinRequest){
-        return ResponseEntity.ok(authenticationService.signIn(signinRequest));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(authenticationService.signIn(signinRequest));
+        }
+        catch(Exception e){
+            JwtAuthenticationResponse jwtAuthenticationResponse=new JwtAuthenticationResponse();
+            jwtAuthenticationResponse.setHttpMessage(HttpMessage.INVALID_EMAIL_OR_PASSWORD);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(jwtAuthenticationResponse);
+        }
     }
 
     @PostMapping("/refresh")
     public ResponseEntity<JwtAuthenticationResponse> refresh(@RequestBody RefreshTokenRequest refreshTokenRequest){
         return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequest));
+    }
+
+    @GetMapping(path = "/verify-account")
+    public ResponseEntity<Boolean> confirm(@RequestParam("token") String token){
+        try {
+            var success = confirmationTokenService.confirmToken(token);
+            if (!success) {
+                return ResponseEntity.status((HttpStatus.UNAUTHORIZED)).build();
+            }
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
     }
 
     @PostMapping("/forget-password")
