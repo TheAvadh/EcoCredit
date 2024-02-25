@@ -1,13 +1,10 @@
 package com.group1.ecocredit;
 
-import com.group1.ecocredit.models.Role;
-import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class EcocreditApplication implements CommandLineRunner {

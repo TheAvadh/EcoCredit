@@ -3,7 +3,6 @@ package com.group1.ecocredit.controllers;
 import com.group1.ecocredit.dto.UpdateProfileRequest;
 import com.group1.ecocredit.dto.UpdateProfileResponse;
 import com.group1.ecocredit.dto.UserDetailsResponse;
-import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/user")
-
+@RequestMapping("/api/v1/users")
+@CrossOrigin
 public class UserController {
 
     private final UserService userService;

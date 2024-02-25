@@ -12,15 +12,27 @@ const SignupForm = () => {
     lastName: "",
     email: "",
     password: "",
-    address: "",
-    city: "",
-    province: "",
-    postalCode: "",
+    address: {
+      street: "",
+      city: "",
+      province: "",
+      postalCode: ""
+    }
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setSignupData((prevState) => ({ ...prevState, [name]: value }));
+    if (Object.keys(signupData.address).includes(name)) {
+      setSignupData({
+        ...signupData,
+        address: { ...signupData.address, [name]: value },
+      });
+    } else {
+      setSignupData({
+        ...signupData,
+        [name]: value,
+      });
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -29,9 +41,12 @@ const SignupForm = () => {
 
     if (form.checkValidity() === true) {
       try {
-        const response = await fetch("/api", {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/signup`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
           body: JSON.stringify(signupData),
         });
 
@@ -131,17 +146,17 @@ const SignupForm = () => {
           Please enter a password that is at least 8 characters long.
         </Form.Control.Feedback>
       </FloatingLabel>
-      <FloatingLabel controlId="signupAddress" label="Address" className="mb-3">
+      <FloatingLabel controlId="signupStreetAddress" label="Street Address" className="mb-3">
         <Form.Control
           type="text"
-          name="address"
-          placeholder="Address"
+          name="street"
+          placeholder="Street Address"
           required
-          value={signupData.address}
+          value={signupData.address.street}
           onChange={handleInputChange}
         />
         <Form.Control.Feedback type="invalid">
-          Please enter your address.
+          Please enter your street address.
         </Form.Control.Feedback>
       </FloatingLabel>
       <Row className="g-2">
@@ -152,7 +167,7 @@ const SignupForm = () => {
               name="city"
               placeholder="City"
               required
-              value={signupData.city}
+              value={signupData.address.city}
               onChange={handleInputChange}
             />
             <Form.Control.Feedback type="invalid">
@@ -166,7 +181,7 @@ const SignupForm = () => {
               name="province"
               aria-label="Province"
               required
-              value={signupData.province}
+              value={signupData.address.province}
               onChange={handleInputChange}
             >
               <option value="">Select a province</option>
@@ -195,7 +210,7 @@ const SignupForm = () => {
               name="postalCode"
               placeholder="Postal Code"
               required
-              value={signupData.postalCode}
+              value={signupData.address.postalCode}
               onChange={handleInputChange}
             />
             <Form.Control.Feedback type="invalid">
