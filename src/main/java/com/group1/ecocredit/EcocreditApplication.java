@@ -19,5 +19,6 @@ public class EcocreditApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args){
 
+
 	}
 }
