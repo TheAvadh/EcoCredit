@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Row, Col, Form, Button } from 'react-bootstrap';
-import ScheduleContainer from "../../components/ProfileToast/PickupScheduleForm";
+import ScheduleContainer from "../../components/PickupScheduleForm";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import logoUrl from "../../assets/images/recycle.png";
 import { ToastContainer, toast } from "react-toastify";
+import Cookies from "js-cookie";
 import "react-toastify/dist/ReactToastify.css";
 
 const PickupSchedule = () => {
@@ -42,30 +43,34 @@ const PickupSchedule = () => {
 
 		const selectedCategories = Object.keys(categories).filter(category => categories[category]);
 
-		const formData = {
-			date,
-			time,
-			categories: selectedCategories.reduce((acc, category) => {
-			acc[category] = true;
-			return acc;
-			}, {}),
-		};
+    const wastes = selectedCategories.map(c => { 
+      return { 
+        category: c, waste: 0 // set weights to 0 for now
+      };
+    });
 
-		const jsonFormData = JSON.stringify(formData);
+    const pickupData = {
+      dateTime: `${date}T${time}`,
+      wastes: wastes
+    };
 
-		fetch('/api/v1/auth/pickup-schedule', {
+		fetch(`${process.env.REACT_APP_BASE_URL}/pickups/schedule`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Cookies.get("token")}`
 			},
-			body: jsonFormData,
+			body: JSON.stringify(pickupData),
 		})
-		.then(response => response.json())
-		.then(data => {
-			console.log('Success:', data);
+		.then(response => {
+      if (response.ok) {
+        console.log('Success:', response);
+        showToastMessagePickupScheduled();
+      }
 		})
-		.catch((error) => console.error('Error:', error));
-		showToastMessage1();
+		.catch((error) => {
+      console.error('Error:', error);
+    });
 	};
 
 	const handleCancel = () => {
@@ -107,18 +112,18 @@ const PickupSchedule = () => {
             checkbox.checked = false;
         });
 
-        showToastMessage2();
+        showToastMessagePickupCanceled();
 	};
 
-	const showToastMessage1 = () => {
+	const showToastMessagePickupScheduled = () => {
 		toast.success("Your Pickup has been scheduled!", {
 		position: "top-center",
 		autoClose: 3000,
 		});
 	};
 
-	const showToastMessage2 = () => {
-		toast.error("Cancelled!", {
+	const showToastMessagePickupCanceled = () => {
+		toast.error("Canceled!", {
 		position: "top-center",
 		autoClose: 3000,
 		});

@@ -4,20 +4,24 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Generated;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "waste")
 public class Waste {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @Column(name = "category_id")
-    private Integer category_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    @Column(name = "pickup_id")
-    private long pickup_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pickup_id")
+    private Pickup pickup;
 
-    private float weight;
+    private Float weight;
 
 }
