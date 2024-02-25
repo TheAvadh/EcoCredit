@@ -70,7 +70,9 @@ deploy:
   tags:
     - deployment
   script:
-    - chmod og= $ID_RSA
+    - mkdir -p ~/.ssh
+    - echo "$ID_RSA" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
     - apk update && apk add openssh-client
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP -t "docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS docker.io"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP -t "docker pull docker.io/$DOCKER_HUB_USER/$APP_NAME:$CI_COMMIT_SHORT_SHA"
