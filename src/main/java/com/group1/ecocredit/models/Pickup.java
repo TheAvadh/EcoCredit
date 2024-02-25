@@ -1,7 +1,5 @@
 package com.group1.ecocredit.models;
 
-import com.group1.ecocredit.dto.WasteDto;
-import com.group1.ecocredit.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Setter;
@@ -15,16 +13,17 @@ public class Pickup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "datetime")
     private LocalDateTime dateTime;
 
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private int user_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @JoinColumn(name = "status_id", referencedColumnName = "id")
-    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id")
     private Status status;
 
 }
