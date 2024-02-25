@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Entity
@@ -16,7 +15,7 @@ public class Pickup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "datetime")
     private LocalDateTime dateTime;
