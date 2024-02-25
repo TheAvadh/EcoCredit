@@ -3,31 +3,38 @@ package com.group1.ecocredit.controllers;
 import com.group1.ecocredit.dto.*;
 import com.group1.ecocredit.dto.PasswordResetRequest;
 import com.group1.ecocredit.enums.HttpMessage;
-import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.AuthenticationService;
 import com.group1.ecocredit.services.PasswordService;
 import com.group1.ecocredit.services.ConfirmationTokenService;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequiredArgsConstructor
-@RequestMapping("/api/v1/auth")
+import java.net.URI;
 
+@RestController
+@RequestMapping("/api/v1/auth")
+@CrossOrigin
 public class AuthenticationController {
 
+    private final String frontendServerUrl;
     private final AuthenticationService authenticationService;
     private final PasswordService passwordService;
     private final ConfirmationTokenService confirmationTokenService;
 
-    @Autowired
-    UserRepository userRepository;
+    public AuthenticationController(@Value("${front-end.server.url}") String frontendServerUrl,
+                                    AuthenticationService authenticationService,
+                                    PasswordService passwordService,
+                                    ConfirmationTokenService confirmationTokenService) {
+        this.frontendServerUrl = frontendServerUrl;
+        this.authenticationService = authenticationService;
+        this.passwordService = passwordService;
+        this.confirmationTokenService = confirmationTokenService;
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest signUpRequest) {
@@ -83,7 +90,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("reset-password")
-    public ResponseEntity<String> resetPasswordGet(@RequestParam(required = true) String token) {
+    public ResponseEntity<Void> resetPasswordGet(@RequestParam(required = true) String token) {
 
         try {
             boolean isValidPasswordResetRequest = passwordService.validPasswordResetRequest(token);
@@ -92,8 +99,10 @@ public class AuthenticationController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
 
-            return ResponseEntity.ok("password return page");
-
+            // Redirect to frontend Reset Password page
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(
+                    "%s/reset-password?token=%s"
+                            .formatted(frontendServerUrl, token))).build();
         } catch (Exception e) {
 
             return ResponseEntity.badRequest().build();

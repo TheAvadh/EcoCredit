@@ -17,8 +17,8 @@ const ForgetPassword = () => {
         email,
       };
       const jsonPayload = JSON.stringify(formData);
-
-      fetch("/api/v1/auth/forget-password", {
+      console.log(jsonPayload);
+      fetch(`${process.env.REACT_APP_BASE_URL}/auth/forget-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
