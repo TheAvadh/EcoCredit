@@ -14,6 +14,6 @@ public class Status {
     private Integer id;
 
     @Column(name = "value")
-    private String value;
+    private com.group1.ecocredit.enums.Status status;
 
 }

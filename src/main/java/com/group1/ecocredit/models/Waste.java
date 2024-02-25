@@ -16,7 +16,7 @@ public class Waste {
     private Integer category_id;
 
     @Column(name = "pickup_id")
-    private int pickup_id;
+    private long pickup_id;
 
     private float weight;
 
