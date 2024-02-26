@@ -1,0 +1,76 @@
+variables:
+  FRONTEND_APP_NAME: ecocredit-frontend
+  FRONTEND_APP_PORT: 80
+  FRONTEND_APP_CONTAINER_NAME: ecocredit-frontend-app
+  APP_DIR: frontend/ecocredit/
+
+image: node:latest
+
+cache:
+  paths:
+    - $APP_DIR/node_modules/
+    - $APP_DIR/.next
+stages:
+  - install
+  - build
+  - publish
+  - deploy
+
+install:
+  stage: install
+  script:
+    - cd $APP_DIR
+    - npm ci
+  artifacts:
+    paths:
+      - node_modules/*
+
+build:
+  stage: build
+  script:
+    - cd $APP_DIR
+    - npm run build
+
+publish:
+  image: docker:latest
+  stage: publish
+  tags:
+    - deployment
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://docker:2375
+  services:
+    - docker:dind
+  script:
+    - cd $APP_DIR
+    - docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_PASS" docker.io
+    - docker build -t docker.io/$DOCKER_HUB_USER/$FRONTEND_APP_NAME:$CI_COMMIT_SHORT_SHA .
+    - docker push docker.io/$DOCKER_HUB_USER/$FRONTEND_APP_NAME:$CI_COMMIT_SHORT_SHA
+  environment:
+    name: production
+  only:
+    - main
+
+deploy:
+  image: alpine:latest
+  stage: deploy
+  tags:
+    - deployment
+  script:
+    - apk update && apk add openssh-client
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - echo "$ID_RSA" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 700 ~/.ssh/id_rsa
+    - ssh-add ~/.ssh/id_rsa
+    - ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+    - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP -t "docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS docker.io"
+    - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP -t "docker pull docker.io/$DOCKER_HUB_USER/$FRONTEND_APP_NAME:$CI_COMMIT_SHORT_SHA"
+    - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP -t "docker container rm -f $FRONTEND_APP_CONTAINER_NAME || true"
+    - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP -t "docker run -d -p $FRONTEND_APP_PORT:$FRONTEND_APP_PORT --name $FRONTEND_APP_CONTAINER_NAME docker.io/$DOCKER_HUB_USER/$FRONTEND_APP_NAME:$CI_COMMIT_SHORT_SHA"
+  environment:
+    name: production
+    url: http://$SERVER_IP:$FRONTEND_APP_PORT
+  only:
+    - main
+

@@ -1,0 +1,19 @@
+.role-container {
+  border-radius: 1rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+}
+
+.role-button {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+}
+
+.role-button:hover {
+  background-color: #344e41;
+}
+
+.role-button:hover .fa-icon {
+  animation: fa-beat 1s infinite;
+}
