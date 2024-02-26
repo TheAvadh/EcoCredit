@@ -3,7 +3,6 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { Link } from "react-router-dom";
-import Cookies from "js-cookie";
 import "./LoginForm.css";
 
 const LoginForm = () => {
@@ -35,7 +34,7 @@ const LoginForm = () => {
 
         const data = await response.json();
         console.log("Login Success:", data);
-        Cookies.set('token', data.token, { secure: true });
+        localStorage.setItem("token", data.token);
         localStorage.setItem("userId", data.userId);
       } catch (error) {
         console.error("Login Error:", error);
