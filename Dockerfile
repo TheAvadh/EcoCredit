@@ -10,5 +10,7 @@ COPY target/ecocredit-0.0.1-SNAPSHOT.jar /app/app.jar
 # Expose the port on which your Spring Boot application will run (adjust as needed)
 EXPOSE 8080
 
+EXPOSE 587
+
 # Define the command to run your Spring Boot application when the container starts
 ENTRYPOINT ["java", "-jar", "app.jar"]
