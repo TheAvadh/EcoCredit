@@ -4,7 +4,6 @@ import ScheduleContainer from "../../components/PickupScheduleForm";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import logoUrl from "../../assets/images/recycle.png";
 import { ToastContainer, toast } from "react-toastify";
-import Cookies from "js-cookie";
 import "react-toastify/dist/ReactToastify.css";
 
 const PickupSchedule = () => {
@@ -58,7 +57,7 @@ const PickupSchedule = () => {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-        'Authorization': `Bearer ${Cookies.get("token")}`
+        'Authorization': `Bearer ${localStorage.getItem("token")}`
 			},
 			body: JSON.stringify(pickupData),
 		})
