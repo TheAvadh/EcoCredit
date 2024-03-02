@@ -1,7 +1,9 @@
 package com.group1.ecocredit.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -9,6 +11,8 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name="pickup")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Pickup {
 
     @Id

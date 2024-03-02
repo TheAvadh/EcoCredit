@@ -76,7 +76,7 @@ public class EcocreditApplication implements CommandLineRunner {
 
 			if (statusOptional.isEmpty()) {
 				statusRepository.save(new Status(status.getId(),
-						status.getStatus()));
+						status.getValue()));
 			}
 		}
 	}
