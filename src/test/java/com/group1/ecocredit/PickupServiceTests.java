@@ -68,7 +68,7 @@ public class PickupServiceTests {
                 LocalDateTime.parse(pickupRequest.getDateTime()), user, status);
         Category plasticsCategory = new Category(CATEGORY_PLASTICS_ID, CATEGORY_PLASTICS);
 
-        Mockito.when(statusRepository.findByStatus(PickupStatus.SCHEDULED))
+        Mockito.when(statusRepository.findByValue(PickupStatus.SCHEDULED))
                 .thenReturn(Optional.of(status));
         Mockito.when(pickupRepository.save(any(Pickup.class)))
                 .thenReturn(pickup);
@@ -103,7 +103,7 @@ public class PickupServiceTests {
         Category biodegradableCategory = new Category(CATEGORY_BIODEGRADABLE_ID,
                 CATEGORY_BIODEGRADABLE);
 
-        Mockito.when(statusRepository.findByStatus(PickupStatus.SCHEDULED))
+        Mockito.when(statusRepository.findByValue(PickupStatus.SCHEDULED))
                 .thenReturn(Optional.of(status));
         Mockito.when(pickupRepository.save(any(Pickup.class)))
                 .thenReturn(pickup);
@@ -126,7 +126,7 @@ public class PickupServiceTests {
         // Arrange
         PickupRequest pickupRequest = new PickupRequest();
         User user = new User();
-        Mockito.when(statusRepository.findByStatus(PickupStatus.SCHEDULED))
+        Mockito.when(statusRepository.findByValue(PickupStatus.SCHEDULED))
                 .thenReturn(Optional.empty());
 
         // Act & Assert that an exception is thrown
@@ -149,7 +149,7 @@ public class PickupServiceTests {
         Pickup pickup = new Pickup(PICKUP_ID,
                 LocalDateTime.parse(pickupRequest.getDateTime()), user, status);
 
-        Mockito.when(statusRepository.findByStatus(PickupStatus.SCHEDULED))
+        Mockito.when(statusRepository.findByValue(PickupStatus.SCHEDULED))
                 .thenReturn(Optional.of(status));
         Mockito.when(pickupRepository.save(any(Pickup.class)))
                 .thenReturn(pickup);
@@ -176,7 +176,7 @@ public class PickupServiceTests {
 
         Mockito.when(pickupRepository.findById(pickupToCancel.getId()))
                 .thenReturn(Optional.of(pickup));
-        Mockito.when(statusRepository.findByStatus(PickupStatus.CANCELED))
+        Mockito.when(statusRepository.findByValue(PickupStatus.CANCELED))
                 .thenReturn(Optional.of(status));
 
         // Act
@@ -210,7 +210,7 @@ public class PickupServiceTests {
 
         // Verify that the right methods are called
         verify(pickupRepository, times(1)).findById(anyLong());
-        verify(statusRepository, never()).findByStatus(anyString());
+        verify(statusRepository, never()).findByValue(anyString());
         verify(pickupRepository, never()).save(any(Pickup.class));
     }
 
@@ -225,7 +225,7 @@ public class PickupServiceTests {
 
         Mockito.when(pickupRepository.findById(pickupToCancel.getId()))
                 .thenReturn(Optional.of(pickup));
-        Mockito.when(statusRepository.findByStatus(PickupStatus.CANCELED))
+        Mockito.when(statusRepository.findByValue(PickupStatus.CANCELED))
                 .thenReturn(Optional.empty());
 
         // Act
@@ -236,7 +236,7 @@ public class PickupServiceTests {
 
         // Verify that the right methods are called
         verify(pickupRepository, times(1)).findById(anyLong());
-        verify(statusRepository, times(1)).findByStatus(anyString());
+        verify(statusRepository, times(1)).findByValue(anyString());
         verify(pickupRepository, never()).save(any(Pickup.class));
     }
 }
