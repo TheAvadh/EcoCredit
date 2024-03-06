@@ -2,15 +2,16 @@ package com.group1.ecocredit.services.implementations;
 
 import com.group1.ecocredit.models.Pickup;
 import com.group1.ecocredit.models.PickupStatus;
+import com.group1.ecocredit.models.ScheduledPickupsWithoutConfirmationEmailSent;
 import com.group1.ecocredit.repositories.PickupRepository;
 import com.group1.ecocredit.services.EmailScheduler;
 import com.group1.ecocredit.services.EmailService;
 import org.quartz.Job;
-import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,9 @@ public class EmailSchedulerImpl implements EmailScheduler, Job {
     @Autowired
     private EmailService emailServices;
 
+    @Value("${MAX_RETRIES}")
+    private int maxRetries;
+
     public EmailSchedulerImpl(PickupRepository pickupRepository, EmailService emailService) {
         this.pickupRepository = pickupRepository;
         this.emailServices = emailService;
@@ -33,11 +37,15 @@ public class EmailSchedulerImpl implements EmailScheduler, Job {
     @Override
     public void sendEmailToPickupsThatAreScheduled() {
 
-        List<Pickup> pickupList = pickupRepository.findScheduledPickupsWithoutConfirmationEmailSent(PickupStatus.SCHEDULED);
+        List<ScheduledPickupsWithoutConfirmationEmailSent> pickupList = pickupRepository.findScheduledPickupsWithoutConfirmationEmailSent(PickupStatus.SCHEDULED);
 
-        for(Pickup pickup : pickupList) {
+        for(ScheduledPickupsWithoutConfirmationEmailSent pickup : pickupList) {
             try {
-                emailServices.sendPickupScheduledEmail(pickup);
+                if(pickup.getRetryCounter() < maxRetries) {
+
+                    Pickup pickupObj = pickupRepository.findById(pickup.getPickupId()).get();
+                    emailServices.sendPickupScheduledEmail(pickupObj);
+                }
             } catch (Exception ignored) {
 
             }

@@ -9,7 +9,7 @@ import org.hibernate.annotations.FetchMode;
 
 @Data
 @Entity
-@Table(name="pickup")
+@Table(name="confirmation_email")
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConfirmationEmail {
@@ -24,5 +24,5 @@ public class ConfirmationEmail {
     boolean emailSent;
 
 
-    int retryCounter = 5;
+    int retryCounter = 0;
 }
