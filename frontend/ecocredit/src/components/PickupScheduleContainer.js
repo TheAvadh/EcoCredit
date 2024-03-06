@@ -3,9 +3,9 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-const PickupScheduleForm = ({ children, title }) => {
+const PickupScheduleContainer = ({ children, title }) => {
   return (
-    <Container className="d-flex vh-100 justify-content-center align-items-center bg-ec-light-green">
+    <Container className="d-flex vh-100 justify-content-center align-items-center">
       <Row className="w-100">
         <Col lg={6} className="mx-auto">
           <div className="form-container bg-ec-grey">
@@ -18,4 +18,4 @@ const PickupScheduleForm = ({ children, title }) => {
   );
 };
 
-export default PickupScheduleForm;
+export default PickupScheduleContainer;
