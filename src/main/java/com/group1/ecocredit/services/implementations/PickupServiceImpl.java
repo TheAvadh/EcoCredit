@@ -2,6 +2,7 @@ package com.group1.ecocredit.services.implementations;
 
 import com.group1.ecocredit.dto.PickupCancelRequest;
 import com.group1.ecocredit.dto.PickupRequest;
+import com.group1.ecocredit.dto.PickupStatusResponse;
 import com.group1.ecocredit.models.PickupStatus;
 import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.repositories.*;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -75,5 +78,28 @@ public class PickupServiceImpl implements PickupService {
         pickup.setStatus(canceled);
         pickupRepository.save(pickup);
         return true;
+    }
+
+
+    @Override
+    public List<PickupStatusResponse> getPickupStatus(Long userId) {
+        List<PickupStatusResponse> pickupStatusList = new ArrayList<>();
+
+        List<Pickup> pickups = pickupRepository.findByUserId(userId);
+
+        if (pickups.isEmpty()) {
+            throw new IllegalArgumentException("No pickups found for the user");
+        }
+
+        for (Pickup pickup : pickups) {
+            LocalDateTime pickupDateTime = pickup.getDateTime();
+            String pickupDate = pickupDateTime.toLocalDate().toString();
+            String pickupTime = pickupDateTime.toLocalTime().toString();
+            String pickupStatus = pickup.getStatus().getValue();
+            PickupStatusResponse response = new PickupStatusResponse(pickup.getId(), pickupStatus, pickupDate, pickupTime);
+            pickupStatusList.add(response);
+        }
+
+        return pickupStatusList;
     }
 }
