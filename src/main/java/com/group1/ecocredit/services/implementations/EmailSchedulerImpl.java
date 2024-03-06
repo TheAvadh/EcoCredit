@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public class EmailSchedulerImpl implements EmailScheduler, Job {
+public class EmailSchedulerImpl implements EmailScheduler {
 
     @Autowired
     private PickupRepository pickupRepository;

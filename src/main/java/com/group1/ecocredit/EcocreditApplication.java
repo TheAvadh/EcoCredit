@@ -6,6 +6,7 @@ import com.group1.ecocredit.models.Status;
 import com.group1.ecocredit.repositories.CategoryRepository;
 import com.group1.ecocredit.repositories.StatusRepository;
 import com.group1.ecocredit.services.EmailScheduler;
+import com.group1.ecocredit.services.implementations.EmailSchedulerImpl;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -53,9 +54,12 @@ public class EcocreditApplication implements CommandLineRunner {
     private void createEmailScheduler() {
         try {
 
-			scheduler = StdSchedulerFactory.getDefaultScheduler();
+            SchedulerFactory schedulerFactory = new StdSchedulerFactory();
 
-            JobDetail jobDetail = newJob((Class<? extends Job>) EmailScheduler.class)
+
+			scheduler = schedulerFactory.getScheduler();
+
+            JobDetail jobDetail = JobBuilder.newJob(EmailScheduler.class)
 					.withIdentity("emailjob")
 					.build();
 

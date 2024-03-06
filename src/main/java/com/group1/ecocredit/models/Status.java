@@ -18,6 +18,6 @@ public class Status {
     private Integer id;
 
     @Column(name = "value")
-    private String value;
+    private String status;
 
 }
