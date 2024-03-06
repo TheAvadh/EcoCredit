@@ -5,6 +5,7 @@ import com.group1.ecocredit.models.PickupStatus;
 import com.group1.ecocredit.repositories.ConfirmationEmailRepository;
 import com.group1.ecocredit.repositories.PickupRepository;
 import com.group1.ecocredit.services.EmailScheduler;
+import com.group1.ecocredit.services.EmailService;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -22,21 +23,26 @@ public class EmailSchedulerImpl implements EmailScheduler, Job {
     @Autowired
     private PickupRepository pickupRepository;
 
-    public EmailSchedulerImpl(PickupRepository pickupRepository) {
+    @Autowired
+    private EmailService emailServices;
+
+    public EmailSchedulerImpl(PickupRepository pickupRepository, EmailService emailService) {
         this.pickupRepository = pickupRepository;
+        this.emailServices = emailService;
     }
 
-//    @Autowired
-//    private ConfirmationEmailRepository confirmationEmailRepository;
 
     @Override
     public void sendEmailToPickupsThatAreScheduled() {
-
-
+        
         List<Pickup> pickupList = pickupRepository.findScheduledPickupsWithoutConfirmationEmailSent(PickupStatus.SCHEDULED);
-        System.out.println(pickupList.size());
-        for (Pickup p : pickupList) {
-            System.out.println(p.getId());
+
+        for(Pickup pickup : pickupList) {
+            try {
+                emailServices.sendPickupScheduledEmail(pickup);
+            } catch (Exception ignored) {
+
+            }
         }
     }
 
