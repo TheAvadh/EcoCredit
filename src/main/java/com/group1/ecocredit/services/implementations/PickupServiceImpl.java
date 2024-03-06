@@ -33,7 +33,7 @@ public class PickupServiceImpl implements PickupService {
     @Override
     public void schedulePickup(PickupRequest pickupRequest, User user) {
         Optional<Status> statusOptional =
-                statusRepository.findByStatus(PickupStatus.SCHEDULED);
+                statusRepository.findByValue(PickupStatus.SCHEDULED);
         if (statusOptional.isEmpty()) {
             throw new IllegalArgumentException("Status not found: " + PickupStatus.SCHEDULED);
         }
@@ -67,7 +67,7 @@ public class PickupServiceImpl implements PickupService {
         if(pickupOptional.isEmpty()) return false;
 
         Optional<Status> statusCanceledOptional =
-                statusRepository.findByStatus(PickupStatus.CANCELED);
+                statusRepository.findByValue(PickupStatus.CANCELED);
         if(statusCanceledOptional.isEmpty()) return false;
 
         Pickup pickup = pickupOptional.get();

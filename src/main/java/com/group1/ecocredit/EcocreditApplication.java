@@ -13,16 +13,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.quartz.impl.StdSchedulerFactory;
-
-import static org.quartz.JobBuilder.*;
-import static org.quartz.TriggerBuilder.*;
-import static org.quartz.SimpleScheduleBuilder.*;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @SpringBootApplication
+@EnableScheduling
 public class EcocreditApplication implements CommandLineRunner {
 
     @Autowired
@@ -31,7 +29,7 @@ public class EcocreditApplication implements CommandLineRunner {
     @Autowired
     private StatusRepository statusRepository;
 
-	private static Scheduler scheduler;
+    private static Scheduler scheduler;
 
 
     public static void main(String[] args) {
@@ -47,45 +45,7 @@ public class EcocreditApplication implements CommandLineRunner {
 
         var statuses = getPickupStatuses();
         prefillPickupStatusLookup(statuses);
-
-		createEmailScheduler();
     }
-
-    private void createEmailScheduler() {
-        try {
-
-            SchedulerFactory schedulerFactory = new StdSchedulerFactory();
-
-
-			scheduler = schedulerFactory.getScheduler();
-
-            JobDetail jobDetail = JobBuilder.newJob(EmailScheduler.class)
-					.withIdentity("emailjob")
-					.build();
-
-			Trigger trigger = TriggerBuilder.newTrigger()
-					.withIdentity("emailtrigger")
-					.startNow()
-					.withSchedule(
-							SimpleScheduleBuilder
-									.simpleSchedule()
-									.withIntervalInMinutes(1)
-									.repeatForever()
-					)
-					.build();
-			scheduler.start();
-		} catch (Exception e) {
-
-        }
-    }
-
-	private void stopEmailScheduler() {
-		try{
-			scheduler.shutdown();
-		} catch (Exception e) {
-
-		}
-	}
 
     private List<Category> getWasteCategories() {
         return Arrays.asList(
