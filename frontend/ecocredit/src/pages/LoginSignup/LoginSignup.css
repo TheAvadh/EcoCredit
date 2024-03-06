@@ -34,3 +34,8 @@
   font-size: 2.5rem;
   color: #344e41;
 }
+
+.recycler-image {
+  max-width: 80%;
+  max-height: 80%
+}
