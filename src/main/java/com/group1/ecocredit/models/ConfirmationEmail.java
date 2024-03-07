@@ -23,6 +23,5 @@ public class ConfirmationEmail {
 
     boolean emailSent;
 
-
     int retryCounter = 0;
 }

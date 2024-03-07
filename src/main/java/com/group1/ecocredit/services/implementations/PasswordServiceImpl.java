@@ -39,8 +39,9 @@ public class PasswordServiceImpl implements PasswordService {
     @Override
     public boolean forgetPassword(ForgetPasswordRequest request) {
 
+        var optionalUser = userRepository.findByEmail(request.getEmail());
+
         try {
-            var optionalUser = userRepository.findByEmail(request.getEmail());
             System.out.println(optionalUser.isEmpty());
 
             if (optionalUser.isEmpty()) {
