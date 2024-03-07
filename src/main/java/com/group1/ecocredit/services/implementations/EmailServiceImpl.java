@@ -34,7 +34,7 @@ public class EmailServiceImpl implements EmailService {
         var subject = "Verify your Eco Credit account";
         var text = """
             <div>
-              Click <a href="http://localhost:8080/api/v1/auth/verify-account?token=%s" target="_blank">here</a>
+              Click <a href="http://172.17.0.157:8080/api/v1/auth/verify-account?token=%s" target="_blank">here</a>
                to verify your Eco Credit account
             </div>
             """.formatted(token);
@@ -48,7 +48,7 @@ public class EmailServiceImpl implements EmailService {
         var subject = "Reset your Eco Credit password";
         var text = """
             <div>
-              Click <a href="http://localhost:8080/api/v1/auth/reset-password?token=%s" target="_blank">here</a>
+              Click <a href="http://172.17.0.157:8080/api/v1/auth/reset-password?token=%s" target="_blank">here</a>
                to reset your Eco Credit password
             </div>
             """.formatted(token);

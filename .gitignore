@@ -34,3 +34,6 @@ build/
 
 ### DS Store MacOS ###
 **/.DS_Store
+
+### Customer Launcher ###
+ecocredit_launcher*

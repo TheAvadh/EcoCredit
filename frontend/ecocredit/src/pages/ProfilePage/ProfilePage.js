@@ -6,7 +6,6 @@ import Image from "react-bootstrap/Image";
 import ProfileForm from "../../components/ProfileForm";
 import ProfileToast from "../../components/ProfileToast/ProfileToast";
 import profilePicURL from "../../assets/images/profilePic.jpg";
-import Cookies from "js-cookie";
 import "./ProfilePage.css";
 
 const ProfilePage = () => {
@@ -35,7 +34,7 @@ const ProfilePage = () => {
       method: "GET",
       mode: "cors",
       headers: {
-        "Authorization": `Bearer ${Cookies.get("token")}`,
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,
         "Accept": "application/json"
       }})
       .then((response) => response.json())
@@ -68,7 +67,7 @@ const ProfilePage = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${Cookies.get("token")}`
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
       },
       body: JSON.stringify(profileData),
     })
