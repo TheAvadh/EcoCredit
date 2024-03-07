@@ -2,6 +2,7 @@ package com.group1.ecocredit.controllers;
 
 import com.group1.ecocredit.dto.PickupCancelRequest;
 import com.group1.ecocredit.dto.PickupRequest;
+import com.group1.ecocredit.dto.PickupStatusResponse;
 import com.group1.ecocredit.models.Pickup;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.services.PickupService;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,4 +52,29 @@ public class PickupController {
 
         return ResponseEntity.ok("Pickup scheduled successfully.");
     }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getPickupStatus(@PathVariable Long userId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        try {
+            List<PickupStatusResponse> pickupStatusList = pickUpService.getPickupStatus(userId);
+
+            if (pickupStatusList.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+
+            return ResponseEntity.ok(pickupStatusList);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }
+

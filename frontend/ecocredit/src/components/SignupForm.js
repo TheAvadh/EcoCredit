@@ -54,6 +54,8 @@ const SignupForm = () => {
 
         const data = await response.json();
         console.log("Signup Success:", data);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("userId", data.userId);
       } catch (error) {
         console.error("Signup Error:", error);
       }

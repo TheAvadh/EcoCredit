@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import "./LoginForm.css";
 
@@ -10,6 +10,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [validated, setValidated] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -37,6 +38,7 @@ const LoginForm = () => {
         console.log("Login Success:", data);
         Cookies.set('token', data.token, { secure: true });
         localStorage.setItem("userId", data.userId);
+        navigate("/role");
       } catch (error) {
         console.error("Login Error:", error);
       }
@@ -46,7 +48,7 @@ const LoginForm = () => {
   };
 
   return (
-    <Form
+    <Form 
       className="form-container bg-ec-grey"
       noValidate
       validated={validated}
