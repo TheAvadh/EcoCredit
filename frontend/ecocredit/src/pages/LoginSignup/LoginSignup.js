@@ -6,19 +6,19 @@ import Button from "react-bootstrap/Button";
 import LoginForm from "../../components/LoginForm/LoginForm";
 import SignupForm from "../../components/SignupForm";
 import logoUrl from "../../assets/images/logo.png";
+import recyclerURL from "../../assets/images/recycler.png";
 import "./LoginSignup.css";
 
 const LoginSignup = () => {
   const [activeView, setActiveView] = useState("login");
 
   return (
-    <Container className="d-flex vh-100 justify-content-center align-items-center bg-ec-light-green">
+    <Container
+      fluid
+      className="d-flex justify-content-center align-items-center bg-ec-light-green px-0"
+    >
       <Row className="w-100">
-        <Col lg={6} className="mx-auto">
-          <div className="mb-4 text-center">
-            <img src={logoUrl} alt="EcoCredit Logo" className="logo" />
-            <h1 className="title">EcoCredit</h1>
-          </div>
+        <Col lg={6} className="mx-auto my-auto p-5 order-2 order-lg-1">
           <div className="tabs-container">
             <Button
               variant={
@@ -45,6 +45,23 @@ const LoginSignup = () => {
           ) : (
             <SignupForm onSignup={() => {}} />
           )}
+        </Col>
+        <Col lg={6} className="d-flex vh-100 justify-content-center align-items-center bg-ec-dark-green order-1 order-lg-2">
+          <Row>
+            <Col md={12}>
+              <div className="mb-4 text-center">
+                <img src={logoUrl} alt="EcoCredit Logo" className="logo" />
+                <h1 className="title text-white">EcoCredit</h1>
+              </div>
+            </Col>
+            <Col md={12} className="text-center">
+              <img
+                src={recyclerURL}
+                alt="Recycler"
+                className="recycler-image"
+              />
+            </Col>
+          </Row>
         </Col>
       </Row>
     </Container>
