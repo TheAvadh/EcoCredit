@@ -16,6 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
@@ -70,6 +72,27 @@ public class UserServiceTests {
         addressDTO.setPostalCode("54321");
         addressDTO.setCountry("Canada");
         updateProfileRequest.setAddress(addressDTO);
+    }
+
+    @Test
+    void testLoadUserByUsername(){
+
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+
+        UserDetails userDetails = userService.userDetailsService().loadUserByUsername(user.getEmail());
+
+        assertNotNull(userDetails);
+        assertEquals(user.getEmail(), userDetails.getUsername());
+    }
+
+    @Test
+    public void testLoadUserByUsernameNotFound() {
+
+        when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.empty());
+
+        assertThrows(UsernameNotFoundException.class, () -> {
+            userService.userDetailsService().loadUserByUsername(user.getEmail());
+        });
     }
 
     @Test
