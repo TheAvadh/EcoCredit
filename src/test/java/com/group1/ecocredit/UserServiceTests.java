@@ -97,14 +97,12 @@ public class UserServiceTests {
 
     @Test
     void testUpdateProfileSuccess() throws MessagingException {
-        // Arrange
+
         Mockito.when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
         Mockito.when(userRepository.save(any(User.class))).thenReturn(user);
 
-        // Act
         UpdateProfileResponse response = userService.updateProfile(updateProfileRequest);
 
-        // Assert
         assertEquals(SUCCESS, response.getResponse());
         assertEquals("Geerthana", user.getFirstName());
         assertEquals("Kanagalingame", user.getLastName());
@@ -126,44 +124,40 @@ public class UserServiceTests {
 
     @Test
     void testUpdateProfileUserNotFound() throws MessagingException {
-        // Arrange
+
         Mockito.when(userRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-        // Act
         UpdateProfileResponse response = userService.updateProfile(updateProfileRequest);
 
-        // Assert
         assertEquals(USER_NOT_FOUND, response.getResponse());
         verify(userRepository, times(1)).findById(anyInt());
         verify(userRepository, never()).save(any(User.class));
         verify(emailService, never()).sendProfileUpdateEmail(any(User.class));
 
-        Mockito.reset(userRepository);
+    }
 
-        // Arrange
+    @Test
+    void testUpdateProfileThrowsException() throws MessagingException {
+
         Mockito.when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
         Mockito.doThrow(new MessagingException()).when(emailService).sendProfileUpdateEmail(any(User.class));
 
-        // Act
-        response = userService.updateProfile(updateProfileRequest);
+        UpdateProfileResponse response = userService.updateProfile(updateProfileRequest);
 
-        // Assert
         assertEquals(INTERNAL_SERVER_ERROR, response.getResponse());
         verify(userRepository, times(1)).findById(anyInt());
         verify(userRepository, times(1)).save(any(User.class));
         verify(emailService, times(1)).sendProfileUpdateEmail(any(User.class));
-
     }
+
 
     @Test
     void testGetUserByIdSuccess() {
-        // Arrange
+
         Mockito.when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
 
-        // Act
         UserDetailsResponse userDetails = userService.getUserById(1);
 
-        // Assert
         assertNotNull(userDetails);
         assertEquals(1, userDetails.getId());
         assertEquals("Chandler", userDetails.getFirstName());
@@ -184,13 +178,11 @@ public class UserServiceTests {
 
     @Test
     void testGetUserByIdUserNotFound() {
-        // Arrange
+
         Mockito.when(userRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-        // Act
         UserDetailsResponse userDetails = userService.getUserById(1);
 
-        // Assert
         assertNull(userDetails);
         verify(userRepository, times(1)).findById(anyInt());
     }
