@@ -13,6 +13,7 @@ public interface PickupRepository extends JpaRepository<Pickup, Long> {
 
     @Query("SELECT p FROM Pickup p " +
             "WHERE NOT EXISTS " +
-            "(SELECT ce FROM ConfirmationEmail ce WHERE ce.pickup.id = p.id AND ce.emailSent = true)")
+            "(SELECT ce FROM ConfirmationEmail ce WHERE ce.pickup.id = p.id AND ce.emailSent = true) " +
+            "AND DATE(p.dateTime) = CURRENT_DATE()")
     List<Pickup> findAllPickupsWithEmailsNotSent();
 }
