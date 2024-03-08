@@ -8,6 +8,7 @@ import {
   PickupSchedule,
   RoleSelection,
   ProfilePage,
+  PickupStatus,
 } from "./pages";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/pickup-schedule" element={<PickupSchedule />} />
         <Route path="/role" element={<RoleSelection />} />
         <Route path="/profile-page" element={<ProfilePage />} />
+        <Route path="/pickup-status" element={<PickupStatus />} />
       </Routes>
     </BrowserRouter>
   );
