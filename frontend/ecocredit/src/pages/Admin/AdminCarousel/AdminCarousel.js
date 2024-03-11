@@ -1,12 +1,15 @@
 import Carousel from 'react-bootstrap/Carousel';
 import './AdminCarousel.css';
+import RecyclingImage from "../../../assets/images/recycling-waste.png";
+import BiddingImage from "../../../assets/images/bidding.webp";
+import CreateBidImage from "../../../assets/images/create-a-bid.jpeg";
 
 const AdminCarousel = () => {
     return (
         <Carousel>
         <Carousel.Item interval={1000}>
           <a href="/view-pickups">
-            <img src='https://miro.medium.com/v2/resize:fit:1400/0*b4jhv2frpoSQ9fD2.png' 
+            <img src={RecyclingImage}
             className='d-block w-100'
                 alt='trash pickup'/>
           </a>
@@ -16,7 +19,7 @@ const AdminCarousel = () => {
         </Carousel.Item>
         <Carousel.Item interval={1000}>
           <a href="/view-bids">
-            <img src='https://freestar.com/wp-content/uploads/2023/06/How-Does-In-App-Header-Bidding-Work-Matt.png'  
+            <img src={BiddingImage}  
             className = 'd-block w-100'
             alt='bids' />
           </a>
@@ -26,7 +29,7 @@ const AdminCarousel = () => {
         </Carousel.Item>
         <Carousel.Item interval={1000}>
           <a href="/create-a-bid">
-            <img src='https://media.istockphoto.com/id/1319023983/photo/announcement-concept-cheerful-black-woman-shouting-with-megaphone-in-hands-blue-background.jpg?s=612x612&w=0&k=20&c=SF-qv1Saei8cgKapMAnwqeYM8FftgMDt-eepUi4Nd_E=' 
+            <img src={CreateBidImage} 
             className = 'd-block w-100'
             alt='create-bid' />
           </a>
