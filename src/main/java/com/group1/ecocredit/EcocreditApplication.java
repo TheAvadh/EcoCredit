@@ -24,6 +24,7 @@ public class EcocreditApplication implements CommandLineRunner {
 	private StatusRepository statusRepository;
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(EcocreditApplication.class, args);
 	}
 
