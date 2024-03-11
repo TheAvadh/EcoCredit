@@ -1,22 +1,23 @@
 import Carousel from 'react-bootstrap/Carousel';
+import './AdminCarousel.css';
 
 const AdminCarousel = () => {
     return (
         <Carousel>
         <Carousel.Item interval={1000}>
           <a href="/view-pickups">
-            <img src='https://img.pikbest.com/wp/202405/recycle-bin-assorted-waste-on-eco-friendly-backdrop-recycling-symbol-and-3d-rendered-rubbish_9831528.jpg!sw800' 
+            <img src='https://miro.medium.com/v2/resize:fit:1400/0*b4jhv2frpoSQ9fD2.png' 
             className='d-block w-100'
                 alt='trash pickup'/>
           </a>
-          <Carousel.Caption>
+          <Carousel.Caption className="carousel-caption">
             <h3>View Pickups</h3>
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item interval={1000}>
           <a href="/view-bids">
             <img src='https://freestar.com/wp-content/uploads/2023/06/How-Does-In-App-Header-Bidding-Work-Matt.png'  
-            className = 'd-block w-100' 
+            className = 'd-block w-100'
             alt='bids' />
           </a>
           <Carousel.Caption>
