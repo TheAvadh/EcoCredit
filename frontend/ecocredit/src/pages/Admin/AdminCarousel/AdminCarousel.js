@@ -7,7 +7,7 @@ import CreateBidImage from "../../../assets/images/create-a-bid.jpeg";
 const AdminCarousel = () => {
     return (
         <Carousel>
-        <Carousel.Item interval={1000}>
+        <Carousel.Item interval={2000}>
           <a href="/view-pickups">
             <img src={RecyclingImage}
             className='d-block w-100'
@@ -17,7 +17,7 @@ const AdminCarousel = () => {
             <h3>View Pickups</h3>
           </Carousel.Caption>
         </Carousel.Item>
-        <Carousel.Item interval={1000}>
+        <Carousel.Item interval={2000}>
           <a href="/view-bids">
             <img src={BiddingImage}  
             className = 'd-block w-100'
@@ -27,7 +27,7 @@ const AdminCarousel = () => {
             <h3>View bids</h3>
           </Carousel.Caption>
         </Carousel.Item>
-        <Carousel.Item interval={1000}>
+        <Carousel.Item interval={2000}>
           <a href="/create-a-bid">
             <img src={CreateBidImage} 
             className = 'd-block w-100'
