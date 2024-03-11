@@ -9,7 +9,7 @@ import {
   RoleSelection,
   ProfilePage,
 } from "./pages";
-import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import AdminDashboard from "./pages/Admin/AdminDashboard/AdminDashboard";
 
 function App() {
   return (
