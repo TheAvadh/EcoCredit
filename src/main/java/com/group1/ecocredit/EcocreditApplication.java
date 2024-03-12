@@ -1,14 +1,15 @@
 package com.group1.ecocredit;
 
-import com.group1.ecocredit.models.PickupStatus;
-import com.group1.ecocredit.models.Category;
-import com.group1.ecocredit.models.Status;
+import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.repositories.CategoryRepository;
 import com.group1.ecocredit.repositories.StatusRepository;
+import com.group1.ecocredit.repositories.UserRepository;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +17,9 @@ import java.util.Optional;
 
 @SpringBootApplication
 public class EcocreditApplication implements CommandLineRunner {
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Autowired
 	private CategoryRepository categoryRepository;
@@ -30,11 +34,28 @@ public class EcocreditApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args){
+		registerAdmin();
+
 		var categories = getWasteCategories();
 		prefillWasteCategoryLookup(categories);
 
 		var statuses = getPickupStatuses();
 		prefillPickupStatusLookup(statuses);
+	}
+
+	private void registerAdmin() {
+		var adminAccount = userRepository.findByRole(Role.ADMIN);
+		if (adminAccount == null) {
+			var admin = new User();
+			admin.setEmail("ecocredit.donotreply@gmail.com");
+			admin.setFirstName("Admin");
+			admin.setLastName("EcoCredit");
+			admin.setRole(Role.ADMIN);
+			admin.setPassword(new BCryptPasswordEncoder().encode(
+					"adminpassword"));
+			admin.setEnabled(true);
+			userRepository.save(admin);
+		}
 	}
 
 	private List<Category> getWasteCategories() {
