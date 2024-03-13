@@ -10,6 +10,7 @@ import {
   ProfilePage,
   PickupStatus,
 } from "./pages";
+import AdminDashboard from "./pages/Admin/AdminDashboard/AdminDashboard";
 
 function App() {
   return (
@@ -21,7 +22,11 @@ function App() {
         <Route path="/pickup-schedule" element={<PickupSchedule />} />
         <Route path="/role" element={<RoleSelection />} />
         <Route path="/profile-page" element={<ProfilePage />} />
+<<<<<<< HEAD
         <Route path="/pickup-status" element={<PickupStatus />} />
+=======
+        <Route path="/admin" element={<AdminDashboard />} />
+>>>>>>> dev
       </Routes>
     </BrowserRouter>
   );

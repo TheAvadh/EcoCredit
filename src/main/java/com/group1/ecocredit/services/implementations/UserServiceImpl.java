@@ -26,9 +26,7 @@ import static com.group1.ecocredit.dto.UpdateProfileResponse.ResponseType.*;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ConfirmationTokenService confirmationTokenService;
-
-    @Autowired
-    private EmailService emailService;
+    private final EmailService emailService;
 
     @Override
     public UserDetailsService userDetailsService(){

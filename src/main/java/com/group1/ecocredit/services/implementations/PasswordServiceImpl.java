@@ -38,8 +38,10 @@ public class PasswordServiceImpl implements PasswordService {
 
     @Override
     public boolean forgetPassword(ForgetPasswordRequest request) {
+
         try {
             var optionalUser = userRepository.findByEmail(request.getEmail());
+            System.out.println(optionalUser.isEmpty());
 
             if (optionalUser.isEmpty()) {
                 throw new IllegalArgumentException("Invalid email %s"
