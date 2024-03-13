@@ -23,6 +23,12 @@ $table-variants: (
   "ec-grey": rgba($ec-grey, 0.6),
 );
 
+$nav-pills-link-active-color: $ec-dark-green;
+$nav-pills-link-active-bg: $ec-grey;
+
+$nav-link-color: $ec-grey;
+$nav-link-hover-color: darken($ec-grey, 10%);
+
 @import "~bootstrap/scss/mixins";
 @import "~bootstrap/scss/bootstrap";
 
@@ -43,4 +49,8 @@ $table-variants: (
     background-color: $ec-dark-green;
     color: white;
   }
+}
+
+.nav-pills .nav-link.active .fa-icon {
+  color: $ec-dark-green;
 }

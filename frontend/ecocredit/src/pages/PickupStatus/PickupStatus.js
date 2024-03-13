@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
 import Cookies from "js-cookie";
-import "../../components/PickupScheduleContainer/PickupScheduleContainer.css";
+import "../CustomerDashboard/CustomerDashboard.css";
 
 const PickupStatus = () => {
   const [pickups, setPickups] = useState([]);

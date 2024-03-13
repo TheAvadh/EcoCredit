@@ -2,7 +2,7 @@ import React from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import "./PickupScheduleContainer.css";
+import "../pages/CustomerDashboard/CustomerDashboard";
 
 const PickupScheduleContainer = ({ children, title }) => {
   return (
