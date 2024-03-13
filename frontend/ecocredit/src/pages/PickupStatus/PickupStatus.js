@@ -33,8 +33,8 @@ const PickupStatus = () => {
   return (
     <Container fluid className="background-image">
       <Row className="d-flex justify-content-center align-items-center">
-        <Col lg={6} className="mt-5">
-          <div className="shadow-lg rounded-4 bg-ec-grey p-4">
+        <Col lg={8} className="mt-5">
+          <div className="shadow-lg rounded-4 bg-ec-grey p-4 mb-5">
             <h1 className="text-center text-ec-dark-green p-2">
               Pickup Status
             </h1>

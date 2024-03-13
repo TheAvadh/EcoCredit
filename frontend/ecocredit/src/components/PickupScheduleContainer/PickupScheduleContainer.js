@@ -11,9 +11,9 @@ const PickupScheduleContainer = ({ children, title }) => {
       className="d-flex vh-100 justify-content-center align-items-center background-image"
     >
       <Row className="w-100">
-        <Col lg={4} className="mx-auto">
-          <div className="form-container bg-ec-grey">
-            <h2 className="text-center text-ec-dark-green mb-4">{title}</h2>
+        <Col lg={6} className="mx-auto">
+          <div className="shadow-lg rounded-4 bg-ec-grey p-4 mb-5">
+            <h1 className="text-center text-ec-dark-green mb-4">{title}</h1>
             {children}
           </div>
         </Col>
