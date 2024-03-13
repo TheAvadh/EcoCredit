@@ -1,6 +1,7 @@
 package com.group1.ecocredit.models;
 
 
+import com.group1.ecocredit.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Value;

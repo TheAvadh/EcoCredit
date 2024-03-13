@@ -1,6 +1,6 @@
 package com.group1.ecocredit.repositories;
 
-import com.group1.ecocredit.models.Role;
+import com.group1.ecocredit.enums.Role;
 import com.group1.ecocredit.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
