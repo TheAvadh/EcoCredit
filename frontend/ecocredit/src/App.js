@@ -8,6 +8,7 @@ import {
   PickupSchedule,
   RoleSelection,
   ProfilePage,
+  PickupStatus,
 } from "./pages";
 import AdminDashboard from "./pages/Admin/AdminDashboard/AdminDashboard";
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/pickup-schedule" element={<PickupSchedule />} />
         <Route path="/role" element={<RoleSelection />} />
         <Route path="/profile-page" element={<ProfilePage />} />
+        <Route path="/pickup-status" element={<PickupStatus />} />
         <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </BrowserRouter>
