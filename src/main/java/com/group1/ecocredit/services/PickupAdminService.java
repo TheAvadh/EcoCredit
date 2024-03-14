@@ -1,4 +1,4 @@
-package com.group1.ecocredit.services.admin;
+package com.group1.ecocredit.services;
 
 import com.group1.ecocredit.dto.admin.PickupAdminResponse;
 

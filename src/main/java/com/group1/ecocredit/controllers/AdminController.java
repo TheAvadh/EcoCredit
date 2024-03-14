@@ -2,7 +2,7 @@ package com.group1.ecocredit.controllers;
 
 
 import com.group1.ecocredit.dto.admin.PickupAdminResponse;
-import com.group1.ecocredit.services.admin.PickupAdminServiceImpl;
+import com.group1.ecocredit.services.implementations.PickupAdminServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
