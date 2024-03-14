@@ -58,10 +58,10 @@ public class PickupAdminServiceTests {
     @Test
     void testGetPickupsSuccess() throws SQLException {
         // Arrange
-        Mockito.when(pickupAdminRepository.findPickups()).thenReturn(dbPickups);
+        Mockito.when(pickupAdminRepository.findScheduledPickups()).thenReturn(dbPickups);
 
         // Act
-        var pickups = pickupAdminService.getPickups();
+        var pickups = pickupAdminService.getScheduledPickups();
         var firstPickup = pickups.getFirst();
 
         // Assert
@@ -107,10 +107,10 @@ public class PickupAdminServiceTests {
     @Test
     void testGetEmptyPickupsFromDb() throws SQLException {
         // Arrange
-        Mockito.when(pickupAdminRepository.findPickups()).thenReturn(new ArrayList<>());
+        Mockito.when(pickupAdminRepository.findScheduledPickups()).thenReturn(new ArrayList<>());
 
         // Act
-        var pickups = pickupAdminService.getPickups();
+        var pickups = pickupAdminService.getScheduledPickups();
 
         // Assert
         assertEquals("pickup size should be 0", 0, pickups.size());
@@ -119,10 +119,10 @@ public class PickupAdminServiceTests {
     @Test
     void testGetNullPickupsFromDb() throws SQLException {
         // Arrange
-        Mockito.when(pickupAdminRepository.findPickups()).thenReturn(null);
+        Mockito.when(pickupAdminRepository.findScheduledPickups()).thenReturn(null);
 
         // Act
-        var pickups = pickupAdminService.getPickups();
+        var pickups = pickupAdminService.getScheduledPickups();
 
         // Assert
         assertEquals("pickup size should be 0", 0, pickups.size());

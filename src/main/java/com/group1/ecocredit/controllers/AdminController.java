@@ -22,12 +22,12 @@ public class AdminController {
 
     private final PickupAdminServiceImpl pickupAdminService;
 
-    @GetMapping("/user-pickups")
-    public ResponseEntity<?> getUserPickups() {
+    @GetMapping("/scheduled-pickups")
+    public ResponseEntity<?> getScheduledPickups() {
         List<PickupAdminResponse> pickups;
 
         try {
-            pickups = pickupAdminService.getPickups();
+            pickups = pickupAdminService.getScheduledPickups();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

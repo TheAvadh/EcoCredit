@@ -6,5 +6,5 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface PickupAdminService {
-    List<PickupAdminResponse> getPickups() throws SQLException;
+    List<PickupAdminResponse> getScheduledPickups() throws SQLException;
 }

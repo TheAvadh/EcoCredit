@@ -22,7 +22,7 @@ public class PickupAdminRepositoryImpl implements PickupAdminRepository {
     private String dbPassword;
 
     @Override
-    public List<PickupQueryResult> findPickups() throws SQLException {
+    public List<PickupQueryResult> findScheduledPickups() throws SQLException {
         var conn = DriverManager.getConnection(
                 dbUrl, dbUsername, dbPassword
         );

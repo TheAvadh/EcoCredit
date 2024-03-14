@@ -21,8 +21,8 @@ public class PickupAdminServiceImpl implements PickupAdminService {
     private PickupAdminRepository pickupAdminRepository;
 
     @Override
-    public List<PickupAdminResponse> getPickups() throws SQLException {
-        var dbPickups = pickupAdminRepository.findPickups();
+    public List<PickupAdminResponse> getScheduledPickups() throws SQLException {
+        var dbPickups = pickupAdminRepository.findScheduledPickups();
 
         if (dbPickups == null || dbPickups.isEmpty())
             return new ArrayList<>();

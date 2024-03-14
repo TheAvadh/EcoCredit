@@ -6,5 +6,5 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface PickupAdminRepository {
-    List<PickupQueryResult> findPickups() throws SQLException;
+    List<PickupQueryResult> findScheduledPickups() throws SQLException;
 }
