@@ -69,8 +69,12 @@ public class PickupAdminServiceTests {
 
         assertEquals("pickup should have same id as db pickup",
                 dbPickupFirst.getId(), firstPickup.getId());
-        assertEquals("pickup should have same datetime as db pickup",
-                dbPickupFirst.getDateTime(), firstPickup.getDateTime());
+        assertEquals("pickup should have same date as db pickup",
+                dbPickupFirst.getDateTime().toLocalDate().toString(),
+                firstPickup.getDate());
+        assertEquals("pickup should have same time as db pickup",
+                dbPickupFirst.getDateTime().toLocalTime().toString(),
+                firstPickup.getTime());
         assertEquals("pickups should have same user id as db pickup",
                 dbPickupFirst.getUserId(), firstPickup.getUserId());
         assertEquals("pickups should have same status as db pickup",

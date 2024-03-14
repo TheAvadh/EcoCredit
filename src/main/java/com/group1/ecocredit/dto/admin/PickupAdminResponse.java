@@ -10,7 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 public class PickupAdminResponse {
     private Integer id;
-    private LocalDateTime dateTime;
+    private String date;
+    private String time;
     private Integer userId;
     private String status;
     private List<WasteAdminResponse> wastes;

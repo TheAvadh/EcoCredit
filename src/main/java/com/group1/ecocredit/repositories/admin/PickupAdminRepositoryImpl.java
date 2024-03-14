@@ -28,18 +28,19 @@ public class PickupAdminRepositoryImpl implements PickupAdminRepository {
         );
 
         var query = """
-            select
-                    p.id, p.datetime, p.user_id,
-                    w.id as waste_id, w.weight,
-                    cl.value as category,
-                    sl.value as status
-                from
-                    pickup p
-                    inner join waste w
-                    inner join category_lookup cl
-                    inner join status_lookup sl
-                on p.id = w.pickup_id and w.category_id = cl.id and p.status_id = sl.id
-                order by id, waste_id;
+                    select
+                        p.id, p.datetime, p.user_id,
+                        w.id as waste_id, w.weight,
+                        cl.value as category,
+                        sl.value as status
+                    from
+                        pickup p
+                        inner join waste w
+                        inner join category_lookup cl
+                        inner join status_lookup sl
+                    on p.id = w.pickup_id and w.category_id = cl.id and p.status_id = sl.id
+                    where sl.value like 'SCHEDULED'
+                    order by datetime desc, id asc, waste_id asc;
             """;
         var statement = conn.prepareStatement(query);
         var resultSet = statement.executeQuery();
