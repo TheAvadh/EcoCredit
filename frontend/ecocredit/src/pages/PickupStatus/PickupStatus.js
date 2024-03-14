@@ -24,7 +24,10 @@ const PickupStatus = () => {
       }
     )
       .then((response) => response.json())
-      .then((data) => setPickups(data))
+      .then((data) => {
+        const sortedPickups = data.sort((a, b) => b.pickupId - a.pickupId);
+        setPickups(sortedPickups);
+      })
       .catch((error) =>
         console.error("Fetching pickup status data failed:", error)
       );
@@ -54,9 +57,9 @@ const PickupStatus = () => {
                 </tr>
               </thead>
               <tbody>
-                {pickups.map((pickup) => (
+                {pickups.map((pickup, index) => (
                   <tr key={pickup.pickupId}>
-                    <td>{pickup.pickupId}</td>
+                    <td>{index + 1}</td>
                     <td>{pickup.pickupDate}</td>
                     <td>{pickup.pickupTime}</td>
                     <td>{pickup.pickupStatus}</td>
