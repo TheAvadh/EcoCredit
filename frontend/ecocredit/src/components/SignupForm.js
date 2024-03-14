@@ -16,8 +16,9 @@ const SignupForm = () => {
       street: "",
       city: "",
       province: "",
-      postalCode: ""
-    }
+      postalCode: "",
+      country: "Canada",
+    },
   });
 
   const handleInputChange = (e) => {
@@ -41,14 +42,17 @@ const SignupForm = () => {
 
     if (form.checkValidity() === true) {
       try {
-        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/signup`, {
-          method: "POST",
-          headers: { 
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          body: JSON.stringify(signupData),
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_BASE_URL}/auth/signup`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify(signupData),
+          }
+        );
 
         if (!response.ok) throw new Error("Failed to signup");
 
@@ -148,7 +152,11 @@ const SignupForm = () => {
           Please enter a password that is at least 8 characters long.
         </Form.Control.Feedback>
       </FloatingLabel>
-      <FloatingLabel controlId="signupStreetAddress" label="Street Address" className="mb-3">
+      <FloatingLabel
+        controlId="signupStreetAddress"
+        label="Street Address"
+        className="mb-3"
+      >
         <Form.Control
           type="text"
           name="street"
