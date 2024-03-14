@@ -2,14 +2,13 @@ package com.group1.ecocredit.controllers;
 
 
 import com.group1.ecocredit.dto.admin.PickupAdminResponse;
-import com.group1.ecocredit.services.implementations.PickupAdminServiceImpl;
+import com.group1.ecocredit.dto.admin.WasteUpdateRequest;
+import com.group1.ecocredit.services.admin.implementations.PickupAdminServiceImpl;
+import com.group1.ecocredit.services.admin.implementations.WasteServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +20,7 @@ import java.util.List;
 public class AdminController {
 
     private final PickupAdminServiceImpl pickupAdminService;
+    private final WasteServiceImpl wasteService;
 
     @GetMapping("/scheduled-pickups")
     public ResponseEntity<?> getScheduledPickups() {
@@ -33,5 +33,20 @@ public class AdminController {
         }
 
         return ResponseEntity.ok(pickups);
+    }
+
+    @PatchMapping("/wastes/{wasteId}")
+    public ResponseEntity<?> updateWeight(@PathVariable Long wasteId,
+                                          @RequestBody WasteUpdateRequest request) {
+        try {
+            var result = wasteService.updateWeight(wasteId, request);
+            if (!result) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return ResponseEntity.ok().build();
     }
 }

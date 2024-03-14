@@ -2,7 +2,7 @@ package com.group1.ecocredit;
 
 import com.group1.ecocredit.models.admin.PickupQueryResult;
 import com.group1.ecocredit.repositories.admin.PickupAdminRepository;
-import com.group1.ecocredit.services.implementations.PickupAdminServiceImpl;
+import com.group1.ecocredit.services.admin.implementations.PickupAdminServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
