@@ -24,10 +24,10 @@ public class Bid {
     private Waste waste;
 
     @Column(name="base_price")
-    private Integer base_price;
+    private Double base_price;
 
     @Column(name="top_bid_amount")
-    private Integer top_bid_amount;
+    private Double top_bid_amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

@@ -1,7 +1,9 @@
 package com.group1.ecocredit.services;
 
+import com.group1.ecocredit.models.Bid;
+
 public interface BidService {
 
-    void putWasteForBid(Long wasteId);
+    Bid putWasteForBid(Long wasteId);
 
 }
