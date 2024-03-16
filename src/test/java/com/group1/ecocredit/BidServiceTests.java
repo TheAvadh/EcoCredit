@@ -16,6 +16,7 @@ import com.group1.ecocredit.dto.BidCreateRequest;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -81,7 +82,42 @@ public class BidServiceTests {
         assertEquals(1000.0, result.getBase_price()); // Assuming base price calculation logic
     }
 
+    @Test
+    void whenCheckAndUpdateActiveBids_thenExpireCorrectBids() {
+        Bid activeBid = new Bid();
+        activeBid.setDate(LocalDateTime.now().minusDays(2)); // Bid older than 24 hours
+        activeBid.set_active(true);
+
+        when(bidRepository.findByIsActive(true)).thenReturn(Arrays.asList(activeBid));
+
+        bidService.checkAndUpdateActiveBids();
+
+        assertFalse(activeBid.is_active());
+    }
+
+    @Test
+    void whenGetAllActiveBids_thenReturnAllActiveBids() {
+        Bid activeBid = new Bid();
+
+        when(bidRepository.findByIsActive(true)).thenReturn(Arrays.asList(activeBid));
+
+        List<Bid> result = bidService.getAllActiveBids();
+
+        assertFalse(result.isEmpty());
+        assertTrue(result.contains(activeBid));
+    }
 
 
+    @Test
+    void whenGetAllBids_thenReturnAllBids() {
+        Bid bid1 = new Bid();
+        Bid bid2 = new Bid();
 
+        when(bidRepository.findAll()).thenReturn(Arrays.asList(bid1, bid2));
+
+        List<Bid> result = bidService.getAllBids();
+
+        assertEquals(2, result.size());
+        assertTrue(result.containsAll(Arrays.asList(bid1, bid2)));
+    }
 }
