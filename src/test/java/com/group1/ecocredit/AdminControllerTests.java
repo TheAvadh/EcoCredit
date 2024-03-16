@@ -61,4 +61,35 @@ public class AdminControllerTests {
         mockMvc.perform(get("/api/v1/admin/allactivebids"))
                 .andExpect(status().isForbidden());
     }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    public void getAllActiveBidsAsUserRoleShouldReturnUnauthorized() throws Exception {
+        mockMvc.perform(get("/api/v1/admin/allactivebids"))
+                .andExpect(status().isUnauthorized());
+    }
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void getAllActiveBidsAsAdminRoleShouldSucceed() throws Exception {
+        mockMvc.perform(get("/api/v1/admin/allactivebids"))
+                .andExpect(status().isOk());
+        verify(bidService, times(1)).getAllActiveBids();
+    }
+
+    @Test
+    @WithMockUser(username="user", roles={"USER"})
+    public void accessingAllBidsAsUserRoleShouldReturnUnauthorized() throws Exception {
+        mockMvc.perform(get("/api/v1/admin/allbids"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void putWasteForBidWithInvalidDataShouldReturnBadRequest() throws Exception {
+        // Assume "{}" represents invalid data for BidCreateRequest
+        mockMvc.perform(post("/api/v1/admin/putwasteforbid")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isBadRequest());
+    }
 }
