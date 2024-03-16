@@ -1,5 +1,6 @@
 package com.group1.ecocredit;
 
+import com.group1.ecocredit.dto.BidCreateRequest;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.services.BidService;
 import org.junit.jupiter.api.Test;
