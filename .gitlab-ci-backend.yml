@@ -1,0 +1,91 @@
+variables:
+  BACKEND_APP_NAME: ecocredit-backend
+  BACKEND_APP_CONTAINER_NAME: ecocredit-backend-app
+  BACKEND_APP_PORT: 8080
+
+image: maven:latest
+
+cache:
+  paths:
+    - "target/"
+
+stages:
+  - build
+  - test
+  - quality
+  - publish
+  - deploy
+
+
+build:
+  stage: build
+  script:
+    - mvn clean package -DskipTests
+  artifacts:
+    paths:
+      - target/*.jar
+
+test:
+  stage: test
+  script:
+    - mvn test
+
+quality:
+  stage: quality
+  script:
+    - git clone https://github.com/tushartushar/DesigniteJava.git
+    - cd DesigniteJava
+    - mvn clean install
+    - cd ..
+    - mkdir smells/
+    - java -jar $CI_PROJECT_DIR/DesigniteJava/target/DesigniteJava.jar -i $CI_PROJECT_DIR/$APP_DIR -o $CI_PROJECT_DIR/smells/
+  artifacts:
+    paths:
+      - smells/
+
+
+publish:
+  stage: publish
+  image: docker:latest
+  tags:
+    - deployment
+
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://docker:2375
+
+  services:
+    - docker:dind
+
+  script:
+    - docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_PASS" docker.io
+    - docker build -t docker.io/$DOCKER_HUB_USER/$BACKEND_APP_NAME:$CI_COMMIT_SHORT_SHA .
+    - docker push docker.io/$DOCKER_HUB_USER/$BACKEND_APP_NAME:$CI_COMMIT_SHORT_SHA
+
+  environment:
+    name: dev
+  only:
+    - main
+
+deploy:
+  image: alpine:latest
+  stage: deploy
+  tags:
+    - deployment
+  script:
+    - apk update && apk add openssh-client
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - echo "$ID_RSA" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 700 ~/.ssh/id_rsa
+    - ssh-add ~/.ssh/id_rsa
+    - ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+    - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP -t "docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS docker.io"
+    - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP -t "docker pull docker.io/$DOCKER_HUB_USER/$BACKEND_APP_NAME:$CI_COMMIT_SHORT_SHA"
+    - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP -t "docker container rm -f $BACKEND_APP_CONTAINER_NAME || true"
+    - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP -t "docker run -d -p $BACKEND_APP_PORT:$BACKEND_APP_PORT --name $BACKEND_APP_CONTAINER_NAME docker.io/$DOCKER_HUB_USER/$BACKEND_APP_NAME:$CI_COMMIT_SHORT_SHA"
+  environment:
+    name: production
+    url: http://$SERVER_IP:$BACKEND_APP_PORT
+  only:
+    - main
