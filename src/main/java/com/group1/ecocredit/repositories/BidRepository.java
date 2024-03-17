@@ -11,7 +11,8 @@ import java.util.Optional;
 @Repository
 public interface BidRepository extends JpaRepository<Bid, Integer> {
 
-    Optional<Bid> findByWasteId(long wasteID);
+    @Query("SELECT b FROM Bid b WHERE b.waste.id = :wasteId")
+    Optional<Bid> findByWasteId(long wasteId);
 
     @Query("SELECT b FROM Bid b WHERE b.is_active = :isActive")
     List<Bid> findByIsActive(boolean isActive);

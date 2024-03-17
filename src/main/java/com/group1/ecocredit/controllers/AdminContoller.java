@@ -37,8 +37,15 @@ public class AdminContoller {
         if (user.getRole() == Role.USER){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+         try{
+             bidService.putWasteForBid(bidCreateRequest);
+         }
+         catch (IllegalArgumentException e) {
+             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+         } catch (Exception e) {
+             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+         }
 
-        bidService.putWasteForBid(bidCreateRequest);
         return ResponseEntity.ok().build();
     }
 
@@ -53,7 +60,16 @@ public class AdminContoller {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        bidService.getAllActiveBids();
+        try{
+            bidService.getAllActiveBids();
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+
         return ResponseEntity.ok().build();
     }
 
@@ -68,7 +84,14 @@ public class AdminContoller {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        bidService.getAllBids();
+        try{
+            bidService.getAllBids();
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
         return ResponseEntity.ok().build();
     }
 

@@ -23,6 +23,4 @@ public class CategoryPrice {
     @JoinColumn(name="category_id")
     private Category category;
 
-    public Double getValue(long id){ return value; }
-
 }

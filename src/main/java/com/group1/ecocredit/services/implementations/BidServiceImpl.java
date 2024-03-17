@@ -5,6 +5,8 @@ import com.group1.ecocredit.models.Bid;
 import com.group1.ecocredit.models.CategoryPrice;
 import com.group1.ecocredit.models.Waste;
 import com.group1.ecocredit.repositories.BidRepository;
+import com.group1.ecocredit.repositories.CategoryPriceRepository;
+import com.group1.ecocredit.repositories.CategoryRepository;
 import com.group1.ecocredit.repositories.WasteRepository;
 import com.group1.ecocredit.services.BidService;
 import lombok.AllArgsConstructor;
@@ -23,8 +25,9 @@ public class BidServiceImpl implements BidService {
     BidRepository bidRepository;
     @Autowired
     WasteRepository wasteRepository;
+    @Autowired
+    CategoryPriceRepository categoryPriceRepository;
 
-    CategoryPrice categoryPrice;
 
     @Override
     public Bid putWasteForBid(BidCreateRequest bidCreateRequest) {
@@ -39,14 +42,16 @@ public class BidServiceImpl implements BidService {
             return bid;
         }
         else{
-            if(optionalWaste.isEmpty()){
+            if(optionalWaste.isEmpty() == true){
                 System.out.println("No waste with given waste id present");
+                return null;
             }
 
             else{
                 Waste waste = wasteRepository.findById(bidCreateRequest.getWasteId()).get();
 //                Base Price = category base price multiply by weight of the waste.
-                Double basePrice = categoryPrice.getValue(waste.getCategory().getId()) * waste.getWeight();
+                Optional<CategoryPrice> categoryPrice = categoryPriceRepository.findByCategoryId(waste.getCategory().getId());
+                Double basePrice = categoryPrice.get().getValue() * waste.getWeight();
 
                 Bid bid = new Bid();
                 bid.setBase_price(basePrice);
@@ -55,10 +60,13 @@ public class BidServiceImpl implements BidService {
                 bid.set_active(true);
                 bid.setDate(LocalDateTime.parse(bidCreateRequest.getDateTime()));
 
-                return bid;
+                bidRepository.save(bid);
+
+                System.out.println("Waste is now available for auction");
+                return  bid;
             }
         }
-        return null;
+
     }
 
     @Override
