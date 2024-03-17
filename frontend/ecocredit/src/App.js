@@ -7,6 +7,7 @@ import {
   ResetPassword,
   RoleSelection,
   CustomerDashboard,
+  RecyclerDashboard,
   ProfilePage,
 } from "./pages";
 import AdminDashboard from "./pages/Admin/AdminDashboard/AdminDashboard";
@@ -20,6 +21,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/role" element={<RoleSelection />} />
         <Route path="/customer/*" element={<CustomerDashboard />} />
+        <Route path="/recycler/*" element={<RecyclerDashboard />} />
         <Route path="/profile-page" element={<ProfilePage />} />
         <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
