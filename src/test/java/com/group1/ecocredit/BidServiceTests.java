@@ -16,6 +16,7 @@ import com.group1.ecocredit.services.implementations.BidServiceImpl;
 import com.group1.ecocredit.dto.BidCreateRequest;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +32,6 @@ public class BidServiceTests {
     @Mock
     private CategoryPriceRepository categoryPriceRepository;
 
-    @Mock
-    private CategoryPrice categoryPrice;
 
     @InjectMocks
     private BidServiceImpl bidService;
@@ -93,32 +92,82 @@ public class BidServiceTests {
         Bid result = bidService.putWasteForBid(request);
 
         assertNotNull(result);
-        assertEquals(1000.0, result.getBase_price()); // Assuming base price calculation logic
+        assertEquals(1000.0, result.getBase_price());
+    }
+
+
+    @Test
+    void testActivateBids_BidsToActivate() {
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        Bid activeBid1 = new Bid();
+        activeBid1.setId(1L);
+        activeBid1.setDate(currentDateTime.minusHours(25));
+        activeBid1.set_active(false);
+        activeBid1.setSold(false);
+
+        Bid activeBid2 = new Bid();
+        activeBid2.setId(2L);
+        activeBid2.setDate(currentDateTime.minusHours(23));
+        activeBid2.set_active(false);
+        activeBid2.setSold(false);
+
+        List<Bid> bidsToActivate = List.of(activeBid1, activeBid2);
+        when(bidRepository.findBidsToActivate()).thenReturn(bidsToActivate);
+
+
+        bidService.activateBids();
+
+        verify(bidRepository, times(2)).save(any());
+        assert activeBid1.is_active();
+        assert activeBid2.is_active();
     }
 
     @Test
-    void whenCheckAndUpdateActiveBids_thenExpireCorrectBids() {
+    void testExpireBids_thenExpireActiveBids() {
+        User user = new User();
+        user.setId(5);
+
         Bid activeBid = new Bid();
-        activeBid.setDate(LocalDateTime.now().minusDays(2)); // Bid older than 24 hours
+        activeBid.setId(1L);
+        activeBid.setDate(LocalDateTime.now().minusHours(25));
+        activeBid.setUser(user);
         activeBid.set_active(true);
 
         when(bidRepository.findByIsActive(true)).thenReturn(Arrays.asList(activeBid));
 
-        bidService.checkAndUpdateActiveBids();
+        bidService.expireBids();
 
         assertFalse(activeBid.is_active());
+        assertTrue(activeBid.isSold());
     }
 
     @Test
     void whenGetAllActiveBids_thenReturnAllActiveBids() {
-        Bid activeBid = new Bid();
+        List<Bid> activeBids = new ArrayList<>();
 
-        when(bidRepository.findByIsActive(true)).thenReturn(Arrays.asList(activeBid));
+        Bid activeBid1 = new Bid();
+        activeBid1.setId(1L);
+        activeBid1.set_active(true);
+        activeBids.add(activeBid1);
+
+        Bid activeBid2 = new Bid();
+        activeBid2.setId(2L);
+        activeBid2.set_active(true);
+        activeBids.add(activeBid2);
+
+        when(bidRepository.findByIsActive(true)).thenReturn(activeBids);
 
         List<Bid> result = bidService.getAllActiveBids();
 
-        assertFalse(result.isEmpty());
-        assertTrue(result.contains(activeBid));
+        assertEquals(activeBids.size(), result.size());
+        for (int i = 0; i < activeBids.size(); i++) {
+            assertEquals(activeBids.get(i), result.get(i));
+        }
+
+        verify(bidRepository, times(1)).findByIsActive(true);
+
     }
 
 

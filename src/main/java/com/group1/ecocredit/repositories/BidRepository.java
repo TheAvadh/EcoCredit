@@ -19,8 +19,8 @@ public interface BidRepository extends JpaRepository<Bid, Integer> {
     List<Bid> findByIsActive(boolean isActive);
 
     //Here I added b.user = null only to ensure that no closed bid reactive again
-    @Query("SELECT b FROM Bid b WHERE b.date <= :currentDateTime AND b.is_active = false AND b.user = null")
-    List<Bid> findBidsToActivate(LocalDateTime currentDateTime);
+    @Query("SELECT b FROM Bid b WHERE b.is_active = false AND b.sold = false")
+    List<Bid> findBidsToActivate();
 
 
 }
