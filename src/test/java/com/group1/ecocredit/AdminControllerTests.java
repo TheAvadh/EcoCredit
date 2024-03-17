@@ -54,7 +54,7 @@ public class AdminControllerTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}")) // Assuming JSON content is valid for BidCreateRequest
                 .andExpect(status().isOk());
-        verify(bidService, times(1)).putWasteForBid(any(BidCreateRequest.class), any(User.class));
+        verify(bidService, times(1)).putWasteForBid(any(BidCreateRequest.class));
     }
 
     @Test

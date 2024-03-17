@@ -1,5 +1,6 @@
 package com.group1.ecocredit;
 
+import com.group1.ecocredit.repositories.CategoryPriceRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -28,6 +29,9 @@ public class BidServiceTests {
     private WasteRepository wasteRepository;
 
     @Mock
+    private CategoryPriceRepository categoryPriceRepository;
+
+    @Mock
     private CategoryPrice categoryPrice;
 
     @InjectMocks
@@ -46,7 +50,7 @@ public class BidServiceTests {
 
         when(bidRepository.findByWasteId(request.getWasteId())).thenReturn(Optional.of(existingBid));
 
-        Bid result = bidService.putWasteForBid(request, new User());
+        Bid result = bidService.putWasteForBid(request);
         assertNotNull(result);
         assertEquals(existingBid, result);
     }
@@ -58,7 +62,7 @@ public class BidServiceTests {
 
         when(wasteRepository.findById(request.getWasteId())).thenReturn(Optional.empty());
 
-        Bid result = bidService.putWasteForBid(request, new User());
+        Bid result = bidService.putWasteForBid(request);
         assertNull(result);
     }
 
@@ -68,15 +72,25 @@ public class BidServiceTests {
         request.setWasteId(1L);
         request.setDateTime("2024-03-16T10:00:00");
 
+        Category category = new Category();
+        category.setId(1);
+        category.setValue("Plastic");
+
         Waste waste = new Waste();
         waste.setId(1L);
-        waste.setWeight(10.0);
+        waste.setWeight(10.0F);
+        waste.setCategory(category);
+
+        CategoryPrice categoryPrice = new CategoryPrice();
+        categoryPrice.setId(1L);
+        categoryPrice.setCategory(category);
+        categoryPrice.setValue(100.0);
 
         when(wasteRepository.findById(request.getWasteId())).thenReturn(Optional.of(waste));
         when(bidRepository.findByWasteId(request.getWasteId())).thenReturn(Optional.empty());
-        when(categoryPrice.getValue(waste.getCategory().getId())).thenReturn(100.0); // Assume category base price
+        when(categoryPriceRepository.findByCategoryId(category.getId())).thenReturn(Optional.of(categoryPrice));
 
-        Bid result = bidService.putWasteForBid(request, new User());
+        Bid result = bidService.putWasteForBid(request);
 
         assertNotNull(result);
         assertEquals(1000.0, result.getBase_price()); // Assuming base price calculation logic
