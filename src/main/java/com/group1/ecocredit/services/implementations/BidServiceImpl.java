@@ -57,7 +57,7 @@ public class BidServiceImpl implements BidService {
                 bid.setBase_price(basePrice);
                 bid.setWaste(waste);
                 bid.setTop_bid_amount(basePrice);
-                bid.set_active(true);
+                //bid.set_active(true); Set this true when the schedule time arrive
                 bid.setDate(LocalDateTime.parse(bidCreateRequest.getDateTime()));
 
                 bidRepository.save(bid);
@@ -70,8 +70,19 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    @Scheduled(fixedRate = 3600000) // Runs every hour (3600000 milliseconds)
-    public void checkAndUpdateActiveBids() {
+    public void checkAndStartActiveBids() {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        List<Bid> bidsToActivate = bidRepository.findBidsToActivate(currentDateTime);
+
+        for (Bid bid : bidsToActivate) {
+            bid.set_active(true);
+            bidRepository.save(bid);
+            System.out.println("Bid with ID " + bid.getId() + " has been activated.");
+        }
+    }
+
+    @Override
+    public void checkAndCloseActiveBids() {
         List<Bid> activeBids = bidRepository.findByIsActive(true);
         LocalDateTime currentDateTime = LocalDateTime.now();
 
@@ -79,13 +90,21 @@ public class BidServiceImpl implements BidService {
             LocalDateTime bidCreationDateTime = bid.getDate();
             LocalDateTime bidExpiryDateTime = bidCreationDateTime.plusHours(24); // Bid expires after 24 hours
 
-            if (currentDateTime.isAfter(bidExpiryDateTime)) {
+            //Note that bid will only expire if any user has participated else it will stay until the first bidder will bid
+            if (currentDateTime.isAfter(bidExpiryDateTime) && bid.getUser()!=null) {
                 bid.set_active(false);
                 bidRepository.save(bid);
                 System.out.println("Bid with ID " + bid.getId() + " has expired and deactivated.");
             }
         }
     }
+
+    @Scheduled(fixedRate = 60000) // Run every minute
+    public void bidSchedular() {
+        checkAndStartActiveBids();
+        checkAndCloseActiveBids();
+    }
+
 
     @Override
     public List<Bid> getAllActiveBids() {

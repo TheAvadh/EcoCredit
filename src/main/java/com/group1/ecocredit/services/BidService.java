@@ -13,5 +13,7 @@ public interface BidService {
 
     List<Bid> getAllBids();
 
-    void checkAndUpdateActiveBids();
+    void checkAndCloseActiveBids();
+
+    void checkAndStartActiveBids();
 }
