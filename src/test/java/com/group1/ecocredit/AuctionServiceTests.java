@@ -43,4 +43,28 @@ public class AuctionServiceTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()", is(1)));
     }
+    @Test
+    public void placeOrUpdateBid_ShouldReturnUpdatedBid() throws Exception {
+        Bid updatedBid = new Bid();
+        updatedBid.setTop_bid_amount(500);
+        given(auctionService.placeOrUpdateBid(anyInt(), anyLong(), anyInt())).willReturn(updatedBid);
+
+        mockMvc.perform(post("/recycler/placeOrUpdateBid")
+                        .param("userId", "1")
+                        .param("bidId", "1")
+                        .param("newBidAmount", "500"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.top_bid_amount", is(500)));
+    }
+
+    @Test
+    public void incrementBid_ShouldReturnIncrementedBid() throws Exception {
+        Bid incrementedBid = new Bid();
+        incrementedBid.setTop_bid_amount(300);
+        given(auctionService.incrementBid(anyLong())).willReturn(incrementedBid);
+
+        mockMvc.perform(put("/recycler/incrementBid/{bidId}", 1))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.top_bid_amount", is(300)));
+    }
 }
