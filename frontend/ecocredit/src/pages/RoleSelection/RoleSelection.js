@@ -29,7 +29,7 @@ function RoleSelection() {
               <Button
                 variant="ec-medium-green"
                 className="role-button"
-                onClick={() => redirectTo("/customer")}
+                onClick={() => redirectTo("/customer/pickup-schedule")}
               >
                 <FontAwesomeIcon
                   className="fa-icon"

@@ -3,7 +3,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import ScheduleContainer from "../../components/PickupScheduleContainer/PickupScheduleContainer";
+import ScheduleContainer from "../../components/PickupScheduleContainer";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import logoUrl from "../../assets/images/recycle.png";
 import { ToastContainer, toast } from "react-toastify";

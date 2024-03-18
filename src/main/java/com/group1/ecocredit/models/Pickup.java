@@ -22,7 +22,7 @@ public class Pickup {
     @Column(name = "datetime")
     private LocalDateTime dateTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
