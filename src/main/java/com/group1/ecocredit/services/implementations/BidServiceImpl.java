@@ -6,11 +6,11 @@ import com.group1.ecocredit.models.CategoryPrice;
 import com.group1.ecocredit.models.Waste;
 import com.group1.ecocredit.repositories.BidRepository;
 import com.group1.ecocredit.repositories.CategoryPriceRepository;
-import com.group1.ecocredit.repositories.CategoryRepository;
 import com.group1.ecocredit.repositories.WasteRepository;
 import com.group1.ecocredit.services.BidService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Configuration
+@EnableScheduling
 public class BidServiceImpl implements BidService {
 
     @Autowired
@@ -114,13 +116,8 @@ public class BidServiceImpl implements BidService {
 
     @Scheduled(fixedRate = 60000) // Run every minute
     public void bidSchedular() {
-        int a = 0;
         activateBids();
         expireBids();
-        for(a=0; a<10; a++){
-            System.out.println(a);
-        }
-
     }
 
 
