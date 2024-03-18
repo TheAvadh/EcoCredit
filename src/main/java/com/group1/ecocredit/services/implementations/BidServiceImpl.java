@@ -35,6 +35,7 @@ public class BidServiceImpl implements BidService {
 
         Optional<Bid> optionalBid = bidRepository.findByWasteId(bidCreateRequest.getWasteId());
         Optional<Waste> optionalWaste = wasteRepository.findById(bidCreateRequest.getWasteId());
+        LocalDateTime bidTime = LocalDateTime.parse(bidCreateRequest.getDateTime());
 
         if (optionalBid.isPresent()){
             System.out.println("The waste is already auctioned");
@@ -44,6 +45,11 @@ public class BidServiceImpl implements BidService {
         else{
             if(optionalWaste.isEmpty() == true){
                 System.out.println("No waste with given waste id present");
+                return null;
+            }
+
+            if(LocalDateTime.now().isAfter(bidTime)){
+                System.out.println("You can't create bid in past");
                 return null;
             }
 
@@ -57,8 +63,7 @@ public class BidServiceImpl implements BidService {
                 bid.setBase_price(basePrice);
                 bid.setWaste(waste);
                 bid.setTop_bid_amount(basePrice);
-                //bid.set_active(true); Set this true when the schedule time arrive
-                bid.setDate(LocalDateTime.parse(bidCreateRequest.getDateTime()));
+                bid.setDate(bidTime);
 
                 bidRepository.save(bid);
 
@@ -70,19 +75,26 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public void checkAndStartActiveBids() {
+    public void activateBids() {
         LocalDateTime currentDateTime = LocalDateTime.now();
-        List<Bid> bidsToActivate = bidRepository.findBidsToActivate(currentDateTime);
+
+        List<Bid> bidsToActivate = bidRepository.findBidsToActivate();
 
         for (Bid bid : bidsToActivate) {
-            bid.set_active(true);
-            bidRepository.save(bid);
-            System.out.println("Bid with ID " + bid.getId() + " has been activated.");
+
+            LocalDateTime bidCreationDateTime = bid.getDate();
+            if(currentDateTime.isAfter(bidCreationDateTime))
+            {
+                bid.set_active(true);
+                bidRepository.save(bid);
+                System.out.println("Bid with ID " + bid.getId() + " has been activated.");
+            }
         }
+
     }
 
     @Override
-    public void checkAndCloseActiveBids() {
+    public void expireBids() {
         List<Bid> activeBids = bidRepository.findByIsActive(true);
         LocalDateTime currentDateTime = LocalDateTime.now();
 
@@ -93,6 +105,7 @@ public class BidServiceImpl implements BidService {
             //Note that bid will only expire if any user has participated else it will stay until the first bidder will bid
             if (currentDateTime.isAfter(bidExpiryDateTime) && bid.getUser()!=null) {
                 bid.set_active(false);
+                bid.setSold(true);
                 bidRepository.save(bid);
                 System.out.println("Bid with ID " + bid.getId() + " has expired and deactivated.");
             }
@@ -101,8 +114,13 @@ public class BidServiceImpl implements BidService {
 
     @Scheduled(fixedRate = 60000) // Run every minute
     public void bidSchedular() {
-        checkAndStartActiveBids();
-        checkAndCloseActiveBids();
+        int a = 0;
+        activateBids();
+        expireBids();
+        for(a=0; a<10; a++){
+            System.out.println(a);
+        }
+
     }
 
 
@@ -110,6 +128,7 @@ public class BidServiceImpl implements BidService {
     public List<Bid> getAllActiveBids() {
 
         List<Bid> bidList = bidRepository.findByIsActive(true);
+
         return bidList;
     }
 
