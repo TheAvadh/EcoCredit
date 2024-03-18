@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import ProfileForm from "../../components/ProfileForm";
-import ProfileToast from "../../components/ProfileToast/ProfileToast";
+import Toast from "../../components/Toast/Toast";
 import profilePicURL from "../../assets/images/profilePic.jpg";
 import "./ProfilePage.css";
 
@@ -28,15 +28,20 @@ const ProfilePage = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("");
 
-  
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/users/${localStorage.getItem("userId")}`, {
-      method: "GET",
-      mode: "cors",
-      headers: {
-        "Authorization": `Bearer ${localStorage.getItem("token")}`,
-        "Accept": "application/json"
-      }})
+    fetch(
+      `${process.env.REACT_APP_BASE_URL}/users/${localStorage.getItem(
+        "userId"
+      )}`,
+      {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json",
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => setProfileData(data))
       .catch((error) => console.error("Fetching profile data failed:", error));
@@ -67,7 +72,7 @@ const ProfilePage = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify(profileData),
     })
@@ -114,7 +119,7 @@ const ProfilePage = () => {
           />
         </Row>
       </Container>
-      <ProfileToast
+      <Toast
         showToast={showToast}
         setShowToast={setShowToast}
         toastMessage={toastMessage}

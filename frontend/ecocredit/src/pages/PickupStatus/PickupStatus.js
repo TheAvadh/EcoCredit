@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
 import Cookies from "js-cookie";
-import "../../components/PickupScheduleContainer/PickupScheduleContainer.css";
+import "../CustomerDashboard/CustomerDashboard.css";
 
 const PickupStatus = () => {
   const [pickups, setPickups] = useState([]);
@@ -24,7 +24,10 @@ const PickupStatus = () => {
       }
     )
       .then((response) => response.json())
-      .then((data) => setPickups(data))
+      .then((data) => {
+        const sortedPickups = data.sort((a, b) => b.pickupId - a.pickupId);
+        setPickups(sortedPickups);
+      })
       .catch((error) =>
         console.error("Fetching pickup status data failed:", error)
       );
@@ -33,8 +36,8 @@ const PickupStatus = () => {
   return (
     <Container fluid className="background-image">
       <Row className="d-flex justify-content-center align-items-center">
-        <Col lg={6} className="mt-5">
-          <div className="shadow-lg rounded-4 bg-ec-grey p-4">
+        <Col lg={8} className="mt-5">
+          <div className="shadow-lg rounded-4 bg-ec-grey p-4 mb-5">
             <h1 className="text-center text-ec-dark-green p-2">
               Pickup Status
             </h1>
@@ -54,9 +57,9 @@ const PickupStatus = () => {
                 </tr>
               </thead>
               <tbody>
-                {pickups.map((pickup) => (
+                {pickups.map((pickup, index) => (
                   <tr key={pickup.pickupId}>
-                    <td>{pickup.pickupId}</td>
+                    <td>{index + 1}</td>
                     <td>{pickup.pickupDate}</td>
                     <td>{pickup.pickupTime}</td>
                     <td>{pickup.pickupStatus}</td>

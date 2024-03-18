@@ -5,7 +5,7 @@ import {
   faSquareCheck,
   faSquareXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import "./ProfileToast.css";
+import "./Toast.css";
 
 const ProfileToast = ({ showToast, setShowToast, toastMessage, toastType }) => {
   const getToastIcon = (type) => {
