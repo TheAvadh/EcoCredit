@@ -10,7 +10,7 @@ import {
   RecyclerDashboard,
   ProfilePage,
 } from "./pages";
-import AdminDashboard from "./pages/Admin/AdminDashboard/AdminDashboard";
+import AdminOldDashboard from "./pages/Admin/AdminOldDashboard/AdminOldDashboard";
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
         <Route path="/customer/*" element={<CustomerDashboard />} />
         <Route path="/recycler/*" element={<RecyclerDashboard />} />
         <Route path="/profile-page" element={<ProfilePage />} />
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin" element={<AdminOldDashboard />} />
       </Routes>
     </BrowserRouter>
   );

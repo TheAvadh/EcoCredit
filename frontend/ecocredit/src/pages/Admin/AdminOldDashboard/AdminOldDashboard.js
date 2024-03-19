@@ -1,7 +1,7 @@
 import AdminCarousel from "../AdminCarousel/AdminCarousel";
 import AdminNavbar from "../AdminNavbar/AdminNavbar";
 
-const AdminDashboard = () => {
+const AdminOldDashboard = () => {
     return (
         <div>
             <AdminNavbar/>
@@ -10,4 +10,4 @@ const AdminDashboard = () => {
     );
 };
 
-export default AdminDashboard;
+export default AdminOldDashboard;
