@@ -1,7 +1,7 @@
 package com.group1.ecocredit;
 
 import com.group1.ecocredit.models.admin.PickupQueryResult;
-import com.group1.ecocredit.repositories.admin.PickupAdminRepository;
+import com.group1.ecocredit.repositories.PickupRepository;
 import com.group1.ecocredit.services.admin.implementations.PickupAdminServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 @ExtendWith(MockitoExtension.class)
 public class PickupAdminServiceTests {
     @Mock
-    private PickupAdminRepository pickupAdminRepository;
+    private PickupRepository pickupRepository;
     @InjectMocks
     private PickupAdminServiceImpl pickupAdminService;
     private PickupQueryResult dbPickupFirst;
@@ -34,7 +34,7 @@ public class PickupAdminServiceTests {
         dbPickups = new ArrayList<>();
 
         dbPickupFirst = new PickupQueryResult();
-        dbPickupFirst.setId(1);
+        dbPickupFirst.setId(1L);
         dbPickupFirst.setStatus("SCHEDULED");
         dbPickupFirst.setCategory("paper");
         dbPickupFirst.setWasteId(1L);
@@ -44,7 +44,7 @@ public class PickupAdminServiceTests {
         dbPickups.add(dbPickupFirst);
 
         dbPickupSecond = new PickupQueryResult();
-        dbPickupSecond.setId(1);
+        dbPickupSecond.setId(1L);
         dbPickupSecond.setStatus("SCHEDULED");
         dbPickupSecond.setCategory("biodegradable");
         dbPickupSecond.setWasteId(2L);
@@ -58,7 +58,7 @@ public class PickupAdminServiceTests {
     @Test
     void testGetPickupsSuccess() throws SQLException {
         // Arrange
-        Mockito.when(pickupAdminRepository.findScheduledPickups()).thenReturn(dbPickups);
+        Mockito.when(pickupRepository.findScheduledPickups()).thenReturn(dbPickups);
 
         // Act
         var pickups = pickupAdminService.getScheduledPickups();
@@ -107,7 +107,7 @@ public class PickupAdminServiceTests {
     @Test
     void testGetEmptyPickupsFromDb() throws SQLException {
         // Arrange
-        Mockito.when(pickupAdminRepository.findScheduledPickups()).thenReturn(new ArrayList<>());
+        Mockito.when(pickupRepository.findScheduledPickups()).thenReturn(new ArrayList<>());
 
         // Act
         var pickups = pickupAdminService.getScheduledPickups();
@@ -119,7 +119,7 @@ public class PickupAdminServiceTests {
     @Test
     void testGetNullPickupsFromDb() throws SQLException {
         // Arrange
-        Mockito.when(pickupAdminRepository.findScheduledPickups()).thenReturn(null);
+        Mockito.when(pickupRepository.findScheduledPickups()).thenReturn(null);
 
         // Act
         var pickups = pickupAdminService.getScheduledPickups();

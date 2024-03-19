@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class PickupAdminResponse {
-    private Integer id;
+    private Long id;
     private String date;
     private String time;
     private Integer userId;

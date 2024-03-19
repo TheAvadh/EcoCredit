@@ -3,7 +3,7 @@ package com.group1.ecocredit.services.admin.implementations;
 import com.group1.ecocredit.dto.admin.PickupAdminResponse;
 import com.group1.ecocredit.dto.admin.WasteAdminResponse;
 import com.group1.ecocredit.models.admin.PickupQueryResult;
-import com.group1.ecocredit.repositories.admin.PickupAdminRepository;
+import com.group1.ecocredit.repositories.PickupRepository;
 import com.group1.ecocredit.services.admin.PickupAdminService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +19,17 @@ import java.util.Objects;
 public class PickupAdminServiceImpl implements PickupAdminService {
 
     @Autowired
-    private PickupAdminRepository pickupAdminRepository;
+    private PickupRepository pickupRepository;
 
     @Override
     public List<PickupAdminResponse> getScheduledPickups() throws SQLException {
-        var dbPickups = pickupAdminRepository.findScheduledPickups();
+        var dbPickups = pickupRepository.findScheduledPickups();
 
         if (dbPickups == null || dbPickups.isEmpty())
             return new ArrayList<>();
 
         // get distinct pickup ids
-        List<Integer> distinctIds = dbPickups.stream()
+        List<Long> distinctIds = dbPickups.stream()
                 .map(PickupQueryResult::getId)
                 .distinct()
                 .toList();
