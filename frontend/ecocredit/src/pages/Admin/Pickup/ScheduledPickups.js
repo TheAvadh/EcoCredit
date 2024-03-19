@@ -77,7 +77,6 @@ return (
                   <th>Date</th>
                   <th>Time</th>
                   <th>UserID</th>
-                  <th>Status</th>
                   <th>Waste</th>
                 </tr>
               </thead>
@@ -88,7 +87,6 @@ return (
                     <td>{pickup.date}</td>
                     <td>{pickup.time}</td>
                     <td>{pickup.userId}</td>
-                    <td>{pickup.status}</td>
                     <Table
                         bordered
                         hover
