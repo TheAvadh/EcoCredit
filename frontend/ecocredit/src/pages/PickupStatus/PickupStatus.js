@@ -11,9 +11,7 @@ const PickupStatus = () => {
 
   useEffect(() => {
     fetch(
-      `${process.env.REACT_APP_BASE_URL}/pickups/${localStorage.getItem(
-        "userId"
-      )}`,
+      `${process.env.REACT_APP_BASE_URL}/pickups/getpickups`,
       {
         method: "GET",
         mode: "cors",

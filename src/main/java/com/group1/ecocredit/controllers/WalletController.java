@@ -3,10 +3,15 @@ package com.group1.ecocredit.controllers;
 import com.group1.ecocredit.dto.WalletRequest;
 import com.group1.ecocredit.models.Transaction;
 import com.group1.ecocredit.models.Wallet;
+import com.group1.ecocredit.services.JWTService;
 import com.group1.ecocredit.services.WalletService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +23,22 @@ public class WalletController {
     @Autowired
     private WalletService walletService;
 
-    @GetMapping("/getCredit/{userId}")
-    public ResponseEntity<?> getUserWalletDetails(@PathVariable Long userId) {
+    @Autowired
+    private JWTService jwtService;
+
+    private Integer getUserId(HttpServletRequest request) {
+
+        return Integer.parseInt(jwtService.extractUserID(request.getHeader("Authorization")));
+    }
+
+    @GetMapping("/getCredit")
+    public ResponseEntity<?> getUserWalletDetails(HttpServletRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Long userId = getUserId(request).longValue();
 
         Optional<Wallet> optionalWallet = walletService.getWalletByUserId(userId);
 
@@ -31,8 +50,17 @@ public class WalletController {
         }
     }
 
-    @PostMapping("/addCredit/{userId}")
-    public ResponseEntity<?> addCreditAmount(@PathVariable Long userId, @RequestBody WalletRequest walletRequest) {
+    @PostMapping("/addCredit")
+    public ResponseEntity<?> addCreditAmount(HttpServletRequest request, @RequestBody WalletRequest walletRequest) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        Long userId = getUserId(request).longValue();
+
         walletService.addCredit(walletRequest.getUserId(), walletRequest.getCreditAmount());
 
         return ResponseEntity.ok("Points credited successfully for user ID: " + userId);
@@ -49,8 +77,15 @@ public class WalletController {
         }
     }
 
-    @GetMapping("/getTransactions/{userId}")
-    public ResponseEntity<?> getUserTransactions(@PathVariable Long userId) {
+    @GetMapping("/getTransactions")
+    public ResponseEntity<?> getUserTransactions(HttpServletRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Long userId = getUserId(request).longValue();
+        
         List<Transaction> transactions = walletService.getTransactionsByUserId(userId);
 
         if (!transactions.isEmpty()) {

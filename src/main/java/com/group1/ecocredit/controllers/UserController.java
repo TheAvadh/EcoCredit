@@ -3,10 +3,15 @@ package com.group1.ecocredit.controllers;
 import com.group1.ecocredit.dto.UpdateProfileRequest;
 import com.group1.ecocredit.dto.UpdateProfileResponse;
 import com.group1.ecocredit.dto.UserDetailsResponse;
+import com.group1.ecocredit.services.JWTService;
 import com.group1.ecocredit.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+
+    private final JWTService jwtService;
+
     @GetMapping
     public ResponseEntity<String> sayHello(){
         return ResponseEntity.ok("Hi user");
@@ -41,8 +49,15 @@ public class UserController {
         };
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getUserById(@PathVariable Integer userId) {
+    @GetMapping("/getprofile")
+    public ResponseEntity<?> getUserById(HttpServletRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Integer userId = Integer.parseInt(jwtService.extractUserID(request.getHeader("Authorization")));
+
         UserDetailsResponse userDTO = userService.getUserById(userId);
         if (userDTO != null) {
             return ResponseEntity.ok(userDTO);
