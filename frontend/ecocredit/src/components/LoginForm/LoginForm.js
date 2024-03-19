@@ -43,7 +43,9 @@ const LoginForm = () => {
 
         const data = await response.json();
         console.log("Login Success:", data);
+        
         Cookies.set("token", data.token, { secure: true });
+
         localStorage.setItem("userId", data.userId);
         navigate("/role");
       } catch (error) {
