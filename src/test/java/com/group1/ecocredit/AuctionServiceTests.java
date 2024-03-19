@@ -1,6 +1,8 @@
 package com.group1.ecocredit;
 
+import com.group1.ecocredit.dto.DisplayBidRequest;
 import com.group1.ecocredit.models.Bid;
+import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.services.AuctionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,9 @@ public class AuctionServiceTests {
     @MockBean
     private AuctionService auctionService;
 
+    @Mock
+    DisplayBidRequest displayBidRequest;
+
     @Test
     public void viewAllActiveBids_ShouldReturnBids() throws Exception {
         given(auctionService.viewAllActiveBids()).willReturn(List.of(new Bid(), new Bid()));
@@ -45,9 +50,11 @@ public class AuctionServiceTests {
     }
     @Test
     public void placeOrUpdateBid_ShouldReturnUpdatedBid() throws Exception {
+        User user = new User();
+
         Bid updatedBid = new Bid();
         updatedBid.setTop_bid_amount(500);
-        given(auctionService.placeOrUpdateBid(anyInt(), anyLong(), anyInt())).willReturn(updatedBid);
+        given(auctionService.placeOrUpdateBid(displayBidRequest, user)).willReturn(updatedBid);
 
         mockMvc.perform(post("/recycler/placeOrUpdateBid")
                         .param("userId", "1")

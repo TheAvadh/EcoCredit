@@ -16,7 +16,7 @@ public class Bid {
     @Id
     private Long Id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "waste_id")
     private Waste waste;
 

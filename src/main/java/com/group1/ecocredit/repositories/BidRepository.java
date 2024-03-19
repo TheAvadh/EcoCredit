@@ -11,7 +11,7 @@ public interface BidRepository extends JpaRepository<Bid, Integer> {
     @Query("SELECT b FROM Bid b WHERE b.is_active = true")
     List<Bid> findAllActiveBids();
 
-    List<Bid> findByUserId(Integer userId);
+    Bid findById(Long bidId);
 
 
 }
