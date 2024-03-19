@@ -32,7 +32,6 @@ public class PickupServiceImpl implements PickupService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-
     @Override
     public void schedulePickup(PickupRequest pickupRequest, User user) {
         Optional<Status> statusOptional =
@@ -79,7 +78,6 @@ public class PickupServiceImpl implements PickupService {
         pickupRepository.save(pickup);
         return true;
     }
-
 
     @Override
     public List<PickupStatusResponse> getPickupStatus(Long userId) {
