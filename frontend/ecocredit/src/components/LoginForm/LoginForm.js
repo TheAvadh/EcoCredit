@@ -48,7 +48,7 @@ const LoginForm = () => {
 
         localStorage.setItem("userId", data.userId);
         if (data.role === 'ADMIN') {
-          navigate("/admin");
+          navigate("/admin/scheduled-pickups");
         } else {
           navigate("/role");
         }

@@ -5,4 +5,5 @@ export { default as RoleSelection } from "./RoleSelection/RoleSelection";
 export { default as CustomerDashboard } from "./CustomerDashboard/CustomerDashboard";
 export { default as RecyclerDashboard } from "./RecyclerDashboard/RecyclerDashboard";
 export { default as ProfilePage } from "./ProfilePage/ProfilePage";
-export { default as AdminDashboard } from "./AdminDashboard/AdminDashboard"
+export { default as AdminDashboard } from "./Admin/Dashboard/AdminDashboard";
+export { default as ScheduledPickups } from "./Admin/Pickup/ScheduledPickups";
