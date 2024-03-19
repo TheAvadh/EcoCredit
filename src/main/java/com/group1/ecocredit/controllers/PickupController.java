@@ -5,8 +5,11 @@ import com.group1.ecocredit.dto.PickupRequest;
 import com.group1.ecocredit.dto.PickupStatusResponse;
 import com.group1.ecocredit.models.Pickup;
 import com.group1.ecocredit.models.User;
+import com.group1.ecocredit.services.JWTService;
 import com.group1.ecocredit.services.PickupService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -22,6 +25,11 @@ import java.util.List;
 public class PickupController {
 
     private final PickupService pickUpService;
+
+    private final JWTService jwtService;
+
+    @Value("${bearer.size}")
+    private Integer bearerSize;
 
     @PostMapping("/cancel")
     public ResponseEntity<Pickup> pickupCancellation(@RequestBody PickupCancelRequest pickupToCancel) {
@@ -53,13 +61,15 @@ public class PickupController {
         return ResponseEntity.ok("Pickup scheduled successfully.");
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> getPickupStatus(@PathVariable Long userId) {
+    @GetMapping("getpickups")
+    public ResponseEntity<?> getPickupStatus(HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (!authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+
+        Long userId = Long.parseLong(jwtService.extractUserID(request.getHeader("Authorization")));
 
         try {
             List<PickupStatusResponse> pickupStatusList = pickUpService.getPickupStatus(userId);
