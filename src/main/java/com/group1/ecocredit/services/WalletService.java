@@ -1,0 +1,18 @@
+package com.group1.ecocredit.services;
+
+import com.group1.ecocredit.models.Transaction;
+import com.group1.ecocredit.models.Wallet;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+
+public interface WalletService {
+    Optional<Wallet> getWalletByUserId(Long userId);
+
+    void addCredit(Long userId, BigDecimal creditAmount);
+
+    void updateCredit(Long userId, BigDecimal deductionAmount);
+
+    List<Transaction> getTransactionsByUserId(Long userId);
+}

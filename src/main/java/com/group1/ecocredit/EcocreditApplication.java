@@ -4,18 +4,19 @@ import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.repositories.CategoryRepository;
 import com.group1.ecocredit.repositories.StatusRepository;
 import com.group1.ecocredit.repositories.UserRepository;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @SpringBootApplication
+@EnableScheduling
 public class EcocreditApplication implements CommandLineRunner {
 
 	@Autowired
