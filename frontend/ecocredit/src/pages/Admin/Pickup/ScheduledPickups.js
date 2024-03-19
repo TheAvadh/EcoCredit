@@ -3,9 +3,11 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
+import "./SchedulePickups.css";
+import Button from "react-bootstrap/Button";
 
 const ScheduledPickups = () => {
-    const [pickups, setPickups] = useState([
+    const [pickups] = useState([
         {
             "id": 1,
             "date": "2024-03-19",
@@ -15,7 +17,7 @@ const ScheduledPickups = () => {
             "wastes": [
                 {
                     "wasteId": 1,
-                    "weight": 3.0,
+                    "weight": 3.5,
                     "category": "biodegradable"
                 },
                 {
@@ -38,6 +40,20 @@ const ScheduledPickups = () => {
                     "category": "biodegradable"
                 }
             ]
+        },
+        {
+            "id": 2,
+            "date": "2024-03-18",
+            "time": "21:47",
+            "userId": 21,
+            "status": "SCHEDULED",
+            "wastes": [
+                {
+                    "wasteId": 105,
+                    "weight": 11.5,
+                    "category": "biodegradable"
+                }
+            ]
         }
     ]);
 
@@ -50,7 +66,6 @@ return (
               Scheduled Pickups
             </h1>
             <Table
-              striped
               bordered
               hover
               variant="ec-grey"
@@ -63,7 +78,7 @@ return (
                   <th>Time</th>
                   <th>UserID</th>
                   <th>Status</th>
-                  <th>Weights</th>
+                  <th>Waste</th>
                 </tr>
               </thead>
               <tbody>
@@ -74,27 +89,27 @@ return (
                     <td>{pickup.time}</td>
                     <td>{pickup.userId}</td>
                     <td>{pickup.status}</td>
-                    <Table striped
-                            bordered
-                            hover
-                            variant="ec-grey"
-                            className="table-custom mb-0">
-                                <tbody>
-                                    <tr>
-                                        <td>item1</td>
-                                        <td>weight1</td>
-                                        <td>category1</td>
-                                    </tr>
-                                    <tr>
-                                        <td>item2</td>
-                                        <td>weight2</td>
-                                        <td>category2</td>
-                                    </tr>
-                                </tbody>
+                    <Table
+                        bordered
+                        hover
+                        variant="ec-grey"
+                        className="table-custom mb-0">
+                        <tbody>
+                            {pickup.wastes.map((waste) => (
+                                <tr key={waste.wasteId}>
+                                    <td className="col-widths-category">{waste.category}</td>
+                                    <td className="col-widths-weight">{waste.weight ? waste.weight : 0.0} kg</td>
+                                    <td className="col-widths-button">
+                                        <Button variant="ec-dark-green text-ec-grey" size="sm">
+                                            Update
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
                     </Table>
                   </tr>
-                )
-                )}
+                ))}
               </tbody>
             </Table>
           </div>
