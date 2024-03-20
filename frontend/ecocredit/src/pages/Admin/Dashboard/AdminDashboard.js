@@ -7,7 +7,7 @@ import ScheduledPickups from "../Pickup/ScheduledPickups";
 const AdminDashboard = () => {
     const tabs = [
         {
-            label: "Pickups",
+            label: "Scheduled Pickups",
             to: "/admin/scheduled-pickups",
             path: "/scheduled-pickups",
             icon: faCalendarCheck,

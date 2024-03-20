@@ -9,7 +9,7 @@ const Dashboard = ({ tabs }) => {
   return (
     <Row className="m-0" style={{ height: "100vh" }}>
       <Col md={2} className="p-3">
-        <Nav variant="pills" className="flex-column fs-5 fw-medium">
+        <Nav variant="pills" className="flex-column fm-3 fw-medium">
           {tabs.map((tab, index) => (
             <Nav.Item key={index} className="mb-2">
               <Nav.Link as={NavLink} to={tab.to} activeClassName="active">
