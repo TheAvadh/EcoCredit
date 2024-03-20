@@ -8,8 +8,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Dashboard = ({ tabs }) => {
   return (
     <Row className="m-0" style={{ height: "100vh" }}>
-      <Col md={2} className="p-3">
-        <Nav variant="pills" className="flex-column fm-3 fw-medium">
+      <Col md={2} className="bg-ec-dark-green">
+        <Nav
+          variant="pills"
+          className="sticky-top flex-column fs-5 fw-medium pt-3"
+        >
           {tabs.map((tab, index) => (
             <Nav.Item key={index} className="mb-2">
               <Nav.Link as={NavLink} to={tab.to} activeClassName="active">
