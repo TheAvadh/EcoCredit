@@ -41,8 +41,16 @@ $nav-link-hover-color: darken($ec-grey, 10%);
   }
 }
 
+.table-wrapper {
+  max-height: calc(100vh - 250px);
+  overflow-y: auto;
+  display:inline-block;
+  width: 100%;
+}
+
 .table-custom {
   border-radius: 0.25rem;
+  display: table;
   overflow: hidden;
 
   thead th {
