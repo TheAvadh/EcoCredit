@@ -23,7 +23,7 @@ install:
     - npm ci
   artifacts:
     paths:
-      - node_modules/*
+      - $APP_DIR/node_modules/*
     expire_in: 1 week
 
 build:
