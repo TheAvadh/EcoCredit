@@ -27,7 +27,7 @@ const ScheduledPickups = () => {
         setPickups(data);
       })
       .catch((error) =>
-        console.error("Fetching pickup status data failed:", error)
+        console.error("Fetching scheduled pickups data failed:", error)
       );
   }, []);
 
