@@ -12,7 +12,8 @@ public class PickupAdminResponse {
     private Long id;
     private String date;
     private String time;
-    private Integer userId;
+    private String userFirstName;
+    private String userLastName;
     private String status;
     private List<WasteAdminResponse> wastes;
 }

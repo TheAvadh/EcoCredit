@@ -54,7 +54,8 @@ public class PickupAdminServiceImpl implements PickupAdminService {
             if (firstDbPickupOptional.isPresent()) {
                 var firstDbPickup = firstDbPickupOptional.get();
                 pickup.setId(firstDbPickup.getId());
-                pickup.setUserId(firstDbPickup.getUserId());
+                pickup.setUserFirstName(firstDbPickup.getUserFirstName());
+                pickup.setUserLastName(firstDbPickup.getUserLastName());
                 pickup.setDate(firstDbPickup.getDateTime().toLocalDate().toString());
                 pickup.setTime(firstDbPickup.getDateTime().toLocalTime().toString());
                 pickup.setStatus(firstDbPickup.getStatus());

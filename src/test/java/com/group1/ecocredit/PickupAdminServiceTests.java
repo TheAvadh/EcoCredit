@@ -43,6 +43,8 @@ public class PickupAdminServiceTests {
         dbPickupScheduledFirst.setWasteId(1L);
         dbPickupScheduledFirst.setWeight(1F);
         dbPickupScheduledFirst.setDateTime(LocalDateTime.now());
+        dbPickupScheduledFirst.setUserFirstName("Jane");
+        dbPickupScheduledFirst.setUserLastName("Doe");
 
         dbPickupsScheduled.add(dbPickupScheduledFirst);
 
@@ -53,6 +55,8 @@ public class PickupAdminServiceTests {
         dbPickupScheduledSecond.setWasteId(2L);
         dbPickupScheduledSecond.setWeight(1F);
         dbPickupScheduledSecond.setDateTime(LocalDateTime.now());
+        dbPickupScheduledSecond.setUserFirstName("Jane");
+        dbPickupScheduledSecond.setUserLastName("Doe");
 
         dbPickupsScheduled.add(dbPickupScheduledSecond);
 
@@ -66,6 +70,8 @@ public class PickupAdminServiceTests {
         dbPickupCompletedFirst.setWasteId(1L);
         dbPickupCompletedFirst.setWeight(1F);
         dbPickupCompletedFirst.setDateTime(LocalDateTime.now());
+        dbPickupCompletedFirst.setUserFirstName("Jane");
+        dbPickupCompletedFirst.setUserLastName("Doe");
 
         dbPickupsCompleted.add(dbPickupCompletedFirst);
 
@@ -76,6 +82,8 @@ public class PickupAdminServiceTests {
         dbPickupCompletedSecond.setWasteId(2L);
         dbPickupCompletedSecond.setWeight(1F);
         dbPickupCompletedSecond.setDateTime(LocalDateTime.now());
+        dbPickupCompletedSecond.setUserFirstName("Jane");
+        dbPickupCompletedSecond.setUserLastName("Doe");
 
         dbPickupsCompleted.add(dbPickupCompletedSecond);
     }
@@ -98,8 +106,10 @@ public class PickupAdminServiceTests {
         assertEquals("pickup should have same time as db pickup",
                 dbPickupScheduledFirst.getDateTime().toLocalTime().toString(),
                 firstPickup.getTime());
-        assertEquals("pickups should have same user id as db pickup",
-                dbPickupScheduledFirst.getUserId(), firstPickup.getUserId());
+        assertEquals("pickups should have same user first name as db pickup",
+                dbPickupScheduledFirst.getUserFirstName(), firstPickup.getUserFirstName());
+        assertEquals("pickups should have same user last name as db pickup",
+                dbPickupScheduledFirst.getUserLastName(), firstPickup.getUserLastName());
         assertEquals("pickups should have same status as db pickup",
                 dbPickupScheduledFirst.getStatus(), firstPickup.getStatus());
 
@@ -144,8 +154,10 @@ public class PickupAdminServiceTests {
         assertEquals("pickup should have same time as db pickup",
                 dbPickupCompletedFirst.getDateTime().toLocalTime().toString(),
                 firstPickup.getTime());
-        assertEquals("pickups should have same user id as db pickup",
-                dbPickupCompletedFirst.getUserId(), firstPickup.getUserId());
+        assertEquals("pickups should have same user first name as db pickup",
+                dbPickupCompletedFirst.getUserFirstName(), firstPickup.getUserFirstName());
+        assertEquals("pickups should have same user last name as db pickup",
+                dbPickupCompletedFirst.getUserLastName(), firstPickup.getUserLastName());
         assertEquals("pickups should have same status as db pickup",
                 dbPickupCompletedFirst.getStatus(), firstPickup.getStatus());
 
