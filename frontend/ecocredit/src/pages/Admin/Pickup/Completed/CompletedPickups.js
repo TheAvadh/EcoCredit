@@ -4,15 +4,15 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
 import Cookies from "js-cookie";
-import "../Styling/Pickups.css"
+import "../Styling/Pickups.css";
 import WeightUpdateForm from "../../Waste/WeightUpdateForm";
 
-const ScheduledPickups = () => {
+const CompletedPickups = () => {
     const [pickups, setPickups] = useState([]);
 
     useEffect(() => {
       fetch(
-        `${process.env.REACT_APP_BASE_URL}/admin/scheduled-pickups`,
+        `${process.env.REACT_APP_BASE_URL}/admin/completed-pickups`,
         {
           method: "GET",
           mode: "cors",
@@ -28,7 +28,7 @@ const ScheduledPickups = () => {
           console.log(data);
         })
         .catch((error) =>
-          console.error("Fetching scheduled pickups data failed:", error)
+          console.error("Fetching completed pickups data failed:", error)
         );
       }, []);
 
@@ -39,7 +39,7 @@ return (
         <Col lg={8} className="mt-5">
           <div className="shadow-lg rounded-4 bg-ec-grey p-4 mb-5">
             <h1 className="text-center text-ec-dark-green p-2">
-              Scheduled Pickups
+              Completed Pickups
             </h1>
             <div className="pickups-table-wrapper">
             <Table
@@ -93,4 +93,4 @@ return (
 };
 
 
-export default ScheduledPickups;
+export default CompletedPickups;

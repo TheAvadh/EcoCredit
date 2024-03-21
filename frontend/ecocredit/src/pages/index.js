@@ -6,4 +6,5 @@ export { default as CustomerDashboard } from "./CustomerDashboard/CustomerDashbo
 export { default as RecyclerDashboard } from "./RecyclerDashboard/RecyclerDashboard";
 export { default as ProfilePage } from "./ProfilePage/ProfilePage";
 export { default as AdminDashboard } from "./Admin/Dashboard/AdminDashboard";
-export { default as ScheduledPickups } from "./Admin/Pickup/ScheduledPickups";
+export { default as ScheduledPickups } from "./Admin/Pickup/Scheduled/ScheduledPickups";
+export { default as CompletedPickups } from "./Admin/Pickup/Completed/CompletedPickups";
