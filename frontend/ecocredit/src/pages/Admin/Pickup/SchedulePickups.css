@@ -1,11 +1,18 @@
+.pickups-table-wrapper {
+    max-height: calc(100vh - 550px);
+    overflow-y: auto;
+    display:inline-block;
+    width: 100%;
+  }
+
 .col-widths-weight {
-    width: 20%;
+    width: 15%;
 }
 
 .col-widths-category {
     width: 30%;
 }
 
-.col-widths-button {
-    width: 10%;
+.col-widths-id {
+    width: 15%;
 }
