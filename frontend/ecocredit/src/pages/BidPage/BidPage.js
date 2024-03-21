@@ -1,12 +1,8 @@
 import React from "react";
-import Container from "react-bootstrap/Container";
+import CenterContainer from "../../components/CenterContainer";
 
 const BidPage = () => {
-  return (
-    <Container fluid className="background-image">
-      <h1>Bid Page</h1>
-    </Container>
-  );
+  return <CenterContainer title="Bid Page"></CenterContainer>;
 };
 
 export default BidPage;

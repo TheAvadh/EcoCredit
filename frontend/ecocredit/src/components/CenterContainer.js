@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "../pages/CustomerDashboard/CustomerDashboard";
 
-const PickupScheduleContainer = ({ children, title }) => {
+const CenterContainer = ({ children, title }) => {
   return (
     <Container
       fluid
@@ -22,4 +22,4 @@ const PickupScheduleContainer = ({ children, title }) => {
   );
 };
 
-export default PickupScheduleContainer;
+export default CenterContainer;
