@@ -2,6 +2,7 @@ package com.group1.ecocredit.repositories;
 
 import com.group1.ecocredit.models.Pickup;
 import com.group1.ecocredit.models.admin.PickupQueryResult;
+import com.group1.ecocredit.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,8 @@ public interface PickupRepository extends JpaRepository<Pickup, Long> {
     @Query("SELECT p FROM Pickup p " +
             "WHERE NOT EXISTS " +
             "(SELECT ce FROM ConfirmationEmail ce WHERE ce.pickup.id = p.id AND ce.emailSent = true) " +
-            "AND DATE(p.dateTime) = CURRENT_DATE()")
+            "AND DATE(p.dateTime) = CURRENT_DATE() " +
+            "AND p.status.value = 'SCHEDULED'")
     List<Pickup> findAllPickupsWithEmailsNotSent();
 
     @Query("""
