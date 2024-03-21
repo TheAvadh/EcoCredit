@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import biodegradableURL from "../../assets/images/biodegradable.jpg";
 import electronicsURL from "../../assets/images/electronics.jpg";
@@ -10,7 +11,6 @@ import glassURL from "../../assets/images/glass.jpg";
 import mixedURL from "../../assets/images/mixed.jpg";
 import paperURL from "../../assets/images/paper.jpg";
 import plasticsURL from "../../assets/images/plastics.jpg";
-import Button from "react-bootstrap/esm/Button";
 
 const ActiveBids = () => {
   const navigate = useNavigate();
