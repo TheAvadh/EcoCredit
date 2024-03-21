@@ -58,7 +58,8 @@ public class BidServiceImpl implements BidService {
                 Waste waste = wasteRepository.findById(bidCreateRequest.getWasteId()).get();
 //                Base Price = category base price multiply by weight of the waste.
                 Optional<CategoryPrice> categoryPrice = categoryPriceRepository.findByCategoryId(waste.getCategory().getId());
-                Double basePrice = categoryPrice.get().getValue() * waste.getWeight();
+                Float basePriceF = (float)categoryPrice.get().getValue() * waste.getWeight();
+                Double basePrice = (double)Math.round(basePriceF);
 
                 Bid bid = new Bid();
                 bid.setBase_price(basePrice);

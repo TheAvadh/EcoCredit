@@ -17,9 +17,9 @@ public class CategoryPrice {
     private Long Id;
 
     @Column(name = "value")
-    private Double value;
+    private Float value;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="category_id")
     private Category category;
 
