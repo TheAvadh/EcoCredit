@@ -12,6 +12,11 @@ import {
   AdminDashboard,
 } from "./pages";
 
+import CheckoutComponent from "./pages/Payment/Payment";
+import AdminDashboard from "./pages/Admin/AdminDashboard/AdminDashboard";
+import PickupSchedule from "./pages/PickupSchedule/PickupSchedule";
+import SuccessPage from "./pages/success/success";
+
 function App() {
   return (
     <BrowserRouter>
@@ -19,11 +24,14 @@ function App() {
         <Route path="/login-signup" element={<LoginSignup />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/pickup-schedule" element={<PickupSchedule />} />
         <Route path="/role" element={<RoleSelection />} />
         <Route path="/customer/*" element={<CustomerDashboard />} />
         <Route path="/recycler/*" element={<RecyclerDashboard />} />
         <Route path="/profile-page" element={<ProfilePage />} />
         <Route path="/admin/*" element={<AdminDashboard />} />
+        <Route path="/success" element={<SuccessPage />} />
+
       </Routes>
     </BrowserRouter>
   );

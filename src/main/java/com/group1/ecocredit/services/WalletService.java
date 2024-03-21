@@ -1,5 +1,6 @@
 package com.group1.ecocredit.services;
 
+import com.group1.ecocredit.models.Pickup;
 import com.group1.ecocredit.models.Transaction;
 import com.group1.ecocredit.models.Wallet;
 
@@ -12,7 +13,7 @@ public interface WalletService {
 
     void addCredit(Long userId, BigDecimal creditAmount);
 
-    void updateCredit(Long userId, BigDecimal deductionAmount);
+    void updateCredit(Long userId, BigDecimal deductionAmount, Pickup pickup);
 
     List<Transaction> getTransactionsByUserId(Long userId);
 }

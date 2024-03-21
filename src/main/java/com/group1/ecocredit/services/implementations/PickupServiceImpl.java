@@ -6,18 +6,25 @@ import com.group1.ecocredit.dto.PickupStatusResponse;
 import com.group1.ecocredit.models.PickupStatus;
 import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.repositories.*;
+import com.group1.ecocredit.services.PickupPaymentActionService;
 import com.group1.ecocredit.services.PickupService;
+import com.group1.ecocredit.services.PriceMapperService;
+import com.stripe.exception.StripeException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@CrossOrigin
 public class PickupServiceImpl implements PickupService {
 
     @Autowired
@@ -32,12 +39,21 @@ public class PickupServiceImpl implements PickupService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+
+    @Autowired
+    private PickupPaymentActionService pickupPaymentActionService;
+
+    @Autowired
+    private TransactionRepository transactionRepository;
+
+
+
     @Override
-    public void schedulePickup(PickupRequest pickupRequest, User user) {
+    public Pickup schedulePickup(PickupRequest pickupRequest, User user) {
         Optional<Status> statusOptional =
-                statusRepository.findByValue(PickupStatus.SCHEDULED);
+                statusRepository.findByValue(PickupStatus.AWAITING_PAYMENT);
         if (statusOptional.isEmpty()) {
-            throw new IllegalArgumentException("Status not found: " + PickupStatus.SCHEDULED);
+            throw new IllegalArgumentException("Status not found: " + PickupStatus.AWAITING_PAYMENT);
         }
 
         Pickup pickup = new Pickup();
@@ -61,23 +77,34 @@ public class PickupServiceImpl implements PickupService {
             wasteRepository.save(waste);
         }
         System.out.println("Pickup scheduled");
+
+        return savedPickup;
     }
     @Override
-    public boolean cancelPickup(PickupCancelRequest pickupToCancel) {
+    public boolean cancelPickup(PickupCancelRequest pickupToCancel) throws StripeException {
 
         Optional<Pickup> pickupOptional = pickupRepository.findById(pickupToCancel.getId());
         if(pickupOptional.isEmpty()) return false;
+
 
         Optional<Status> statusCanceledOptional =
                 statusRepository.findByValue(PickupStatus.CANCELED);
         if(statusCanceledOptional.isEmpty()) return false;
 
+
         Pickup pickup = pickupOptional.get();
+
+        if(Objects.equals(pickup.getStatus().getValue(), PickupStatus.COMPLETED)) return false;
+
         Status canceled = statusCanceledOptional.get();
+
+        pickupPaymentActionService.cancelPayment(pickup);
+
         pickup.setStatus(canceled);
         pickupRepository.save(pickup);
         return true;
     }
+
 
     @Override
     public List<PickupStatusResponse> getPickupStatus(Long userId) {
@@ -99,5 +126,36 @@ public class PickupServiceImpl implements PickupService {
         }
 
         return pickupStatusList;
+    }
+
+    @Override
+    public void confirmPickup(Long pickupId) throws StripeException {
+        Optional<Pickup> optionalPickup = pickupRepository.findById(pickupId);
+
+        if(optionalPickup.isEmpty()) return;
+
+        Pickup pickup = optionalPickup.get();
+
+        if(pickupPaymentActionService.isPaymentDone(pickup.getPaymentId())) {
+
+            Status status = statusRepository.findByValue(PickupStatus.SCHEDULED).get();
+            pickup.setStatus(status);
+            pickupRepository.save(pickup);
+        }
+
+    }
+
+    @Override
+    public void addSessionIdToPickup(Long pickupId, String sessionId) {
+
+        Optional<Pickup> pickupOptional = pickupRepository.findById(pickupId);
+
+        if(pickupOptional.isEmpty()) return;
+
+        Pickup pickup = pickupOptional.get();
+
+        pickup.setPaymentId(sessionId);
+
+        pickupRepository.save(pickup);
     }
 }
