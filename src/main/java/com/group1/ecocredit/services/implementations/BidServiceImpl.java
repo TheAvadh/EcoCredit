@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -46,13 +47,11 @@ public class BidServiceImpl implements BidService {
         }
         else{
             if(optionalWaste.isEmpty() == true){
-                System.out.println("No waste with given waste id present");
-                return null;
+                throw new NoSuchElementException("No waste with given waste id present");
             }
 
             if(LocalDateTime.now().isAfter(bidTime)){
-                System.out.println("You can't create bid in past");
-                return null;
+                throw new IllegalArgumentException("You can't create bid in past");
             }
 
             else{
@@ -123,9 +122,7 @@ public class BidServiceImpl implements BidService {
 
     @Override
     public List<Bid> getAllActiveBids() {
-
         List<Bid> bidList = bidRepository.findByIsActive(true);
-
         return bidList;
     }
 
