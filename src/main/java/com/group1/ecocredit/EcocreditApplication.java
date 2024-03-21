@@ -1,5 +1,6 @@
 package com.group1.ecocredit;
 
+import com.group1.ecocredit.enums.Role;
 import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.repositories.CategoryRepository;
 import com.group1.ecocredit.repositories.StatusRepository;
