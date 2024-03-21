@@ -13,7 +13,6 @@ import {
 } from "./pages";
 
 import CheckoutComponent from "./pages/Payment/Payment";
-import AdminDashboard from "./pages/Admin/AdminDashboard/AdminDashboard";
 import PickupSchedule from "./pages/PickupSchedule/PickupSchedule";
 import SuccessPage from "./pages/success/success";
 
