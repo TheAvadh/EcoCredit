@@ -1,11 +1,14 @@
 package com.group1.ecocredit.services.implementations;
 
+import com.group1.ecocredit.models.Pickup;
 import com.group1.ecocredit.models.Transaction;
 import com.group1.ecocredit.models.TransactionType;
 import com.group1.ecocredit.models.Wallet;
 import com.group1.ecocredit.repositories.TransactionRepository;
 import com.group1.ecocredit.repositories.WalletRepository;
+import com.group1.ecocredit.services.TransactionService;
 import com.group1.ecocredit.services.WalletService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +18,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class WalletServiceImpl implements WalletService {
     @Autowired
     private WalletRepository walletRepository;
+
     @Autowired
-    private TransactionRepository transactionRepository;
+    private TransactionService transactionService;
 
     @Override
     public Optional<Wallet> getWalletByUserId(Long userId) {
@@ -50,7 +55,7 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public void updateCredit(Long userId, BigDecimal deductionAmount) {
+    public void updateCredit(Long userId, BigDecimal deductionAmount, Pickup pickup) {
         try {
             Optional<Wallet> optionalWallet = walletRepository.findByUserId(userId);
             Wallet wallet = optionalWallet.orElseThrow(() ->
@@ -62,13 +67,7 @@ public class WalletServiceImpl implements WalletService {
                 wallet.setCreditAmount(currentCreditAmount.subtract(deductionAmount));
                 walletRepository.save(wallet);
 
-                Transaction transaction = new Transaction();
-                transaction.setUserId(userId);
-                transaction.setAmount(deductionAmount);
-                transaction.setTransactionType(TransactionType.DEBIT);
-                transaction.setTimestamp(LocalDateTime.now());
-
-                transactionRepository.save(transaction);
+                transactionService.createDebitTransaction(userId, deductionAmount, pickup);
             } else {
                 throw new RuntimeException("Insufficient credit for user ID: " + userId);
             }
@@ -79,8 +78,9 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public List<Transaction> getTransactionsByUserId(Long userId) {
-        try {
-            return transactionRepository.findByUserId(userId);
+
+        try{
+            return transactionService.getTransactionsByUserId(userId);
         } catch (Exception e) {
             throw new RuntimeException("Error fetching transactions for user ID: " + userId, e);
         }

@@ -1,9 +1,12 @@
 package com.group1.ecocredit;
 
 import com.group1.ecocredit.models.Transaction;
+import com.group1.ecocredit.models.TransactionType;
 import com.group1.ecocredit.models.Wallet;
 import com.group1.ecocredit.repositories.TransactionRepository;
 import com.group1.ecocredit.repositories.WalletRepository;
+import com.group1.ecocredit.services.TransactionService;
+import com.group1.ecocredit.services.implementations.TransactionServiceImpl;
 import com.group1.ecocredit.services.implementations.WalletServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,11 +31,13 @@ public class WalletServiceTests {
     @Mock
     private TransactionRepository transactionRepository;
 
-    @InjectMocks
     private WalletServiceImpl walletService;
+
+    private TransactionService transactionService;
 
     private Wallet wallet;
     private Long userId;
+    private Transaction transactionMock;
 
     @BeforeEach
     void setUp() {
@@ -40,6 +45,17 @@ public class WalletServiceTests {
         userId = 1L;
         wallet.setUserId(userId);
         wallet.setCreditAmount(BigDecimal.valueOf(1000));
+
+        transactionMock = new Transaction();
+        transactionMock.setUserId(userId);
+        transactionMock.setPickup(null);
+        transactionMock.setTransactionType(TransactionType.DEBIT);
+        transactionMock.setAmount(BigDecimal.valueOf(500));
+
+        walletRepository = mock(WalletRepository.class);
+        transactionService = mock(TransactionService.class);
+
+        walletService = new WalletServiceImpl(walletRepository, transactionService);
     }
 
     @Test
@@ -98,14 +114,13 @@ public class WalletServiceTests {
         BigDecimal deductionAmount = BigDecimal.valueOf(500);
 
         when(walletRepository.findByUserId(userId)).thenReturn(Optional.of(wallet));
-        when(transactionRepository.save(any(Transaction.class))).thenReturn(null);
+        when(transactionService.createDebitTransaction(userId, deductionAmount, null)).thenReturn(transactionMock);
 
-        assertDoesNotThrow(() -> walletService.updateCredit(userId, deductionAmount));
+        walletService.updateCredit(userId, deductionAmount, null);
 
         assertEquals(BigDecimal.valueOf(500), wallet.getCreditAmount());
         verify(walletRepository, times(1)).findByUserId(userId);
         verify(walletRepository, times(1)).save(any(Wallet.class));
-        verify(transactionRepository, times(1)).save(any(Transaction.class));
     }
 
     @Test
@@ -114,7 +129,7 @@ public class WalletServiceTests {
 
         when(walletRepository.findByUserId(userId)).thenReturn(Optional.of(wallet));
 
-        assertThrows(RuntimeException.class, () -> walletService.updateCredit(userId, deductionAmount));
+        assertThrows(RuntimeException.class, () -> walletService.updateCredit(userId, deductionAmount, null));
 
         assertEquals(BigDecimal.valueOf(1000), wallet.getCreditAmount());
         verify(walletRepository, times(1)).findByUserId(userId);
@@ -124,18 +139,18 @@ public class WalletServiceTests {
 
     @Test
     void testGetTransactionsByUserId() {
-        when(transactionRepository.findByUserId(userId)).thenReturn(List.of());
+        when(transactionService.getTransactionsByUserId(userId)).thenReturn(List.of());
 
         List<Transaction> transactions = walletService.getTransactionsByUserId(userId);
 
         assertNotNull(transactions);
         assertEquals(0, transactions.size());
-        verify(transactionRepository, times(1)).findByUserId(userId);
     }
 
     @Test
     void testGetTransactionsByUserIdException() {
-        when(transactionRepository.findByUserId(userId)).thenThrow(new RuntimeException("Database connection error"));
+
+        when(transactionService.getTransactionsByUserId(userId)).thenThrow(new RuntimeException("Database connection error"));
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> walletService.getTransactionsByUserId(userId));
 
@@ -145,6 +160,6 @@ public class WalletServiceTests {
         assertEquals(expectedErrorMessage, exception.getMessage());
         assertEquals(expectedCauseMessage, exception.getCause().getMessage());
 
-        verify(transactionRepository, times(1)).findByUserId(userId);
+        verify(transactionService, times(1)).getTransactionsByUserId(userId);
     }
 }

@@ -103,6 +103,13 @@
 			<version>2.3.2</version>
 		</dependency>
 
+		<!-- stripe -->
+		<dependency>
+			<groupId>com.stripe</groupId>
+			<artifactId>stripe-java</artifactId>
+			<version>24.19.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

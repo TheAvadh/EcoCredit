@@ -1,0 +1,25 @@
+.completed-pickups-table-wrapper {
+    max-height: calc(100vh - 550px);
+    overflow-y: auto;
+    display:inline-block;
+    width: 100%;
+  }
+
+.scheduled-pickups-table-wrapper {
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
+    display:inline-block;
+    width: 100%;
+}
+
+.col-widths-weight {
+    width: 15%;
+}
+
+.col-widths-category {
+    width: 30%;
+}
+
+.col-widths-id {
+    width: 15%;
+}

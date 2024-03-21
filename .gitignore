@@ -35,8 +35,9 @@ build/
 ### DS Store MacOS ###
 **/.DS_Store
 
+
 ### Custom Launcher ###
 ecocredit_launcher*
 
-### env files ###
+### env ###
 *.env

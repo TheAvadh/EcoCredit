@@ -24,6 +24,7 @@ public class UserController {
 
     private final JWTService jwtService;
 
+
     @GetMapping
     public ResponseEntity<String> sayHello(){
         return ResponseEntity.ok("Hi user");

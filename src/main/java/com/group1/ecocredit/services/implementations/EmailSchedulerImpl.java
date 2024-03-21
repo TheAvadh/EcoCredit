@@ -30,7 +30,7 @@ public class EmailSchedulerImpl implements EmailScheduler, Job {
     @Autowired
     private ConfirmationEmailRepository confirmationEmailRepository;
 
-    @Value("${MAX_RETRIES}")
+    @Value("${max.retries}")
     private int maxRetries;
 
     public EmailSchedulerImpl(PickupRepository pickupRepository, EmailService emailService) {

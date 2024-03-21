@@ -7,7 +7,6 @@ import com.group1.ecocredit.services.JWTService;
 import com.group1.ecocredit.services.WalletService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -69,7 +68,7 @@ public class WalletController {
     @PutMapping("/updateCredit")
     public ResponseEntity<?> updateCreditAmount(@RequestBody WalletRequest walletRequest) {
         try {
-            walletService.updateCredit(walletRequest.getUserId(), walletRequest.getDeductionAmount());
+            walletService.updateCredit(walletRequest.getUserId(), walletRequest.getDeductionAmount(), walletRequest.getPickup());
             return ResponseEntity.ok("Payment successful for user ID: " + walletRequest.getUserId());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -85,7 +84,7 @@ public class WalletController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         Long userId = getUserId(request).longValue();
-        
+
         List<Transaction> transactions = walletService.getTransactionsByUserId(userId);
 
         if (!transactions.isEmpty()) {

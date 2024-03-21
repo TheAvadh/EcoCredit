@@ -24,11 +24,19 @@ public class PickupAdminServiceImpl implements PickupAdminService {
     @Override
     public List<PickupAdminResponse> getScheduledPickups() throws SQLException {
         var dbPickups = pickupRepository.findScheduledPickups();
+        return transform(dbPickups);
+    }
 
+    @Override
+    public List<PickupAdminResponse> getCompletedPickups() throws SQLException {
+        var dbPickups = pickupRepository.findCompletedPickups();
+        return transform(dbPickups);
+    }
+
+    private List<PickupAdminResponse> transform(List<PickupQueryResult> dbPickups) {
         if (dbPickups == null || dbPickups.isEmpty())
             return new ArrayList<>();
 
-        // get distinct pickup ids
         List<Long> distinctIds = dbPickups.stream()
                 .map(PickupQueryResult::getId)
                 .distinct()
@@ -43,7 +51,6 @@ public class PickupAdminServiceImpl implements PickupAdminService {
             var firstDbPickupOptional =
                     dbPickupsWithSameId.stream().findFirst();
 
-            // get pickup details
             if (firstDbPickupOptional.isPresent()) {
                 var firstDbPickup = firstDbPickupOptional.get();
                 pickup.setId(firstDbPickup.getId());
