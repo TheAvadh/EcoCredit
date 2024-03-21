@@ -5,7 +5,6 @@ import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
 import Cookies from "js-cookie";
 import "../Styling/Pickups.css"
-import WeightUpdateForm from "../../Waste/WeightUpdateForm";
 
 const ScheduledPickups = () => {
     const [pickups, setPickups] = useState([]);
@@ -41,7 +40,7 @@ return (
             <h1 className="text-center text-ec-dark-green p-2">
               Scheduled Pickups
             </h1>
-            <div className="pickups-table-wrapper">
+            <div className="scheduled-pickups-table-wrapper">
             <Table
               bordered
               hover
@@ -87,7 +86,6 @@ return (
           </div>
         </Col>
       </Row>
-      <WeightUpdateForm></WeightUpdateForm>
       </Container>
     );
 };

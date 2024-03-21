@@ -41,7 +41,7 @@ return (
             <h1 className="text-center text-ec-dark-green p-2">
               Completed Pickups
             </h1>
-            <div className="pickups-table-wrapper">
+            <div className="completed-pickups-table-wrapper">
             <Table
               bordered
               hover

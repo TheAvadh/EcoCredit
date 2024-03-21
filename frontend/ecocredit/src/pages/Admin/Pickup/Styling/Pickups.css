@@ -1,9 +1,16 @@
-.pickups-table-wrapper {
+.completed-pickups-table-wrapper {
     max-height: calc(100vh - 550px);
     overflow-y: auto;
     display:inline-block;
     width: 100%;
   }
+
+.scheduled-pickups-table-wrapper {
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
+    display:inline-block;
+    width: 100%;
+}
 
 .col-widths-weight {
     width: 15%;
