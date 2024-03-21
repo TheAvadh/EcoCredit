@@ -7,6 +7,7 @@ import ProfileForm from "../../components/ProfileForm";
 import Toast from "../../components/Toast/Toast";
 import profilePicURL from "../../assets/images/profilePic.jpg";
 import "./ProfilePage.css";
+import Cookies from "js-cookie";
 
 const ProfilePage = () => {
   const [profileData, setProfileData] = useState({
@@ -30,14 +31,12 @@ const ProfilePage = () => {
 
   useEffect(() => {
     fetch(
-      `${process.env.REACT_APP_BASE_URL}/users/${localStorage.getItem(
-        "userId"
-      )}`,
+      `${process.env.REACT_APP_BASE_URL}/users/getprofile`,
       {
         method: "GET",
         mode: "cors",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${Cookies.get("token")}`,
           Accept: "application/json",
         },
       }

@@ -43,9 +43,15 @@ const LoginForm = () => {
 
         const data = await response.json();
         console.log("Login Success:", data);
+        
         Cookies.set("token", data.token, { secure: true });
+
         localStorage.setItem("userId", data.userId);
-        navigate("/role");
+        if (data.role === 'ADMIN') {
+          navigate("/admin/scheduled-pickups");
+        } else {
+          navigate("/role");
+        }
       } catch (error) {
         console.error("Login Error:", error);
         setShowToast(true);

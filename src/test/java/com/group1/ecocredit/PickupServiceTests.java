@@ -5,6 +5,7 @@ import com.group1.ecocredit.dto.PickupRequest;
 import com.group1.ecocredit.dto.PickupWaste;
 import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.repositories.*;
+import com.group1.ecocredit.repositories.WasteRepository;
 import com.group1.ecocredit.services.PickupService;
 import com.group1.ecocredit.services.implementations.PickupServiceImpl;
 import org.junit.jupiter.api.BeforeEach;

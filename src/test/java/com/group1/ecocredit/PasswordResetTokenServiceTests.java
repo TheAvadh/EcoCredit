@@ -8,20 +8,15 @@ import com.group1.ecocredit.services.PasswordService;
 import com.group1.ecocredit.services.TokenService;
 import com.group1.ecocredit.services.implementations.PasswordServiceImpl;
 import com.group1.ecocredit.utils.Utils;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import com.group1.ecocredit.repositories.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 import static org.mockito.Mockito.doNothing;

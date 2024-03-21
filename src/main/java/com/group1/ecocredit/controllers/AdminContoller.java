@@ -18,5 +18,3 @@ public class AdminContoller {
         return ResponseEntity.ok("Hi admin");
     }
 }
-
-

@@ -1,55 +1,54 @@
-package com.group1.ecocredit.models;
+package com.group1.ecocredit.dto;
 
-
-import com.group1.ecocredit.enums.Role;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import org.springframework.beans.factory.annotation.Value;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.group1.ecocredit.models.Address;
+import com.group1.ecocredit.models.Role;
+import jakarta.persistence.Embedded;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name="user")
-
-public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Component
+@Setter
+public class JwtResponseUserModel implements UserDetails {
     private Integer id;
 
+    @Getter
     private String firstName;
-
+    @Getter
     private String lastName;
 
-    @Column(unique = true)
-    @NotNull
+    @Getter
     private String email;
 
-    @Value("${password.minimum.length=8}")
-    private String password;
-
+    @Getter
     private String phoneNumber;
+    @Getter
     @Embedded
     private Address address;
 
     private Role role;
 
-    private boolean isEnabled = false;
+    private boolean isEnabled;
+
+    private String sub;
+
+    private Integer iat;
+    private Integer exp;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return "";
     }
 
     @Override
@@ -80,4 +79,3 @@ public class User implements UserDetails {
     public Integer getUserID() { return this.id; }
 
 }
-

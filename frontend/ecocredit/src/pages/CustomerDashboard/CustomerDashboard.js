@@ -1,12 +1,8 @@
 import React from "react";
-import { NavLink, Routes, Route } from "react-router-dom";
-import Nav from "react-bootstrap/Nav";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import PickupSchedule from "../PickupSchedule/PickupSchedule";
 import PickupStatus from "../PickupStatus/PickupStatus";
 import ProfilePage from "../ProfilePage/ProfilePage";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Dashboard from "../../components/Dashboard";
 import {
   faCalendarCheck,
   faClockRotateLeft,
@@ -14,53 +10,31 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const CustomerDashboard = () => {
-  return (
-    <Row className="m-0" style={{ height: "100vh" }}>
-      <Col md={2} className="p-3">
-        <Nav variant="pills" className="flex-column fs-5 fw-medium">
-          <Nav.Item className="mb-2">
-            <Nav.Link
-              as={NavLink}
-              to="/customer/pickup-schedule"
-              activeClassName="active"
-            >
-              <FontAwesomeIcon
-                className="fa-icon pe-2"
-                icon={faCalendarCheck}
-              />
-              Pickup Schedule
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item className="mb-2">
-            <Nav.Link
-              as={NavLink}
-              to="/customer/pickup-status"
-              activeClassName="active"
-            >
-              <FontAwesomeIcon
-                className="fa-icon pe-2"
-                icon={faClockRotateLeft}
-              />
-              Pickup Status
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link as={NavLink} to="/profile-page" activeClassName="active">
-              <FontAwesomeIcon className="fa-icon pe-2" icon={faIdCard} />
-              Profile
-            </Nav.Link>
-          </Nav.Item>
-        </Nav>
-      </Col>
-      <Col md={10} className="px-0">
-        <Routes>
-          <Route path="/pickup-schedule" element={<PickupSchedule />} />
-          <Route path="/pickup-status" element={<PickupStatus />} />
-          <Route path="/profile-page" element={<ProfilePage />} />
-        </Routes>
-      </Col>
-    </Row>
-  );
+  const tabs = [
+    {
+      label: "Pickup Schedule",
+      to: "/customer/pickup-schedule",
+      path: "/pickup-schedule",
+      icon: faCalendarCheck,
+      component: <PickupSchedule />,
+    },
+    {
+      label: "Pickup Status",
+      to: "/customer/pickup-status",
+      path: "/pickup-status",
+      icon: faClockRotateLeft,
+      component: <PickupStatus />,
+    },
+    {
+      label: "Profile",
+      to: "/profile-page",
+      path: "/profile-page",
+      icon: faIdCard,
+      component: <ProfilePage />,
+    },
+  ];
+
+  return <Dashboard tabs={tabs} />;
 };
 
 export default CustomerDashboard;
