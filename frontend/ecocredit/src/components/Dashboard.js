@@ -5,14 +5,17 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Dashboard = ({ tabs }) => {
+const Dashboard = ({ tabs, children }) => {
   return (
     <Row className="m-0" style={{ height: "100vh" }}>
-      <Col md={2} className="p-3">
-        <Nav variant="pills" className="flex-column fm-3 fw-medium">
+      <Col md={2} className="bg-ec-dark-green">
+        <Nav
+          variant="pills"
+          className="sticky-top flex-column fs-5 fw-medium pt-3"
+        >
           {tabs.map((tab, index) => (
             <Nav.Item key={index} className="mb-2">
-              <Nav.Link as={NavLink} to={tab.to} className="active">
+              <Nav.Link as={NavLink} to={tab.to} activeclassname="active">
                 <FontAwesomeIcon icon={tab.icon} className="fa-icon pe-2" />
                 {tab.label}
               </Nav.Link>
@@ -25,6 +28,7 @@ const Dashboard = ({ tabs }) => {
           {tabs.map((tab, index) => (
             <Route key={index} path={tab.path} element={tab.component} />
           ))}
+          {children}
         </Routes>
       </Col>
     </Row>

@@ -10,17 +10,14 @@ const PickupStatus = () => {
   const [pickups, setPickups] = useState([]);
 
   useEffect(() => {
-    fetch(
-      `${process.env.REACT_APP_BASE_URL}/pickups/getpickups`,
-      {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          Authorization: `Bearer ${Cookies.get("token")}`,
-          Accept: "application/json",
-        },
-      }
-    )
+    fetch(`${process.env.REACT_APP_BASE_URL}/pickups/getpickups`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+        Accept: "application/json",
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         const sortedPickups = data.sort((a, b) => b.pickupId - a.pickupId);
