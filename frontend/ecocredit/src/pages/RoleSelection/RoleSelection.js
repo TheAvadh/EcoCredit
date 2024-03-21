@@ -44,7 +44,7 @@ function RoleSelection() {
               <Button
                 variant="ec-medium-green"
                 className="role-button"
-                onClick={() => redirectTo("/recycler")}
+                onClick={() => redirectTo("/recycler/active-bids")}
               >
                 <FontAwesomeIcon
                   className="fa-icon"
