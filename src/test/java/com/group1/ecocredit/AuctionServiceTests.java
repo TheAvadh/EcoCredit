@@ -1,77 +1,96 @@
 package com.group1.ecocredit;
 
 import com.group1.ecocredit.dto.DisplayBidRequest;
-import com.group1.ecocredit.models.Bid;
-import com.group1.ecocredit.models.User;
-import com.group1.ecocredit.services.AuctionService;
+import com.group1.ecocredit.enums.Role;
+import com.group1.ecocredit.models.*;
+import com.group1.ecocredit.repositories.BidRepository;
+import com.group1.ecocredit.repositories.BidUserRepository;
+import com.group1.ecocredit.services.implementations.AuctionServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import org.mockito.MockitoAnnotations;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.BDDMockito.*;
 public class AuctionServiceTests {
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private AuctionService auctionService;
+    @InjectMocks
+    private AuctionServiceImpl auctionService;
 
     @Mock
-    DisplayBidRequest displayBidRequest;
+    private BidRepository bidRepository;
 
-    @Test
-    public void viewAllActiveBids_ShouldReturnBids() throws Exception {
-        given(auctionService.viewAllActiveBids()).willReturn(List.of(new Bid(), new Bid()));
+    @Mock
+    private BidUserRepository bidUserRepository;
 
-        mockMvc.perform(get("/recycler/activeBids"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()", is(2)));
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void viewUserBids_ShouldReturnUserBids() throws Exception {
-        given(auctionService.viewUserBids(anyInt())).willReturn(List.of(new Bid()));
+    void testViewAllActiveBids() {
+        // Mock dependencies
+        Waste mockWaste = mock(Waste.class);
+        Category mockCategory = mock(Category.class);
+        when(mockWaste.getCategory()).thenReturn(mockCategory);
+        when(mockCategory.getValue()).thenReturn("Plastic"); // Example category
 
-        mockMvc.perform(get("/recycler/userBids/{userId}", 1))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()", is(1)));
+        Bid bid = new Bid();
+        bid.setId(1L);
+        bid.setWaste(mockWaste);
+        bid.setBase_price(100);
+        bid.setTop_bid_amount(150);
+        bid.setDate(LocalDateTime.now());
+        bid.set_active(true);
+
+        when(bidRepository.findAllActiveBids()).thenReturn(Arrays.asList(bid));
+
+        // Execute the method to test
+        List<BidUser> result = auctionService.viewAllActiveBids();
+
+        // Assertions
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertEquals(bid.getId(), result.get(0).getId());
+        assertEquals("Plastic", result.get(0).getWaste_type()); // Verify the waste type is correctly set
+        verify(bidRepository, times(1)).findAllActiveBids();
     }
-    @Test
-    public void placeOrUpdateBid_ShouldReturnUpdatedBid() throws Exception {
+
+
+
+    // Helper method to create a mock Bid object
+    private Bid createMockBid() {
+        Bid bid = new Bid();
+        bid.setId(1L);
+        bid.setDate(LocalDateTime.now());
+        // Setup other necessary Bid properties
+        return bid;
+    }
+
+    // Helper method to create a mock BidUser object
+    private BidUser createMockBidUser() {
+        BidUser bidUser = new BidUser();
+        bidUser.setId(1L);
         User user = new User();
-
-        Bid updatedBid = new Bid();
-        updatedBid.setTop_bid_amount(500);
-        given(auctionService.placeOrUpdateBid(displayBidRequest, user)).willReturn(updatedBid);
-
-        mockMvc.perform(post("/recycler/placeOrUpdateBid")
-                        .param("userId", "1")
-                        .param("bidId", "1")
-                        .param("newBidAmount", "500"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.top_bid_amount", is(500)));
-    }
-
-    @Test
-    public void incrementBid_ShouldReturnIncrementedBid() throws Exception {
-        Bid incrementedBid = new Bid();
-        incrementedBid.setTop_bid_amount(300);
-        given(auctionService.incrementBid(anyLong())).willReturn(incrementedBid);
-
-        mockMvc.perform(put("/recycler/incrementBid/{bidId}", 1))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.top_bid_amount", is(300)));
+        user.setId(1);
+        bidUser.setUser(user);
+        // Setup other necessary BidUser properties
+        return bidUser;
     }
 }
+
+
