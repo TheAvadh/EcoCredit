@@ -11,7 +11,7 @@ const Dashboard = ({ tabs, children }) => {
       <Col md={2} className="bg-ec-dark-green">
         <Nav
           variant="pills"
-          className="sticky-top flex-column fs-5 fw-medium pt-3"
+          className="sticky-top flex-column fs-6 fw-medium pt-3"
         >
           {tabs.map((tab, index) => (
             <Nav.Item key={index} className="mb-2">
