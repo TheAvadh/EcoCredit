@@ -5,7 +5,7 @@ import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
 import Cookies from "js-cookie";
 import "./SchedulePickups.css";
-import WeightUpdateForm from "../Waste/WeightUpdateForm";
+import WeightUpdateForm from "../../Waste/WeightUpdateForm";
 
 const ScheduledPickups = () => {
     const [pickups, setPickups] = useState([]);
