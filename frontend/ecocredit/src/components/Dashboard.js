@@ -15,7 +15,7 @@ const Dashboard = ({ tabs, children }) => {
         >
           {tabs.map((tab, index) => (
             <Nav.Item key={index} className="mb-2">
-              <Nav.Link as={NavLink} to={tab.to} className="active">
+              <Nav.Link as={NavLink} to={tab.to} activeclassname="active">
                 <FontAwesomeIcon icon={tab.icon} className="fa-icon pe-2" />
                 {tab.label}
               </Nav.Link>
