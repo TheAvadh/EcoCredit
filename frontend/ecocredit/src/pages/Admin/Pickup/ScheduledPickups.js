@@ -15,6 +15,7 @@ const ScheduledPickups = () => {
         `${process.env.REACT_APP_BASE_URL}/admin/scheduled-pickups`,
         {
           method: "GET",
+          mode: "cors",
           headers: {
             Authorization: `Bearer ${Cookies.get("token")}`,
             Accept: "application/json",

@@ -7,4 +7,3 @@ export { default as RecyclerDashboard } from "./RecyclerDashboard/RecyclerDashbo
 export { default as ProfilePage } from "./ProfilePage/ProfilePage";
 export { default as AdminDashboard } from "./Admin/Dashboard/AdminDashboard";
 export { default as ScheduledPickups } from "./Admin/Pickup/ScheduledPickups";
-export { default as WeightUpdateForm } from "./Admin/Waste/WeightUpdateForm";
