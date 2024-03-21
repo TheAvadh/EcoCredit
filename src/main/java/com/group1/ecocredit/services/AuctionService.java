@@ -2,17 +2,19 @@ package com.group1.ecocredit.services;
 
 import com.group1.ecocredit.dto.DisplayBidRequest;
 import com.group1.ecocredit.models.Bid;
+import com.group1.ecocredit.models.BidUser;
 import com.group1.ecocredit.models.User;
 
 import java.util.List;
 
 public interface AuctionService {
 
-    List<Bid> viewAllActiveBids();
+    List<BidUser> viewAllActiveBids();
 
-    List<Bid> viewUserBids(Integer userId);
+    List<BidUser> viewUserBids(Integer userId);
 
-    Bid placeOrUpdateBid(DisplayBidRequest request, User user);
+    BidUser raiseBid (DisplayBidRequest request, User user);
 
-    /*Bid incrementBid(Long bidId);*/
+    BidUser placeBid (Long bidId);
+
 }

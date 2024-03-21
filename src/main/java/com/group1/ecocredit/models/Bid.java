@@ -26,7 +26,7 @@ public class Bid {
     @Column(name="top_bid_amount")
     private Integer top_bid_amount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
