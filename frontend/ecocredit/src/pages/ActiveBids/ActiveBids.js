@@ -3,14 +3,22 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
+import { useNavigate } from "react-router-dom";
 import biodegradableURL from "../../assets/images/biodegradable.jpg";
 import electronicsURL from "../../assets/images/electronics.jpg";
 import glassURL from "../../assets/images/glass.jpg";
 import mixedURL from "../../assets/images/mixed.jpg";
 import paperURL from "../../assets/images/paper.jpg";
 import plasticsURL from "../../assets/images/plastics.jpg";
+import Button from "react-bootstrap/esm/Button";
 
 const ActiveBids = () => {
+  const navigate = useNavigate();
+
+  const redirectToBidPage = (bidId) => {
+    navigate(`${bidId}`);
+  };
+
   return (
     <Container fluid className="background-image">
       <Row xs={1} sm={2} lg={3} className="p-4">
@@ -26,11 +34,17 @@ const ActiveBids = () => {
 
                   <dt class="col-sm-5">Current Highest Bid</dt>
                   <dd class="col-sm-7">10 CAD</dd>
+
+                  <dt class="col-sm-5">Starting Bid</dt>
+                  <dd class="col-sm-7">2 CAD</dd>
                 </dl>
                 <div className="text-end">
-                  <a href="#" className="btn btn-ec-dark-green">
+                  <Button
+                    variant="ec-medium-green"
+                    onClick={() => redirectToBidPage("1")}
+                  >
                     Place a Bid
-                  </a>
+                  </Button>
                 </div>
               </Card.Text>
             </Card.Body>
@@ -51,11 +65,17 @@ const ActiveBids = () => {
 
                   <dt class="col-sm-5">Current Highest Bid</dt>
                   <dd class="col-sm-7">10 CAD</dd>
+
+                  <dt class="col-sm-5">Starting Bid</dt>
+                  <dd class="col-sm-7">2 CAD</dd>
                 </dl>
                 <div className="text-end">
-                  <a href="#" className="btn btn-ec-dark-green">
+                  <Button
+                    variant="ec-medium-green"
+                    onClick={() => redirectToBidPage("2")}
+                  >
                     Place a Bid
-                  </a>
+                  </Button>
                 </div>
               </Card.Text>
             </Card.Body>
@@ -76,11 +96,17 @@ const ActiveBids = () => {
 
                   <dt class="col-sm-5">Current Highest Bid</dt>
                   <dd class="col-sm-7">10 CAD</dd>
+
+                  <dt class="col-sm-5">Starting Bid</dt>
+                  <dd class="col-sm-7">2 CAD</dd>
                 </dl>
                 <div className="text-end">
-                  <a href="#" className="btn btn-ec-dark-green">
+                  <Button
+                    variant="ec-medium-green"
+                    onClick={() => redirectToBidPage("3")}
+                  >
                     Place a Bid
-                  </a>
+                  </Button>
                 </div>
               </Card.Text>
             </Card.Body>
@@ -101,11 +127,17 @@ const ActiveBids = () => {
 
                   <dt class="col-sm-5">Current Highest Bid</dt>
                   <dd class="col-sm-7">10 CAD</dd>
+
+                  <dt class="col-sm-5">Starting Bid</dt>
+                  <dd class="col-sm-7">2 CAD</dd>
                 </dl>
                 <div className="text-end">
-                  <a href="#" className="btn btn-ec-dark-green">
+                  <Button
+                    variant="ec-medium-green"
+                    onClick={() => redirectToBidPage("4")}
+                  >
                     Place a Bid
-                  </a>
+                  </Button>
                 </div>
               </Card.Text>
             </Card.Body>
@@ -126,11 +158,17 @@ const ActiveBids = () => {
 
                   <dt class="col-sm-5">Current Highest Bid</dt>
                   <dd class="col-sm-7">10 CAD</dd>
+
+                  <dt class="col-sm-5">Starting Bid</dt>
+                  <dd class="col-sm-7">2 CAD</dd>
                 </dl>
                 <div className="text-end">
-                  <a href="#" className="btn btn-ec-dark-green">
+                  <Button
+                    variant="ec-medium-green"
+                    onClick={() => redirectToBidPage("5")}
+                  >
                     Place a Bid
-                  </a>
+                  </Button>
                 </div>
               </Card.Text>
             </Card.Body>
@@ -151,11 +189,17 @@ const ActiveBids = () => {
 
                   <dt class="col-sm-5">Current Highest Bid</dt>
                   <dd class="col-sm-7">10 CAD</dd>
+
+                  <dt class="col-sm-5">Starting Bid</dt>
+                  <dd class="col-sm-7">2 CAD</dd>
                 </dl>
                 <div className="text-end">
-                  <a href="#" className="btn btn-ec-dark-green">
+                  <Button
+                    variant="ec-medium-green"
+                    onClick={() => redirectToBidPage("6")}
+                  >
                     Place a Bid
-                  </a>
+                  </Button>
                 </div>
               </Card.Text>
             </Card.Body>

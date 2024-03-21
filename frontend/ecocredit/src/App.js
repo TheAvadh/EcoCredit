@@ -9,7 +9,7 @@ import {
   CustomerDashboard,
   RecyclerDashboard,
   ProfilePage,
-  AdminDashboard
+  AdminDashboard,
 } from "./pages";
 
 function App() {

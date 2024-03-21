@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Dashboard = ({ tabs }) => {
+const Dashboard = ({ tabs, children }) => {
   return (
     <Row className="m-0" style={{ height: "100vh" }}>
       <Col md={2} className="bg-ec-dark-green">
@@ -28,6 +28,7 @@ const Dashboard = ({ tabs }) => {
           {tabs.map((tab, index) => (
             <Route key={index} path={tab.path} element={tab.component} />
           ))}
+          {children}
         </Routes>
       </Col>
     </Row>
