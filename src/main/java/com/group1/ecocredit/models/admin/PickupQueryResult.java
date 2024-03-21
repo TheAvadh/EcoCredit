@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 public class PickupQueryResult {
     private Long id;
     private LocalDateTime dateTime;
-    private Integer userId;
+    private String userFirstName;
+    private String userLastName;
     private Long wasteId;
     private Float weight;
     private String category;
@@ -19,14 +20,16 @@ public class PickupQueryResult {
 
     public PickupQueryResult(Long id,
                              LocalDateTime dateTime,
-                             Integer userId,
+                             String userFirstName,
+                             String userLastName,
                              Long wasteId,
                              Float weight,
                              String category,
                              String status) {
         this.id = id;
         this.dateTime = dateTime;
-        this.userId = userId;
+        this.userFirstName = userFirstName;
+        this.userLastName = userLastName;
         this.wasteId = wasteId;
         this.weight = weight;
         this.category = category;
