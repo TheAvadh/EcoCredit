@@ -17,27 +17,27 @@ const BidPage = () => {
     <CenterContainer title="Place a Bid" colSize={8}>
       <Form className="mt-5">
         <Row>
-          <Col lg={4} className="mb-4 text-center">
+          <Col xxl={4} className="mb-4 text-center">
             <Image
               src={biodegradableURL}
               alt="biodegradble"
               style={{ width: "338px", height: "190px" }}
             />
           </Col>
-          <Col lg={1}></Col>
-          <Col lg={7}>
+          <Col xxl={1}></Col>
+          <Col xxl={7}>
             <dl class="row text-end text-ec-dark-green fs-5 pb-4">
-              <dt class="col-sm-7">Waste Type</dt>
-              <dd class="col-sm-5">Biodegradable</dd>
+              <dt class="col-7">Waste Type</dt>
+              <dd class="col-5">Biodegradable</dd>
 
-              <dt class="col-sm-7">Weight</dt>
-              <dd class="col-sm-5">5 KG</dd>
+              <dt class="col-7">Weight</dt>
+              <dd class="col-5">5 KG</dd>
 
-              <dt class="col-sm-7">Current Highest Bid</dt>
-              <dd class="col-sm-5">10 CAD</dd>
+              <dt class="col-7">Current Highest Bid</dt>
+              <dd class="col-5">10 CAD</dd>
 
-              <dt class="col-sm-7">Starting Bid</dt>
-              <dd class="col-sm-5">2 CAD</dd>
+              <dt class="col-7">Starting Bid</dt>
+              <dd class="col-5">2 CAD</dd>
             </dl>
             <Row className="mt-5">
               <Col
