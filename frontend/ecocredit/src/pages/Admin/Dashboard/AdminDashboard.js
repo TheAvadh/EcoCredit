@@ -33,7 +33,10 @@ const AdminDashboard = () => {
         }
     ];
 
-    return <Dashboard tabs={tabs} />;
+    return (
+      <Dashboard tabs={tabs}>
+      </Dashboard>
+    );
 };
 
 export default AdminDashboard;

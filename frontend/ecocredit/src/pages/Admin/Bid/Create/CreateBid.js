@@ -4,17 +4,37 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
+import Button from "react-bootstrap/Button";
+import Toast from "../../../../components/Toast/Toast";
 
 const CreateBid = () => {
+    const [wasteId, setWasteId] = useState("");
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState("");
+    const [toastType, setToastType] = useState("");
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        // TODO integrate with API
+    
+        setShowToast(true);
+        setToastMessage("Created a bid");
+        setToastType("success");
+      };
+
+    const handleWasteIdChange = (e) => {
+        setWasteId(e.target.value);
+    };
 
     const handleDateChange = (e) => {
         setDate(e.target.value);
     };
     
     const handleTimeChange = (e) => {
-    setTime(e.target.value);
+        setTime(e.target.value);
     };
     
     return (
@@ -25,7 +45,25 @@ const CreateBid = () => {
                         <h1 className="text-center text-ec-dark-green p-2">
                         Create a Bid
                         </h1>
-                        <Form>
+                        <Form
+                            onSubmit={handleSubmit}>
+                            <Form.Group controlId="formWasteId">
+                            <FloatingLabel
+                            controlId="wasteId"
+                            type="number"
+                            label="Waste ID"
+                            className="mb-2"
+                            >
+                            <Form.Control
+                                type="number"
+                                name="wasteId"
+                                placeholder="Waste ID"
+                                required
+                                value={wasteId}
+                                onChange={handleWasteIdChange}
+                            />
+                            </FloatingLabel>
+                            </Form.Group>
                             <Form.Group controlId="formDate">
                             <FloatingLabel controlId="date" label="Date" className="mb-3">
                                 <Form.Control
@@ -47,7 +85,21 @@ const CreateBid = () => {
                                 />
                             </FloatingLabel>
                             </Form.Group>
+                            <Button
+                            variant="ec-dark-green"
+                            type="submit"
+                            className="w-100 mt-1"
+                            size="md"
+                            >
+                            Create
+                            </Button>
                         </Form>
+                        <Toast
+                            showToast={showToast}
+                            setShowToast={setShowToast}
+                            toastMessage={toastMessage}
+                            toastType={toastType}
+                        />
                     </div>
                 </Col>
             </Row>
