@@ -6,5 +6,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class WasteUpdateRequest {
+    private Long id;
     private Float weight;
 }

@@ -12,7 +12,7 @@ const Dashboard = ({ tabs }) => {
         <Nav variant="pills" className="flex-column fm-3 fw-medium">
           {tabs.map((tab, index) => (
             <Nav.Item key={index} className="mb-2">
-              <Nav.Link as={NavLink} to={tab.to} activeClassName="active">
+              <Nav.Link as={NavLink} to={tab.to} className="active">
                 <FontAwesomeIcon icon={tab.icon} className="fa-icon pe-2" />
                 {tab.label}
               </Nav.Link>

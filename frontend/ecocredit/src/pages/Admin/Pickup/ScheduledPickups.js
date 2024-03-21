@@ -3,33 +3,33 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
 import Cookies from "js-cookie";
 import "./SchedulePickups.css";
+import WeightUpdateForm from "../Waste/WeightUpdateForm";
 
 const ScheduledPickups = () => {
     const [pickups, setPickups] = useState([]);
 
-  useEffect(() => {
-    fetch(
-      `${process.env.REACT_APP_BASE_URL}/admin/scheduled-pickups`,
-      {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          Authorization: `Bearer ${Cookies.get("token")}`,
-          Accept: "application/json",
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setPickups(data);
-      })
-      .catch((error) =>
-        console.error("Fetching scheduled pickups data failed:", error)
-      );
-  }, []);
+    useEffect(() => {
+      fetch(
+        `${process.env.REACT_APP_BASE_URL}/admin/scheduled-pickups`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+            Accept: "application/json",
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setPickups(data);
+          console.log(data);
+        })
+        .catch((error) =>
+          console.error("Fetching scheduled pickups data failed:", error)
+        );
+      }, []);
 
 return (
     
@@ -40,7 +40,7 @@ return (
             <h1 className="text-center text-ec-dark-green p-2">
               Scheduled Pickups
             </h1>
-            <div class="table-wrapper">
+            <div className="pickups-table-wrapper">
             <Table
               bordered
               hover
@@ -52,7 +52,7 @@ return (
                   <th>#</th>
                   <th>Date</th>
                   <th>Time</th>
-                  <th>UserID</th>
+                  <th>User ID</th>
                   <th>Waste</th>
                 </tr>
               </thead>
@@ -71,13 +71,9 @@ return (
                         <tbody>
                             {pickup.wastes.map((waste) => (
                                 <tr key={waste.wasteId}>
+                                    <td className="col-widths-id">id: {waste.wasteId}</td>
                                     <td className="col-widths-category">{waste.category}</td>
                                     <td className="col-widths-weight">{waste.weight ? waste.weight : 0.0} kg</td>
-                                    <td className="col-widths-button">
-                                        <Button variant="ec-dark-green text-ec-grey" size="sm">
-                                            Update
-                                        </Button>
-                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -90,7 +86,8 @@ return (
           </div>
         </Col>
       </Row>
-    </Container>
+      <WeightUpdateForm></WeightUpdateForm>
+      </Container>
     );
 };
 
