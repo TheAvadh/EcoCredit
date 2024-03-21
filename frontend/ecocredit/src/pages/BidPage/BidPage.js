@@ -19,6 +19,7 @@ const BidPage = () => {
         <Row>
           <Col xxl={4} className="mb-4 text-center">
             <Image
+              rounded
               src={biodegradableURL}
               alt="biodegradble"
               style={{ width: "338px", height: "190px" }}
