@@ -40,7 +40,7 @@ const ActiveBids = () => {
                 </dl>
                 <div className="text-end">
                   <Button
-                    variant="ec-medium-green"
+                    variant="ec-dark-green"
                     onClick={() => redirectToBidPage("1")}
                   >
                     Place a Bid
@@ -71,7 +71,7 @@ const ActiveBids = () => {
                 </dl>
                 <div className="text-end">
                   <Button
-                    variant="ec-medium-green"
+                    variant="ec-dark-green"
                     onClick={() => redirectToBidPage("2")}
                   >
                     Place a Bid
@@ -102,7 +102,7 @@ const ActiveBids = () => {
                 </dl>
                 <div className="text-end">
                   <Button
-                    variant="ec-medium-green"
+                    variant="ec-dark-green"
                     onClick={() => redirectToBidPage("3")}
                   >
                     Place a Bid
@@ -133,7 +133,7 @@ const ActiveBids = () => {
                 </dl>
                 <div className="text-end">
                   <Button
-                    variant="ec-medium-green"
+                    variant="ec-dark-green"
                     onClick={() => redirectToBidPage("4")}
                   >
                     Place a Bid
@@ -164,7 +164,7 @@ const ActiveBids = () => {
                 </dl>
                 <div className="text-end">
                   <Button
-                    variant="ec-medium-green"
+                    variant="ec-dark-green"
                     onClick={() => redirectToBidPage("5")}
                   >
                     Place a Bid
@@ -195,7 +195,7 @@ const ActiveBids = () => {
                 </dl>
                 <div className="text-end">
                   <Button
-                    variant="ec-medium-green"
+                    variant="ec-dark-green"
                     onClick={() => redirectToBidPage("6")}
                   >
                     Place a Bid
