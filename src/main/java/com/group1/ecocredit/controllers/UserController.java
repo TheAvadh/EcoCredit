@@ -23,14 +23,7 @@ public class UserController {
     private final UserService userService;
 
     private final JWTService jwtService;
-
-
-    @GetMapping
-    public ResponseEntity<String> sayHello(){
-        return ResponseEntity.ok("Hi user");
-    }
-
-
+    
     @PutMapping("/update-profile")
     public ResponseEntity<?> updateProfile(
             @RequestBody UpdateProfileRequest updateProfileRequest) {
