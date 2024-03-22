@@ -9,6 +9,7 @@ import ScheduledPickups from "../Pickup/Scheduled/ScheduledPickups";
 import CompletedPickups from "../Pickup/Completed/CompletedPickups";
 import CreateBid from "../Bid/Create/CreateBid";
 import ViewBids from "../Bid/View/ViewBids";
+import ViewActiveBids from "../Bid/View/ViewActiveBids";
 
 const AdminDashboard = () => {
     const tabs = [
@@ -39,6 +40,13 @@ const AdminDashboard = () => {
           path: "/view-bids",
           icon: faTrash,
           component: <ViewBids />,
+        },
+        {
+          label: "View Active Bids",
+          to: "/admin/view-active-bids",
+          path: "/view-active-bids",
+          icon: faTrash,
+          component: <ViewActiveBids />,
         }
     ];
 
