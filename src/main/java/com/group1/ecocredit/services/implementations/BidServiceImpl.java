@@ -45,34 +45,34 @@ public class BidServiceImpl implements BidService {
             Bid bid = bidRepository.findByWasteId(bidCreateRequest.getWasteId()).get();
             return bid;
         }
-        else{
-            if(optionalWaste.isEmpty() == true){
-                throw new NoSuchElementException("No waste with given waste id present");
-            }
 
-            if(LocalDateTime.now().isAfter(bidTime)){
-                throw new IllegalArgumentException("You can't create bid in past");
-            }
-
-                Waste waste = wasteRepository.findById(bidCreateRequest.getWasteId()).get();
-//                Base Price = category base price multiply by weight of the waste.
-                Optional<CategoryPrice> categoryPrice = categoryPriceRepository.findByCategoryId(waste.getCategory().getId());
-                Float basePriceF = (float)categoryPrice.get().getValue() * waste.getWeight();
-                Double basePrice = (double)Math.round(basePriceF);
-
-                Bid bid = new Bid();
-                bid.setBase_price(basePrice);
-                bid.setWaste(waste);
-                bid.setTop_bid_amount(basePrice);
-                bid.setDate(bidTime);
-
-                bidRepository.save(bid);
-
-                System.out.println("Waste is now available for auction");
-                return  bid;
-
+        if(optionalWaste.isEmpty() == true){
+            throw new NoSuchElementException("No waste with given waste id present");
         }
 
+        if(LocalDateTime.now().isAfter(bidTime)){
+            throw new IllegalArgumentException("You can't create bid in past");
+        }
+
+        else {
+
+            Waste waste = wasteRepository.findById(bidCreateRequest.getWasteId()).get();
+//          Base Price = category base price multiply by weight of the waste.
+            Optional<CategoryPrice> categoryPrice = categoryPriceRepository.findByCategoryId(waste.getCategory().getId());
+            Float basePriceF = (float)categoryPrice.get().getValue() * waste.getWeight();
+            Double basePrice = (double)Math.round(basePriceF);
+
+            Bid bid = new Bid();
+            bid.setBase_price(basePrice);
+            bid.setWaste(waste);
+            bid.setTop_bid_amount(basePrice);
+            bid.setDate(bidTime);
+
+            bidRepository.save(bid);
+
+            System.out.println("Waste is now available for auction");
+            return  bid;
+        }
     }
 
     @Override
