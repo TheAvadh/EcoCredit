@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from "js-cookie";
-import { Card, Button } from 'react-bootstrap';
+import Card from 'react-bootstrap';
 import "./Payment.css";
 
 const ShippingCostsComponent = (props) => {
