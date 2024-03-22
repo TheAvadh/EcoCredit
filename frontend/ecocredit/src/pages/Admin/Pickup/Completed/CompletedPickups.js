@@ -53,7 +53,7 @@ return (
                   <th>#</th>
                   <th>Date</th>
                   <th>Time</th>
-                  <th>User ID</th>
+                  <th>Username</th>
                   <th>Waste</th>
                 </tr>
               </thead>
@@ -63,7 +63,7 @@ return (
                     <td>{index + 1}</td>
                     <td>{pickup.date}</td>
                     <td>{pickup.time}</td>
-                    <td>{pickup.userId}</td>
+                    <td>{pickup.userFirstName + " " + pickup.userLastName}</td>
                     <Table
                         bordered
                         hover

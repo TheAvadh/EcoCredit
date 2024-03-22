@@ -1,0 +1,6 @@
+.bids-table-wrapper {
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
+    display:inline-block;
+    width: 100%;
+}

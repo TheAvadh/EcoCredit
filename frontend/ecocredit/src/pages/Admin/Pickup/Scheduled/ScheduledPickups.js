@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
 import Cookies from "js-cookie";
-import "../Styling/Pickups.css"
+import "../Styling/Pickups.css";
 
 const ScheduledPickups = () => {
     const [pickups, setPickups] = useState([]);
@@ -52,7 +52,7 @@ return (
                   <th>#</th>
                   <th>Date</th>
                   <th>Time</th>
-                  <th>User ID</th>
+                  <th>Username</th>
                   <th>Waste</th>
                 </tr>
               </thead>
@@ -62,7 +62,7 @@ return (
                     <td>{index + 1}</td>
                     <td>{pickup.date}</td>
                     <td>{pickup.time}</td>
-                    <td>{pickup.userId}</td>
+                    <td>{pickup.userFirstName + " " + pickup.userLastName}</td>
                     <Table
                         bordered
                         hover
