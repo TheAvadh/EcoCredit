@@ -48,17 +48,6 @@ const ViewBids = () => {
         }
     ]);
 
-    /*
-    waste id
-•⁠  ⁠⁠waste category
-*  waste weight
-•⁠  ⁠⁠bid base price
-•⁠  ⁠⁠top bid amount
-•⁠  ⁠⁠bid winner name if it exists. if not, then display “No Winner”
-•⁠  ⁠⁠bid date
-•⁠  ⁠⁠bid payment status
-•⁠  ⁠⁠whether or not the bid is active
-    */
    return (
         <Container fluid className="background-image">
             <Row className="d-flex justify-content-center align-items-center">
