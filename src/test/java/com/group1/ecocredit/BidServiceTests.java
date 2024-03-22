@@ -39,62 +39,6 @@ public class BidServiceTests {
         MockitoAnnotations.openMocks(this);
     }
 
-//    @Test
-//    void whenWasteAlreadyAuctioned_thenReturnExistingBid() {
-//        BidCreateRequest request = new BidCreateRequest();
-//        request.setWasteId(1L);
-//        Bid existingBid = new Bid();
-//
-//        when(bidRepository.findByWasteId(request.getWasteId())).thenReturn(Optional.of(existingBid));
-//
-//        Bid result = bidService.putWasteForBid(request);
-//        assertNotNull(result);
-//        assertEquals(existingBid, result);
-//    }
-
-//    @Test
-//    void whenNoWasteFound_thenReturnNull() {
-//        BidCreateRequest request = new BidCreateRequest();
-//        request.setWasteId(999L); // Non-existent waste ID
-//
-//        when(wasteRepository.findById(request.getWasteId())).thenReturn(Optional.empty());
-//
-//        Bid result = bidService.putWasteForBid(request);
-//        assertNull(result);
-//    }
-
-//    @Test
-//    void whenValidRequestAndWasteExists_thenCreateBid() {
-//        BidCreateRequest request = new BidCreateRequest();
-//        request.setWasteId(1L);
-//        request.setDateTime("2024-03-16T10:00:00");
-//
-//        Category category = new Category();
-//        category.setId(1);
-//        category.setValue("Plastic");
-//
-//        Waste waste = new Waste();
-//        waste.setId(1L);
-//        waste.setWeight(10.0F);
-//        waste.setCategory(category);
-//
-//        CategoryPrice categoryPrice = new CategoryPrice();
-//        categoryPrice.setId(1L);
-//        categoryPrice.setCategory(category);
-//        categoryPrice.setValue(100F);
-//
-//        when(wasteRepository.findById(request.getWasteId())).thenReturn(Optional.of(waste));
-//        when(bidRepository.findByWasteId(request.getWasteId())).thenReturn(Optional.empty());
-//        when(categoryPriceRepository.findByCategoryId(category.getId())).thenReturn(Optional.of(categoryPrice));
-//
-//        Bid result = bidService.putWasteForBid(request);
-//
-//        assertNotNull(result);
-//        assertEquals(1000.0, result.getBase_price());
-//    }
-//
-
-
     @Test
     public void whenWasteIdDoesNotExist_thenThrowException() {
         BidCreateRequest request = new BidCreateRequest("2023-04-01T12:00", 1L);
