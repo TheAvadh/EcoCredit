@@ -54,7 +54,6 @@ public class BidServiceImpl implements BidService {
                 throw new IllegalArgumentException("You can't create bid in past");
             }
 
-            else{
                 Waste waste = wasteRepository.findById(bidCreateRequest.getWasteId()).get();
 //                Base Price = category base price multiply by weight of the waste.
                 Optional<CategoryPrice> categoryPrice = categoryPriceRepository.findByCategoryId(waste.getCategory().getId());
@@ -71,7 +70,7 @@ public class BidServiceImpl implements BidService {
 
                 System.out.println("Waste is now available for auction");
                 return  bid;
-            }
+
         }
 
     }
