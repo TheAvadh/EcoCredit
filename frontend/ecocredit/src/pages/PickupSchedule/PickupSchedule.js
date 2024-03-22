@@ -9,7 +9,6 @@ import logoUrl from "../../assets/images/recycle.png";
 import { ToastContainer, toast } from "react-toastify";
 import Cookies from "js-cookie";
 import "react-toastify/dist/ReactToastify.css";
-import { Navigate } from "react-router-dom";
 
 const PickupSchedule = () => {
   const [date, setDate] = useState("");

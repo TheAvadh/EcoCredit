@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate  } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 const SuccessPage = () => {
-    const [searchParams, setSearchParams] = useSearchParams(); // Get pickupId from URL params
+    const [searchParams] = useSearchParams(); // Get pickupId from URL params
     
     const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ const SuccessPage = () => {
         if (searchParams) {
             confirmPickup();
         }
-    }, [searchParams]);
+    }, [searchParams, navigate]);
 
     return (
         <div>
