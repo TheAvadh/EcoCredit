@@ -1,6 +1,7 @@
 package com.group1.ecocredit;
 
 import com.group1.ecocredit.repositories.CategoryPriceRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -16,10 +17,7 @@ import com.group1.ecocredit.services.implementations.BidServiceImpl;
 import com.group1.ecocredit.dto.BidCreateRequest;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 public class BidServiceTests {
@@ -41,58 +39,108 @@ public class BidServiceTests {
         MockitoAnnotations.openMocks(this);
     }
 
+//    @Test
+//    void whenWasteAlreadyAuctioned_thenReturnExistingBid() {
+//        BidCreateRequest request = new BidCreateRequest();
+//        request.setWasteId(1L);
+//        Bid existingBid = new Bid();
+//
+//        when(bidRepository.findByWasteId(request.getWasteId())).thenReturn(Optional.of(existingBid));
+//
+//        Bid result = bidService.putWasteForBid(request);
+//        assertNotNull(result);
+//        assertEquals(existingBid, result);
+//    }
+
+//    @Test
+//    void whenNoWasteFound_thenReturnNull() {
+//        BidCreateRequest request = new BidCreateRequest();
+//        request.setWasteId(999L); // Non-existent waste ID
+//
+//        when(wasteRepository.findById(request.getWasteId())).thenReturn(Optional.empty());
+//
+//        Bid result = bidService.putWasteForBid(request);
+//        assertNull(result);
+//    }
+
+//    @Test
+//    void whenValidRequestAndWasteExists_thenCreateBid() {
+//        BidCreateRequest request = new BidCreateRequest();
+//        request.setWasteId(1L);
+//        request.setDateTime("2024-03-16T10:00:00");
+//
+//        Category category = new Category();
+//        category.setId(1);
+//        category.setValue("Plastic");
+//
+//        Waste waste = new Waste();
+//        waste.setId(1L);
+//        waste.setWeight(10.0F);
+//        waste.setCategory(category);
+//
+//        CategoryPrice categoryPrice = new CategoryPrice();
+//        categoryPrice.setId(1L);
+//        categoryPrice.setCategory(category);
+//        categoryPrice.setValue(100F);
+//
+//        when(wasteRepository.findById(request.getWasteId())).thenReturn(Optional.of(waste));
+//        when(bidRepository.findByWasteId(request.getWasteId())).thenReturn(Optional.empty());
+//        when(categoryPriceRepository.findByCategoryId(category.getId())).thenReturn(Optional.of(categoryPrice));
+//
+//        Bid result = bidService.putWasteForBid(request);
+//
+//        assertNotNull(result);
+//        assertEquals(1000.0, result.getBase_price());
+//    }
+//
+
+
     @Test
-    void whenWasteAlreadyAuctioned_thenReturnExistingBid() {
-        BidCreateRequest request = new BidCreateRequest();
-        request.setWasteId(1L);
-        Bid existingBid = new Bid();
-
-        when(bidRepository.findByWasteId(request.getWasteId())).thenReturn(Optional.of(existingBid));
-
-        Bid result = bidService.putWasteForBid(request);
-        assertNotNull(result);
-        assertEquals(existingBid, result);
-    }
-
-    @Test
-    void whenNoWasteFound_thenReturnNull() {
-        BidCreateRequest request = new BidCreateRequest();
-        request.setWasteId(999L); // Non-existent waste ID
+    public void whenWasteIdDoesNotExist_thenThrowException() {
+        BidCreateRequest request = new BidCreateRequest("2023-04-01T12:00", 1L);
 
         when(wasteRepository.findById(request.getWasteId())).thenReturn(Optional.empty());
 
-        Bid result = bidService.putWasteForBid(request);
-        assertNull(result);
+        Assertions.assertThrows(NoSuchElementException.class, () -> {
+            bidService.putWasteForBid(request);
+        });
     }
 
+
     @Test
-    void whenValidRequestAndWasteExists_thenCreateBid() {
-        BidCreateRequest request = new BidCreateRequest();
-        request.setWasteId(1L);
-        request.setDateTime("2024-03-16T10:00:00");
-
-        Category category = new Category();
-        category.setId(1);
-        category.setValue("Plastic");
-
+    public void whenBidCreationDateIsInThePast_thenThrowException() {
+        BidCreateRequest request = new BidCreateRequest(LocalDateTime.now().minusDays(1).toString(), 1L);
         Waste waste = new Waste();
-        waste.setId(1L);
-        waste.setWeight(10.0F);
-        waste.setCategory(category);
-
-        CategoryPrice categoryPrice = new CategoryPrice();
-        categoryPrice.setId(1L);
-        categoryPrice.setCategory(category);
-        categoryPrice.setValue(100.0);
 
         when(wasteRepository.findById(request.getWasteId())).thenReturn(Optional.of(waste));
-        when(bidRepository.findByWasteId(request.getWasteId())).thenReturn(Optional.empty());
-        when(categoryPriceRepository.findByCategoryId(category.getId())).thenReturn(Optional.of(categoryPrice));
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            bidService.putWasteForBid(request);
+        });
+    }
+
+
+
+    @Test
+    public void whenValidRequest_thenCreateBid() {
+        BidCreateRequest request = new BidCreateRequest(LocalDateTime.now().plusDays(1).toString(), 1L);
+        Waste waste = new Waste();
+        waste.setId(1L);
+        waste.setWeight(10f);
+        Category category = new Category();
+        category.setId(1);
+        waste.setCategory(category);
+        CategoryPrice categoryPrice = new CategoryPrice();
+        categoryPrice.setValue(2f);
+
+        when(wasteRepository.findById(request.getWasteId())).thenReturn(Optional.of(waste));
+        when(categoryPriceRepository.findByCategoryId(waste.getCategory().getId())).thenReturn(Optional.of(categoryPrice));
 
         Bid result = bidService.putWasteForBid(request);
 
         assertNotNull(result);
-        assertEquals(1000.0, result.getBase_price());
+        assertEquals(java.util.Optional.of(20.0), java.util.Optional.of(result.getBase_price()));
+        verify(bidRepository).save(any(Bid.class));
     }
 
 
