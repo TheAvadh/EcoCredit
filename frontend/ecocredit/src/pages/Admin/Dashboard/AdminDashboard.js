@@ -2,11 +2,13 @@ import Dashboard from "../../../components/Dashboard";
 import {
     faCalendarCheck,
     faCheck,
-    faPenToSquare
+    faPenToSquare,
+    faTrash
   } from "@fortawesome/free-solid-svg-icons";
 import ScheduledPickups from "../Pickup/Scheduled/ScheduledPickups";
 import CompletedPickups from "../Pickup/Completed/CompletedPickups";
 import CreateBid from "../Bid/Create/CreateBid";
+import ViewBids from "../Bid/View/ViewBids";
 
 const AdminDashboard = () => {
     const tabs = [
@@ -30,6 +32,13 @@ const AdminDashboard = () => {
           path: "/create-bid",
           icon: faPenToSquare,
           component: <CreateBid />,
+        },
+        {
+          label: "View Bids",
+          to: "/admin/view-bids",
+          path: "/view-bids",
+          icon: faTrash,
+          component: <ViewBids />,
         }
     ];
 
