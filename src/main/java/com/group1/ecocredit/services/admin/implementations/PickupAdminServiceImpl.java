@@ -33,6 +33,12 @@ public class PickupAdminServiceImpl implements PickupAdminService {
         return transform(dbPickups);
     }
 
+    @Override
+    public List<PickupAdminResponse> getInProgressPickups() throws SQLException {
+        var dbPickups = pickupRepository.findInProgressPickups();
+        return transform(dbPickups);
+    }
+
     private List<PickupAdminResponse> transform(List<PickupQueryResult> dbPickups) {
         if (dbPickups == null || dbPickups.isEmpty())
             return new ArrayList<>();

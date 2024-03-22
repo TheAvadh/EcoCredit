@@ -18,7 +18,7 @@ const AdminDashboard = () => {
             path: "/scheduled-pickups",
             icon: faCalendarCheck,
             component: <ScheduledPickups />,
-          },
+        },
         {
           label: "Completed Pickups",
           to: "/admin/completed-pickups",
