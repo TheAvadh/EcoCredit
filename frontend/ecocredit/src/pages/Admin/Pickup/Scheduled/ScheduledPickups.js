@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
 import Cookies from "js-cookie";
-import "../Styling/Pickups.css"
+import "../Styling/Pickups.css";
 
 const ScheduledPickups = () => {
     const [pickups, setPickups] = useState([]);
