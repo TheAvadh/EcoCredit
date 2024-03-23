@@ -31,9 +31,19 @@ public class PickupAdminServiceTests {
     private PickupQueryResult dbPickupCompletedSecond;
     private List<PickupQueryResult> dbPickupsCompleted;
 
+    private PickupQueryResult dbPickupInProgressFirst;
+    private List<PickupQueryResult> dbPickupsInProgress;
+
+
+
     @BeforeEach
     void setup() {
-        // Arrange scheduled pickup with two waste items from DB
+        setUpScheduledPickups();
+        setUpCompletedPickups();
+        setUpInProgressPickups();
+    }
+
+    private void setUpScheduledPickups() {
         dbPickupsScheduled = new ArrayList<>();
 
         dbPickupScheduledFirst = new PickupQueryResult();
@@ -59,8 +69,9 @@ public class PickupAdminServiceTests {
         dbPickupScheduledSecond.setUserLastName("Doe");
 
         dbPickupsScheduled.add(dbPickupScheduledSecond);
+    }
 
-        // Arrange completed pickup with two waste items from DB
+    private void setUpCompletedPickups() {
         dbPickupsCompleted = new ArrayList<>();
 
         dbPickupCompletedFirst = new PickupQueryResult();
@@ -87,7 +98,21 @@ public class PickupAdminServiceTests {
 
         dbPickupsCompleted.add(dbPickupCompletedSecond);
     }
+    private void setUpInProgressPickups() {
+        dbPickupsInProgress = new ArrayList<>();
 
+        dbPickupInProgressFirst = new PickupQueryResult();
+        dbPickupInProgressFirst.setId(1L);
+        dbPickupInProgressFirst.setStatus("IN_PROGRESS");
+        dbPickupInProgressFirst.setCategory("paper");
+        dbPickupInProgressFirst.setWasteId(1L);
+        dbPickupInProgressFirst.setWeight(1F);
+        dbPickupInProgressFirst.setDateTime(LocalDateTime.now());
+        dbPickupInProgressFirst.setUserFirstName("Jane");
+        dbPickupInProgressFirst.setUserLastName("Doe");
+
+        dbPickupsInProgress.add(dbPickupInProgressFirst);
+    }
 
     @Test
     void testGetScheduledPickupsSuccess() throws SQLException {
@@ -183,6 +208,44 @@ public class PickupAdminServiceTests {
         assertEquals("second waste should have same category as db waste",
                 dbPickupCompletedSecond.getCategory(),
                 firstPickup.getWastes().getLast().getCategory());
+    }
+
+    @Test
+    void testGetInProgressPickupsSuccess() throws SQLException {
+        Mockito.when(pickupRepository.findInProgressPickups()).thenReturn(dbPickupsInProgress);
+
+        var pickups = pickupAdminService.getInProgressPickups();
+        var firstPickup = pickups.getFirst();
+
+        assertEquals("pickup lists should have same size", 1, pickups.size());
+
+        assertEquals("pickup should have same id as db pickup",
+                dbPickupInProgressFirst.getId(), firstPickup.getId());
+        assertEquals("pickup should have same date as db pickup",
+                dbPickupInProgressFirst.getDateTime().toLocalDate().toString(),
+                firstPickup.getDate());
+        assertEquals("pickup should have same time as db pickup",
+                dbPickupInProgressFirst.getDateTime().toLocalTime().toString(),
+                firstPickup.getTime());
+        assertEquals("pickups should have same user first name as db pickup",
+                dbPickupInProgressFirst.getUserFirstName(), firstPickup.getUserFirstName());
+        assertEquals("pickups should have same user last name as db pickup",
+                dbPickupInProgressFirst.getUserLastName(), firstPickup.getUserLastName());
+        assertEquals("pickups should have same status as db pickup",
+                dbPickupInProgressFirst.getStatus(), firstPickup.getStatus());
+
+        assertEquals("pickup should have same waste count as db pickup", 1,
+                firstPickup.getWastes().size());
+
+        assertEquals("first waste should have same id as db waste",
+                dbPickupInProgressFirst.getWasteId(),
+                firstPickup.getWastes().getFirst().getWasteId());
+        assertEquals("first waste should have same weight as db waste",
+                dbPickupInProgressFirst.getWeight(),
+                firstPickup.getWastes().getFirst().getWeight());
+        assertEquals("first waste should have same category as db waste",
+                dbPickupInProgressFirst.getCategory(),
+                firstPickup.getWastes().getFirst().getCategory());
     }
 
     @Test

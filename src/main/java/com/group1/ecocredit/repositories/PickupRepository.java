@@ -49,4 +49,19 @@ public interface PickupRepository extends JpaRepository<Pickup, Long> {
             where s.value like 'COMPLETED'
             order by p.dateTime desc, p.id asc, w.id asc""")
     List<PickupQueryResult> findCompletedPickups();
+
+    @Query("""
+            select new com.group1.ecocredit.models.admin.PickupQueryResult(
+            p.id, p.dateTime,
+            u.firstName, u.lastName,
+            w.id, w.weight,
+            c.value, s.value)
+            from Pickup p
+            inner join Waste w on p.id = w.pickup.id
+            inner join Category c on w.category.id = c.id
+            inner join Status s on p.status.id = s.id
+            inner join User u on p.user.id = u.id
+            where s.value like 'IN_PROGRESS'
+            order by p.dateTime desc, p.id asc, w.id asc""")
+    List<PickupQueryResult> findInProgressPickups();
 }

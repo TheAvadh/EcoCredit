@@ -10,4 +10,6 @@ public interface PickupAdminService {
     List<PickupAdminResponse> getScheduledPickups() throws SQLException;
 
     List<PickupAdminResponse> getCompletedPickups() throws SQLException;
+
+    List<PickupAdminResponse> getInProgressPickups() throws SQLException;
 }

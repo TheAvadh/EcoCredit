@@ -1,6 +1,7 @@
 import Dashboard from "../../../components/Dashboard";
 import {
     faCalendarCheck,
+    faCar,
     faCheck,
     faPenToSquare,
     faUser,
@@ -10,6 +11,7 @@ import ScheduledPickups from "../Pickup/Scheduled/ScheduledPickups";
 import CompletedPickups from "../Pickup/Completed/CompletedPickups";
 import CreateBid from "../Bid/Create/CreateBid";
 import ViewBids from "../Bid/View/ViewBids";
+import InProgressPickups from "../Pickup/InProgress/InProgressPickups";
 import ViewActiveBids from "../Bid/View/ViewActiveBids";
 
 const AdminDashboard = () => {
@@ -20,7 +22,14 @@ const AdminDashboard = () => {
             path: "/scheduled-pickups",
             icon: faCalendarCheck,
             component: <ScheduledPickups />,
-          },
+        },
+        {
+          label: "In Progress Pickups",
+          to: "/admin/in-progress-pickups",
+          path: "/in-progress-pickups",
+          icon: faCar,
+          component: <InProgressPickups />,
+        },
         {
           label: "Completed Pickups",
           to: "/admin/completed-pickups",

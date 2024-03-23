@@ -48,6 +48,19 @@ public class AdminController {
         return ResponseEntity.ok(pickups);
     }
 
+    @GetMapping("/in-progress-pickups")
+    public ResponseEntity<?> getInProgressPickups() {
+        List<PickupAdminResponse> pickups;
+
+        try {
+            pickups = pickupAdminService.getCompletedPickups();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return ResponseEntity.ok(pickups);
+    }
+
     @PatchMapping("/wastes/{wasteId}")
     public ResponseEntity<?> updateWeight(@PathVariable Long wasteId,
                                           @RequestBody WasteUpdateRequest request) {
