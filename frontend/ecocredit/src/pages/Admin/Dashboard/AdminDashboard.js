@@ -4,13 +4,15 @@ import {
     faCar,
     faCheck,
     faPenToSquare,
-    faTrash
+    faUser,
+    faUserCheck
   } from "@fortawesome/free-solid-svg-icons";
 import ScheduledPickups from "../Pickup/Scheduled/ScheduledPickups";
 import CompletedPickups from "../Pickup/Completed/CompletedPickups";
 import CreateBid from "../Bid/Create/CreateBid";
 import ViewBids from "../Bid/View/ViewBids";
 import InProgressPickups from "../Pickup/InProgress/InProgressPickups";
+import ViewActiveBids from "../Bid/View/ViewActiveBids";
 
 const AdminDashboard = () => {
     const tabs = [
@@ -46,8 +48,15 @@ const AdminDashboard = () => {
           label: "View Bids",
           to: "/admin/view-bids",
           path: "/view-bids",
-          icon: faTrash,
+          icon: faUser,
           component: <ViewBids />,
+        },
+        {
+          label: "View Active Bids",
+          to: "/admin/view-active-bids",
+          path: "/view-active-bids",
+          icon: faUserCheck,
+          component: <ViewActiveBids />,
         }
     ];
 

@@ -9,8 +9,8 @@ import Toast from "../../../../components/Toast/Toast";
 
 const CreateBid = () => {
     const [wasteId, setWasteId] = useState("");
-    const [date, setDate] = useState("");
-    const [time, setTime] = useState("");
+    // const [date, setDate] = useState("");
+    // const [time, setTime] = useState("");
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
     const [toastType, setToastType] = useState("");
@@ -29,6 +29,7 @@ const CreateBid = () => {
         setWasteId(e.target.value);
     };
 
+    /*
     const handleDateChange = (e) => {
         setDate(e.target.value);
     };
@@ -36,6 +37,7 @@ const CreateBid = () => {
     const handleTimeChange = (e) => {
         setTime(e.target.value);
     };
+    */
     
     return (
         <Container fluid className="background-image">
@@ -69,7 +71,7 @@ const CreateBid = () => {
                                 <Form.Control
                                 name="date"
                                 type="date"
-                                onChange={handleDateChange}
+                                //onChange={handleDateChange}
                                 required
                                 />
                             </FloatingLabel>
@@ -80,7 +82,7 @@ const CreateBid = () => {
                                 <Form.Control
                                 name="time"
                                 type="time"
-                                onChange={handleTimeChange}
+                                //onChange={handleTimeChange}
                                 required
                                 />
                             </FloatingLabel>

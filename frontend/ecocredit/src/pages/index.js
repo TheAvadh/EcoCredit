@@ -11,3 +11,4 @@ export { default as CompletedPickups } from "./Admin/Pickup/Completed/CompletedP
 export { default as InProgressPickups } from "./Admin/Pickup/InProgress/InProgressPickups";
 export { default as CreateBid } from "./Admin/Bid/Create/CreateBid";
 export { default as ViewBids } from "./Admin/Bid/View/ViewBids";
+export { default as ViewActiveBids } from "./Admin/Bid/View/ViewActiveBids";
