@@ -10,3 +10,4 @@ export { default as ScheduledPickups } from "./Admin/Pickup/Scheduled/ScheduledP
 export { default as CompletedPickups } from "./Admin/Pickup/Completed/CompletedPickups";
 export { default as CreateBid } from "./Admin/Bid/Create/CreateBid";
 export { default as ViewBids } from "./Admin/Bid/View/ViewBids";
+export { default as ViewActiveBids } from "./Admin/Bid/View/ViewActiveBids";
