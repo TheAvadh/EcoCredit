@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class Bid {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -21,10 +22,10 @@ public class Bid {
     private Waste waste;
 
     @Column(name="base_price")
-    private Integer base_price;
+    private Double base_price;
 
     @Column(name="top_bid_amount")
-    private Integer top_bid_amount;
+    private Double top_bid_amount;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
