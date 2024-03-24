@@ -1,22 +1,26 @@
 package com.group1.ecocredit.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-@Entity
 @Data
-@Setter
-@Getter
+@Entity
+@Table(name = "category_price")
+@NoArgsConstructor
+@AllArgsConstructor
 public class CategoryPrice {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long Id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    Category category;
+    @Column(name = "value")
+    private Float value;
 
-    Float value;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="category_id")
+    private Category category;
+
 }
