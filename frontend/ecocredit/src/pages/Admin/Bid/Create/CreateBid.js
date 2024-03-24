@@ -6,11 +6,12 @@ import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Button from "react-bootstrap/Button";
 import Toast from "../../../../components/Toast/Toast";
+import Cookies from "js-cookie";
 
 const CreateBid = () => {
     const [wasteId, setWasteId] = useState("");
-    // const [date, setDate] = useState("");
-    // const [time, setTime] = useState("");
+    const [date, setDate] = useState("");
+    const [time, setTime] = useState("");
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
     const [toastType, setToastType] = useState("");
@@ -18,18 +19,43 @@ const CreateBid = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // TODO integrate with API
-    
-        setShowToast(true);
-        setToastMessage("Created a bid");
-        setToastType("success");
-      };
+        const bid = {
+            wasteId: wasteId,
+            dateTime: `${date}T${time}`
+          };
+
+
+        fetch(`${process.env.REACT_APP_BASE_URL}/admin/putwasteforbid`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              mode: "cors",
+              Authorization: `Bearer ${Cookies.get("token")}`,
+            },
+            body: JSON.stringify(bid),
+          })
+            .then((response) => {
+              if (response.ok) {
+                setShowToast(true);
+                setToastMessage("Created a bid");
+                setToastType("success");
+              } else {
+                throw new Error("Failed to create a bid");
+              }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                setShowToast(error);
+                setToastMessage("Failed to create a bid");
+                setToastType("error");
+            }
+        );
+    };
 
     const handleWasteIdChange = (e) => {
         setWasteId(e.target.value);
     };
 
-    /*
     const handleDateChange = (e) => {
         setDate(e.target.value);
     };
@@ -37,7 +63,6 @@ const CreateBid = () => {
     const handleTimeChange = (e) => {
         setTime(e.target.value);
     };
-    */
     
     return (
         <Container fluid className="background-image">
@@ -71,7 +96,7 @@ const CreateBid = () => {
                                 <Form.Control
                                 name="date"
                                 type="date"
-                                //onChange={handleDateChange}
+                                onChange={handleDateChange}
                                 required
                                 />
                             </FloatingLabel>
@@ -82,7 +107,7 @@ const CreateBid = () => {
                                 <Form.Control
                                 name="time"
                                 type="time"
-                                //onChange={handleTimeChange}
+                                onChange={handleTimeChange}
                                 required
                                 />
                             </FloatingLabel>
