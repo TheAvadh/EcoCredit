@@ -1,52 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
+import Cookies from "js-cookie";
 import "../Styling/Bids.css";
 
 const ViewBids = () => {
-    // dummy data
-    const [bids] = useState([
+    const [bids, setBids] = useState([
         {
             "waste": {
-                "id": 6,
+                "id": "",
                 "category": {
-                    "id": 4,
-                    "value": "plastics"
+                    "id": "",
+                    "value": ""
                 },
-                "weight": 1.0
+                "weight": ""
             },
-            "base_price": 2.0736,
-            "top_bid_amount": 2.0736,
+            "base_price": "",
+            "top_bid_amount": "",
             "user": {
-                "firstName": "Jane",
-                "lastName": "Doe"
+                "firstName": "",
+                "lastName": ""
             },
-            "date": "2024-03-20T22:39:00",
-            "sold": true,
-            "id": 9,
-            "_active": false
-        },
-        {
-            "waste": {
-                "id": 7,
-                "category": {
-                    "id": 4,
-                    "value": "plastics"
-                },
-                "weight": 2.0
-            },
-            "base_price": 2.0736,
-            "top_bid_amount": 2.0736,
-            "user": null,
-            "date": "2024-03-21T22:39:00",
-            "sold": true,
-            "id": 9,
-            "_active": false
-        
+            "date": "",
+            "sold": "",
+            "id": "",
+            "_active": ""
         }
     ]);
+
+    useEffect(() => {
+        fetch(
+          `${process.env.REACT_APP_BASE_URL}/admin/allbids`,
+          {
+            method: "GET",
+            mode: "cors",
+            headers: {
+              Authorization: `Bearer ${Cookies.get("token")}`,
+              Accept: "application/json",
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => setBids(data))
+          .catch((error) => console.error("Fetching bids failed:", error));
+      }, []);
 
    return (
         <Container fluid className="background-image">
