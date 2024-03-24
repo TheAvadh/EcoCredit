@@ -27,13 +27,13 @@ public class BidUser {
     private Float waste_weight;
 
     @Column(name = "bid_amount")
-    private Integer bid_amount;
+    private Double bid_amount;
 
     @Column(name = "is_Active")
     private Boolean is_Active;
 
     @Column(name = "highest_bid")
-    private Integer highest_bid;
+    private Double highest_bid;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

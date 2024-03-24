@@ -12,5 +12,5 @@ public class DisplayBidRequest {
 
     private Long bidId;
     @Nullable
-    private Integer newBidAmount;
+    private Double newBidAmount;
 }

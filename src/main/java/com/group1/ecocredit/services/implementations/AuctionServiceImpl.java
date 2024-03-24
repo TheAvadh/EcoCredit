@@ -10,6 +10,7 @@ import com.group1.ecocredit.repositories.BidUserRepository;
 import com.group1.ecocredit.services.AuctionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -61,9 +62,9 @@ public class AuctionServiceImpl implements AuctionService {
         Long BidId = request.getBidId();
         Bid bid = bidRepository.findById(BidId);
 
-        Integer nextBid = bid.getTop_bid_amount() + rangeDifference(bid.getTop_bid_amount());
+        Double nextBid = bid.getTop_bid_amount() + rangeDifference(bid.getTop_bid_amount());
 
-        Integer enteredBid = request.getNewBidAmount();
+        Double enteredBid = request.getNewBidAmount();
 
         if (enteredBid >= nextBid) {
             bid.setTop_bid_amount(enteredBid);
@@ -130,7 +131,7 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
 
-    public static Integer rangeDifference(Integer currentPrice) {
+    public static Integer rangeDifference(Double currentPrice) {
         if (currentPrice > 0 && currentPrice <= 20) {
             return 2;
         } else if (currentPrice > 20 && currentPrice <= 50) {
@@ -144,6 +145,20 @@ public class AuctionServiceImpl implements AuctionService {
         } else {
             return 100; // Return null or handle the case when currentPrice is out of specified ranges.
         }
+    }
+
+    private void discardActiveStatus(){
+       List<BidUser> listBidUser = bidUserRepository.findByActive(true);
+       for(BidUser bidUser:listBidUser){
+           Long idBid = bidUser.getBid().getId();
+           bidUser.setIs_Active(bidRepository.findById(idBid).is_active());
+           bidUserRepository.save(bidUser);
+       }
+    }
+
+    @Scheduled(fixedRate = 60000) // Run every minute
+    public void bidUserSchedular() {
+        discardActiveStatus();
     }
 
 }
