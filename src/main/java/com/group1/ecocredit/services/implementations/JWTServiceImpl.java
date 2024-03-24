@@ -33,7 +33,7 @@ public class JWTServiceImpl implements JWTService {
     private long refresh_token_validity_ms;
 
     @Value("${bearer.size}")
-    private Integer bearerSize;
+    Integer bearerSize;
 
     public String generateToken(User userDetails) {
 
@@ -96,7 +96,6 @@ public class JWTServiceImpl implements JWTService {
 
         return null;
     }
-
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
         final Claims claims = extractAllClaims(token);

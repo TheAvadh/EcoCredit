@@ -30,4 +30,6 @@ public class Pickup {
     @JoinColumn(name = "status_id")
     private Status status;
 
+    private String paymentId;
+
 }

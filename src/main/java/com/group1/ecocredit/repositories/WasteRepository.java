@@ -8,4 +8,7 @@ import java.util.Optional;
 public interface WasteRepository extends JpaRepository<Waste, Long> {
 
     Optional<Waste> findById(Long wasteId);
+
+    Waste findByPickupId(Long pickupId);
+
 }

@@ -3,7 +3,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import ScheduleContainer from "../../components/PickupScheduleContainer";
+import CenterContainer from "../../components/CenterContainer";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import logoUrl from "../../assets/images/recycle.png";
 import { ToastContainer, toast } from "react-toastify";
@@ -66,10 +66,12 @@ const PickupSchedule = () => {
       },
       body: JSON.stringify(pickupData),
     })
-      .then((response) => {
+      .then(async (response) => {
         if (response.ok) {
           console.log("Success:", response);
           showToastMessagePickupScheduled();
+          const data = await response.json();
+          window.location = data.checkoutUrl;
         }
       })
       .catch((error) => {
@@ -137,7 +139,7 @@ const PickupSchedule = () => {
   };
 
   return (
-    <ScheduleContainer title="Schedule Garbage Collection">
+    <CenterContainer title="Schedule Garbage Collection">
       <Row>
         <Col>
           <Form>
@@ -284,7 +286,7 @@ const PickupSchedule = () => {
         draggable
         pauseOnHover
       />
-    </ScheduleContainer>
+    </CenterContainer>
   );
 };
 

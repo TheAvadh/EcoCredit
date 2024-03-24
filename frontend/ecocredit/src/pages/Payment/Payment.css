@@ -1,0 +1,65 @@
+.shipping-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .pickup-schedule,
+  .shipping-costs,
+  .checkout-section {
+    margin-bottom: 20px;
+  }
+  
+  .pickup-schedule h2,
+  .shipping-costs h2,
+  .checkout-section h2 {
+    color: #333; /* Dark gray */
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .shipping-costs h2 {
+    border-bottom: 2px solid #ccc; /* Light gray */
+    padding-bottom: 10px;
+  }
+  
+  .shipping-card {
+    flex: 0 0 calc(50% - 10px); 
+    border: 1px solid #ddd; /* Light gray border */
+    border-radius: 8px;
+    padding: 15px;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .shipping-card:hover {
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); /* Shadow effect on hover */
+  }
+  
+  .shipping-card .card-title {
+    color: #333; /* Dark gray */
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .shipping-card .card-text {
+    color: #666; /* Medium gray */
+  }
+  
+  .checkout-button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .checkout-button:hover {
+    background-color: #45a049; /* Darker Green */
+  }
+  
