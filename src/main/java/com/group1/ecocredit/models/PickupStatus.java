@@ -1,6 +1,7 @@
 package com.group1.ecocredit.models;
 
 public final class PickupStatus {
+    private PickupStatus() {}
     public static String SCHEDULED = "SCHEDULED";
     public static String IN_PROGRESS = "IN_PROGRESS";
     public static String COMPLETED = "COMPLETED";
