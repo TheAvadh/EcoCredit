@@ -34,7 +34,6 @@ public class PickupServiceTests {
     private static StatusRepository statusRepository;
     private static CategoryRepository categoryRepository;
     private static PickupService pickupService;
-    private static TransactionRepository transactionRepository;
 
     private static PickupPaymentActionService pickupPaymentActionService;
     private static String PICKUP_DATE = "2024-05-01T15:00";
@@ -58,12 +57,11 @@ public class PickupServiceTests {
         categoryRepository = Mockito.mock(CategoryRepository.class);
         pickupPaymentActionService = Mockito.mock(PickupPaymentActionService.class);
         pickupService = Mockito.mock(PickupService.class);
-        transactionRepository = Mockito.mock(TransactionRepository.class);
 
 
 
         pickupService = new PickupServiceImpl(pickupRepository,
-                wasteRepository, statusRepository, categoryRepository, pickupPaymentActionService, transactionRepository);
+                wasteRepository, statusRepository, categoryRepository, pickupPaymentActionService);
     }
 
     @Test
