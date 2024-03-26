@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.group1.ecocredit.dto.JwtAuthenticationResponse;
 import com.group1.ecocredit.dto.SignInRequest;
 import com.group1.ecocredit.enums.HttpMessage;
-import com.group1.ecocredit.models.Role;
+import com.group1.ecocredit.enums.Role;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.JWTService;
