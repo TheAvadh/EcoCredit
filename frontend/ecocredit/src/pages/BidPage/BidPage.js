@@ -23,12 +23,29 @@ const imageMap = {
   plastics: plasticsURL,
 };
 
+const rangeDifference = (currentPrice) => {
+  if (currentPrice <= 20) {
+    return 2;
+  } else if (currentPrice <= 50) {
+    return 5;
+  } else if (currentPrice <= 100) {
+    return 10;
+  } else if (currentPrice <= 250) {
+    return 25;
+  } else if (currentPrice <= 500) {
+    return 50;
+  } else {
+    return 100;
+  }
+};
+
 const BidPage = () => {
   const { bidId } = useParams();
   const [bidData, setBidData] = useState(null);
+  const [nextBid, setNextBid] = useState(0);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/placebid/${bidId}`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/recycler/place-bid/${bidId}`, {
       method: "GET",
       mode: "cors",
       headers: {
@@ -37,7 +54,12 @@ const BidPage = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) => setBidData(data))
+      .then((data) => {
+        setBidData(data);
+        const nextBidValue =
+          data.highest_bid + rangeDifference(data.highest_bid);
+        setNextBid(nextBidValue);
+      })
       .catch((error) =>
         console.error("Error fetching bid data failed:", error)
       );
@@ -78,9 +100,7 @@ const BidPage = () => {
                 lg={7}
                 className="d-flex align-items-center text-ec-dark-green"
               >
-                <p className="fs-5 fw-bold">
-                  Next Bid Amount: ${bidData.next_bid}
-                </p>
+                <p className="fs-5 fw-bold">Next Bid Amount: ${nextBid}</p>
               </Col>
               <Col lg={5} className="d-grid pb-3">
                 <Button
@@ -89,7 +109,7 @@ const BidPage = () => {
                   size="lg"
                   className="p-3"
                 >
-                  Bid for {bidData.next_bid}$
+                  Bid for {nextBid}$
                 </Button>
               </Col>
             </Row>
@@ -100,7 +120,7 @@ const BidPage = () => {
                     id="floatingInputCustom"
                     type="number"
                     placeholder="Bid Amount"
-                    min={bidData.next_bid}
+                    min={nextBid}
                   />
                   <label htmlFor="floatingInputCustom">
                     Enter Custom Bid Amount
