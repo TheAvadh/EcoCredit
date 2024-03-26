@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/recycler")
+@RequestMapping("/api/v1/recycler")
+@CrossOrigin
 public class RecyclerController {
     @Autowired
     AuctionService auctionService;
 
-    @GetMapping("/activebids")
+    @GetMapping("/active-bids")
     public ResponseEntity<?> getAllActiveBids() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -41,7 +42,7 @@ public class RecyclerController {
         }
     }
 
-    @GetMapping("/viewmybids")
+    @GetMapping("/view-my-bids")
     public ResponseEntity<?> getUserBids() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
@@ -61,7 +62,7 @@ public class RecyclerController {
         }
     }
 
-    @GetMapping("/placebid/{bidId}")
+    @GetMapping("/place-bid/{bidId}")
     public ResponseEntity<BidUser> placeBid(@PathVariable Long bidId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -82,7 +83,7 @@ public class RecyclerController {
         }
     }
 
-    @PutMapping("/raisebid")
+    @PutMapping("/raise-bid")
     public ResponseEntity<BidUser> raiseBid(@RequestBody DisplayBidRequest request) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

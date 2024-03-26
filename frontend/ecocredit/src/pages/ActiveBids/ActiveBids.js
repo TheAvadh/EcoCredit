@@ -29,7 +29,7 @@ const ActiveBids = () => {
   const [bids, setBids] = useState([]);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_BASE_URL}/recycler/activebids`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/recycler/active-bids`, {
       method: "GET",
       mode: "cors",
       headers: {
