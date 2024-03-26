@@ -2,6 +2,7 @@ package com.group1.ecocredit.services;
 
 import com.group1.ecocredit.models.Pickup;
 import com.group1.ecocredit.models.Transaction;
+import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.models.Wallet;
 
 import java.math.BigDecimal;
@@ -16,4 +17,7 @@ public interface WalletService {
     void updateCredit(Long userId, BigDecimal deductionAmount, Pickup pickup);
 
     List<Transaction> getTransactionsByUserId(Long userId);
+
+    void createWalletForUser(User user);
+
 }
