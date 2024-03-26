@@ -193,6 +193,92 @@ public class AdminControllerTests {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
+    @Test
+    public void testGetScheduledPickups_SuccessfulExecution() throws SQLException {
+
+        List<PickupAdminResponse> pickups = new ArrayList<>();
+        when(pickupAdminServiceMock.getScheduledPickups()).thenReturn(pickups);
+
+        ResponseEntity<?> response = adminController.getScheduledPickups();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(pickups, response.getBody());
+    }
+
+    @Test
+    public void testGetScheduledPickups_Exception() throws SQLException {
+
+        when(pickupAdminServiceMock.getScheduledPickups()).thenThrow(SQLException.class);
+
+        ResponseEntity<?> response = adminController.getScheduledPickups();
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    @Test
+    public void testGetCompletedPickups_SuccessfulExecution() throws SQLException {
+
+        List<PickupAdminResponse> pickups = new ArrayList<>();
+        when(pickupAdminServiceMock.getCompletedPickups()).thenReturn(pickups);
+
+        ResponseEntity<?> response = adminController.getCompletedPickups();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(pickups, response.getBody());
+    }
+
+    @Test
+    public void testGetCompletedPickups_Exception() throws SQLException {
+
+        when(pickupAdminServiceMock.getCompletedPickups()).thenThrow(RuntimeException.class);
+
+        ResponseEntity<?> response = adminController.getCompletedPickups();
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+
+
+
+    @Test
+    public void testGetInProgressPickups_SuccessfulExecution() throws SQLException {
+
+        List<PickupAdminResponse> pickups = new ArrayList<>();
+        when(pickupAdminServiceMock.getCompletedPickups()).thenReturn(pickups);
+
+        ResponseEntity<?> response = adminController.getInProgressPickups();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(pickups, response.getBody());
+    }
+
+    @Test
+    public void testGetInProgressPickups_Exception() throws SQLException {
+        when(pickupAdminServiceMock.getCompletedPickups()).thenThrow(RuntimeException.class);
+
+        ResponseEntity<?> response = adminController.getInProgressPickups();
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateWeight_SuccessfulExecution() {
+        when(wasteServiceMock.updateWeight(anyLong(), any(WasteUpdateRequest.class))).thenReturn(true);
+
+        ResponseEntity<?> response = adminController.updateWeight(1L, new WasteUpdateRequest());
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateWeight_Failure() {
+        // Arrange
+        when(wasteServiceMock.updateWeight(anyLong(), any(WasteUpdateRequest.class))).thenReturn(false);
+
+        ResponseEntity<?> response = adminController.updateWeight(1L, new WasteUpdateRequest());
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
 
 }
 
