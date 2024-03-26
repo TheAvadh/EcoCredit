@@ -1,18 +1,48 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Cookies from "js-cookie";
 import CenterContainer from "../../components/CenterContainer";
 import biodegradableURL from "../../assets/images/biodegradable.jpg";
-// import electronicsURL from "../../assets/images/electronics.jpg";
-// import glassURL from "../../assets/images/glass.jpg";
-// import mixedURL from "../../assets/images/mixed.jpg";
-// import paperURL from "../../assets/images/paper.jpg";
-// import plasticsURL from "../../assets/images/plastics.jpg";
+import electronicsURL from "../../assets/images/electronics.jpg";
+import glassURL from "../../assets/images/glass.jpg";
+import mixedURL from "../../assets/images/mixed.jpg";
+import paperURL from "../../assets/images/paper.jpg";
+import plasticsURL from "../../assets/images/plastics.jpg";
+
+const imageMap = {
+  biodegradable: biodegradableURL,
+  electronics: electronicsURL,
+  glass: glassURL,
+  mixed: mixedURL,
+  paper: paperURL,
+  plastics: plasticsURL,
+};
 
 const BidPage = () => {
+  const { bidId } = useParams();
+  const [bidData, setBidData] = useState(null);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_BASE_URL}/placebid/${bidId}`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+        Accept: "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setBidData(data))
+      .catch((error) =>
+        console.error("Error fetching bid data failed:", error)
+      );
+  }, [bidId]);
+
   return (
     <CenterContainer title="Place a Bid" colSize={8}>
       <Form className="mt-5">
@@ -20,32 +50,37 @@ const BidPage = () => {
           <Col xxl={4} className="mb-4 text-center">
             <Image
               rounded
-              src={biodegradableURL}
-              alt="biodegradble"
+              src={imageMap[bidData.waste_type]}
+              alt={bidData.waste_type}
               style={{ width: "338px", height: "190px" }}
             />
           </Col>
           <Col xxl={1}></Col>
           <Col xxl={7}>
-            <dl class="row text-end text-ec-dark-green fs-5 pb-4">
-              <dt class="col-7">Waste Type</dt>
-              <dd class="col-5">Biodegradable</dd>
+            <dl className="row text-end text-ec-dark-green fs-5 pb-4">
+              <dt className="col-7">Waste Type</dt>
+              <dd className="col-5">
+                {bidData.waste_type.charAt(0).toUpperCase() +
+                  bidData.waste_type.slice(1)}
+              </dd>
 
-              <dt class="col-7">Weight</dt>
-              <dd class="col-5">5 KG</dd>
+              <dt className="col-7">Weight</dt>
+              <dd className="col-5">{bidData.waste_weight} KG</dd>
 
-              <dt class="col-7">Current Highest Bid</dt>
-              <dd class="col-5">10 CAD</dd>
+              <dt className="col-7">Current Highest Bid</dt>
+              <dd className="col-5">{bidData.highest_bid} CAD</dd>
 
-              <dt class="col-7">Starting Bid</dt>
-              <dd class="col-5">2 CAD</dd>
+              <dt className="col-7">Starting Bid</dt>
+              <dd className="col-5">{bidData.bid_amount} CAD</dd>
             </dl>
             <Row className="mt-5">
               <Col
                 lg={7}
                 className="d-flex align-items-center text-ec-dark-green"
               >
-                <p className="fs-5 fw-bold">Next Bid Amount: 12$</p>
+                <p className="fs-5 fw-bold">
+                  Next Bid Amount: ${bidData.next_bid}
+                </p>
               </Col>
               <Col lg={5} className="d-grid pb-3">
                 <Button
@@ -54,7 +89,7 @@ const BidPage = () => {
                   size="lg"
                   className="p-3"
                 >
-                  Bid for 12$
+                  Bid for {bidData.next_bid}$
                 </Button>
               </Col>
             </Row>
@@ -65,8 +100,7 @@ const BidPage = () => {
                     id="floatingInputCustom"
                     type="number"
                     placeholder="Bid Amount"
-                    min={0}
-                    step={1}
+                    min={bidData.next_bid}
                   />
                   <label htmlFor="floatingInputCustom">
                     Enter Custom Bid Amount
