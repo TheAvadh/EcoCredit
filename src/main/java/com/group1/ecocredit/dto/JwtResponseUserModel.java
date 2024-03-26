@@ -1,7 +1,7 @@
 package com.group1.ecocredit.dto;
 
 import com.group1.ecocredit.models.Address;
-import com.group1.ecocredit.models.Role;
+import com.group1.ecocredit.enums.Role;
 import jakarta.persistence.Embedded;
 import lombok.Getter;
 import lombok.Setter;

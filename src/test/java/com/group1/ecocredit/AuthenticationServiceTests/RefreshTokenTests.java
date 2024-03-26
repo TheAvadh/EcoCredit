@@ -3,10 +3,9 @@ package com.group1.ecocredit.AuthenticationServiceTests;
 
 import com.group1.ecocredit.dto.JwtAuthenticationResponse;
 import com.group1.ecocredit.dto.RefreshTokenRequest;
-import com.group1.ecocredit.models.Role;
+import com.group1.ecocredit.enums.Role;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.UserRepository;
-import com.group1.ecocredit.services.AuthenticationService;
 import com.group1.ecocredit.services.implementations.AuthenticationServiceImpl;
 import com.group1.ecocredit.services.implementations.JWTServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
