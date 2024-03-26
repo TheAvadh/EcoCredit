@@ -43,9 +43,6 @@ public class PickupServiceImpl implements PickupService {
     @Autowired
     private PickupPaymentActionService pickupPaymentActionService;
 
-    @Autowired
-    private TransactionRepository transactionRepository;
-
 
 
     @Override
