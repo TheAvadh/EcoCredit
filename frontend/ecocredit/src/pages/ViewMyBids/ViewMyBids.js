@@ -28,19 +28,19 @@ const ViewMyBids = () => {
             <Card.Img variant="top" src={biodegradableURL} />
             <Card.Body className="d-flex flex-column">
               <Card.Title className="fs-3 fw-bold">Biodegradable</Card.Title>
-              <Card.Text>
-                <dl class="row">
-                  <dt class="col-sm-5">Weight</dt>
-                  <dd class="col-sm-7">5 KG</dd>
+              <div>
+                <dl className="row">
+                  <dt className="col-sm-5">Weight</dt>
+                  <dd className="col-sm-7">5 KG</dd>
 
-                  <dt class="col-sm-5">Current Highest Bid</dt>
-                  <dd class="col-sm-7">10 CAD</dd>
+                  <dt className="col-sm-5">Current Highest Bid</dt>
+                  <dd className="col-sm-7">10 CAD</dd>
 
-                  <dt class="col-sm-5">Starting Bid</dt>
-                  <dd class="col-sm-7">2 CAD</dd>
+                  <dt className="col-sm-5">Starting Bid</dt>
+                  <dd className="col-sm-7">2 CAD</dd>
 
-                  <dt class="col-sm-5">Status</dt>
-                  <dd class="col-sm-7">
+                  <dt className="col-sm-5">Status</dt>
+                  <dd className="col-sm-7">
                     <Badge bg="ec-dark-green">Active</Badge>
                   </dd>
                 </dl>
@@ -52,7 +52,7 @@ const ViewMyBids = () => {
                     Place a Bid
                   </Button>
                 </div>
-              </Card.Text>
+              </div>
             </Card.Body>
             <Card.Footer>
               <small className="text-muted">
@@ -66,25 +66,25 @@ const ViewMyBids = () => {
             <Card.Img variant="top" src={electronicsURL} />
             <Card.Body className="d-flex flex-column">
               <Card.Title className="fs-3 fw-bold">Electronics</Card.Title>
-              <Card.Text>
-                <dl class="row">
-                  <dt class="col-sm-5">Weight</dt>
-                  <dd class="col-sm-7">5 KG</dd>
+              <div>
+                <dl className="row">
+                  <dt className="col-sm-5">Weight</dt>
+                  <dd className="col-sm-7">5 KG</dd>
 
-                  <dt class="col-sm-5">Current Highest Bid</dt>
-                  <dd class="col-sm-7">10 CAD</dd>
+                  <dt className="col-sm-5">Current Highest Bid</dt>
+                  <dd className="col-sm-7">10 CAD</dd>
 
-                  <dt class="col-sm-5">Starting Bid</dt>
-                  <dd class="col-sm-7">2 CAD</dd>
+                  <dt className="col-sm-5">Starting Bid</dt>
+                  <dd className="col-sm-7">2 CAD</dd>
 
-                  <dt class="col-sm-5">Status</dt>
-                  <dd class="col-sm-7">
+                  <dt className="col-sm-5">Status</dt>
+                  <dd className="col-sm-7">
                     <Badge bg="ec-light-green" className="text-ec-dark-green">
                       Completed
                     </Badge>
                   </dd>
                 </dl>
-              </Card.Text>
+              </div>
             </Card.Body>
             <Card.Footer>
               <small className="text-muted">
@@ -98,19 +98,19 @@ const ViewMyBids = () => {
             <Card.Img variant="top" src={glassURL} />
             <Card.Body className="d-flex flex-column">
               <Card.Title className="fs-3 fw-bold">Glass</Card.Title>
-              <Card.Text>
-                <dl class="row">
-                  <dt class="col-sm-5">Weight</dt>
-                  <dd class="col-sm-7">5 KG</dd>
+              <div>
+                <dl className="row">
+                  <dt className="col-sm-5">Weight</dt>
+                  <dd className="col-sm-7">5 KG</dd>
 
-                  <dt class="col-sm-5">Current Highest Bid</dt>
-                  <dd class="col-sm-7">10 CAD</dd>
+                  <dt className="col-sm-5">Current Highest Bid</dt>
+                  <dd className="col-sm-7">10 CAD</dd>
 
-                  <dt class="col-sm-5">Starting Bid</dt>
-                  <dd class="col-sm-7">2 CAD</dd>
+                  <dt className="col-sm-5">Starting Bid</dt>
+                  <dd className="col-sm-7">2 CAD</dd>
 
-                  <dt class="col-sm-5">Status</dt>
-                  <dd class="col-sm-7">
+                  <dt className="col-sm-5">Status</dt>
+                  <dd className="col-sm-7">
                     <Badge bg="ec-dark-green">Active</Badge>
                   </dd>
                 </dl>
@@ -122,7 +122,7 @@ const ViewMyBids = () => {
                     Place a Bid
                   </Button>
                 </div>
-              </Card.Text>
+              </div>
             </Card.Body>
             <Card.Footer>
               <small className="text-muted">
@@ -136,25 +136,25 @@ const ViewMyBids = () => {
             <Card.Img variant="top" src={mixedURL} />
             <Card.Body className="d-flex flex-column">
               <Card.Title className="fs-3 fw-bold">Mixed</Card.Title>
-              <Card.Text>
-                <dl class="row">
-                  <dt class="col-sm-5">Weight</dt>
-                  <dd class="col-sm-7">5 KG</dd>
+              <div>
+                <dl className="row">
+                  <dt className="col-sm-5">Weight</dt>
+                  <dd className="col-sm-7">5 KG</dd>
 
-                  <dt class="col-sm-5">Current Highest Bid</dt>
-                  <dd class="col-sm-7">10 CAD</dd>
+                  <dt className="col-sm-5">Current Highest Bid</dt>
+                  <dd className="col-sm-7">10 CAD</dd>
 
-                  <dt class="col-sm-5">Starting Bid</dt>
-                  <dd class="col-sm-7">2 CAD</dd>
+                  <dt className="col-sm-5">Starting Bid</dt>
+                  <dd className="col-sm-7">2 CAD</dd>
 
-                  <dt class="col-sm-5">Status</dt>
-                  <dd class="col-sm-7">
+                  <dt className="col-sm-5">Status</dt>
+                  <dd className="col-sm-7">
                     <Badge bg="ec-light-green" className="text-ec-dark-green">
                       Completed
                     </Badge>
                   </dd>
                 </dl>
-              </Card.Text>
+              </div>
             </Card.Body>
             <Card.Footer>
               <small className="text-muted">
@@ -168,19 +168,19 @@ const ViewMyBids = () => {
             <Card.Img variant="top" src={paperURL} />
             <Card.Body className="d-flex flex-column">
               <Card.Title className="fs-3 fw-bold">Paper</Card.Title>
-              <Card.Text>
-                <dl class="row">
-                  <dt class="col-sm-5">Weight</dt>
-                  <dd class="col-sm-7">5 KG</dd>
+              <div>
+                <dl className="row">
+                  <dt className="col-sm-5">Weight</dt>
+                  <dd className="col-sm-7">5 KG</dd>
 
-                  <dt class="col-sm-5">Current Highest Bid</dt>
-                  <dd class="col-sm-7">10 CAD</dd>
+                  <dt className="col-sm-5">Current Highest Bid</dt>
+                  <dd className="col-sm-7">10 CAD</dd>
 
-                  <dt class="col-sm-5">Starting Bid</dt>
-                  <dd class="col-sm-7">2 CAD</dd>
+                  <dt className="col-sm-5">Starting Bid</dt>
+                  <dd className="col-sm-7">2 CAD</dd>
 
-                  <dt class="col-sm-5">Status</dt>
-                  <dd class="col-sm-7">
+                  <dt className="col-sm-5">Status</dt>
+                  <dd className="col-sm-7">
                     <Badge bg="ec-dark-green">Active</Badge>
                   </dd>
                 </dl>
@@ -192,7 +192,7 @@ const ViewMyBids = () => {
                     Place a Bid
                   </Button>
                 </div>
-              </Card.Text>
+              </div>
             </Card.Body>
             <Card.Footer>
               <small className="text-muted">
@@ -206,25 +206,25 @@ const ViewMyBids = () => {
             <Card.Img variant="top" src={plasticsURL} />
             <Card.Body className="d-flex flex-column">
               <Card.Title className="fs-3 fw-bold">Plastics</Card.Title>
-              <Card.Text>
-                <dl class="row">
-                  <dt class="col-sm-5">Weight</dt>
-                  <dd class="col-sm-7">5 KG</dd>
+              <div>
+                <dl className="row">
+                  <dt className="col-sm-5">Weight</dt>
+                  <dd className="col-sm-7">5 KG</dd>
 
-                  <dt class="col-sm-5">Current Highest Bid</dt>
-                  <dd class="col-sm-7">10 CAD</dd>
+                  <dt className="col-sm-5">Current Highest Bid</dt>
+                  <dd className="col-sm-7">10 CAD</dd>
 
-                  <dt class="col-sm-5">Starting Bid</dt>
-                  <dd class="col-sm-7">2 CAD</dd>
+                  <dt className="col-sm-5">Starting Bid</dt>
+                  <dd className="col-sm-7">2 CAD</dd>
 
-                  <dt class="col-sm-5">Status</dt>
-                  <dd class="col-sm-7">
+                  <dt className="col-sm-5">Status</dt>
+                  <dd className="col-sm-7">
                     <Badge bg="ec-light-green" className="text-ec-dark-green">
                       Completed
                     </Badge>
                   </dd>
                 </dl>
-              </Card.Text>
+              </div>
             </Card.Body>
             <Card.Footer>
               <small className="text-muted">

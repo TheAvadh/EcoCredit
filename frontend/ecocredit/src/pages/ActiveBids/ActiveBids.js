@@ -68,7 +68,7 @@ const ActiveBids = () => {
                   {bid.waste_type.charAt(0).toUpperCase() +
                     bid.waste_type.slice(1)}
                 </Card.Title>
-                <Card.Text>
+                <div>
                   <dl className="row">
                     <dt className="col-sm-5">Weight</dt>
                     <dd className="col-sm-7">{bid.waste_weight} KG</dd>
@@ -89,7 +89,7 @@ const ActiveBids = () => {
                       Place a Bid
                     </Button>
                   </div>
-                </Card.Text>
+                </div>
               </Card.Body>
               <Card.Footer>
                 <small className="text-muted">
