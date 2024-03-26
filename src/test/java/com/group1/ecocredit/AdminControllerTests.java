@@ -272,7 +272,6 @@ public class AdminControllerTests {
 
     @Test
     public void testUpdateWeight_Failure() {
-        // Arrange
         when(wasteServiceMock.updateWeight(anyLong(), any(WasteUpdateRequest.class))).thenReturn(false);
 
         ResponseEntity<?> response = adminController.updateWeight(1L, new WasteUpdateRequest());
