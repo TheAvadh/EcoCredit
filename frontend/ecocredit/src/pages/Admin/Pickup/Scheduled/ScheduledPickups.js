@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
 import Cookies from "js-cookie";
 import "../Styling/Pickups.css";
 
@@ -10,6 +11,10 @@ const ScheduledPickups = () => {
     const [pickups, setPickups] = useState([]);
 
     useEffect(() => {
+      fetchPickups();
+    }, []);
+  
+    const fetchPickups = async () => {
       fetch(
         `${process.env.REACT_APP_BASE_URL}/admin/scheduled-pickups`,
         {
@@ -29,7 +34,27 @@ const ScheduledPickups = () => {
         .catch((error) =>
           console.error("Fetching scheduled pickups data failed:", error)
         );
-      }, []);
+      };
+
+      const completePickup = async (pickupId) => {
+        try {
+          const response = await fetch(
+            `${process.env.REACT_APP_BASE_URL}/admin/complete-pickup`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${Cookies.get("token")}`,
+              },
+              body: JSON.stringify(pickupId),
+            }
+          );
+          if (!response.ok) throw new Error("Failed to complete pickup");
+          await fetchPickups();
+        } catch (error) {
+          console.error("Error completing the pickup:", error);
+        }
+      };
 
 return (
     
@@ -54,6 +79,7 @@ return (
                   <th>Time</th>
                   <th>Username</th>
                   <th>Waste</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -64,10 +90,10 @@ return (
                     <td>{pickup.time}</td>
                     <td>{pickup.userFirstName + " " + pickup.userLastName}</td>
                     <Table
-                        bordered
+                        border-collapse
                         hover
                         variant="ec-grey"
-                        className="table-custom mb-0">
+                        className="table-custom mb-0 mt-0">
                         <tbody>
                             {pickup.wastes.map((waste) => (
                                 <tr key={waste.wasteId}>
@@ -78,6 +104,19 @@ return (
                             ))}
                         </tbody>
                     </Table>
+                    <td className="text-center">
+                      {
+                        <Button
+                          variant="ec-dark-green"
+                          size="sm"
+                          margin-top="0"
+                          margin-bottom="0"
+                          onClick={() => completePickup(pickup.pickupId)}
+                        >
+                          Complete
+                        </Button>
+                      }
+                    </td>
                   </tr>
                 ))}
               </tbody>
