@@ -41,6 +41,7 @@ EcoCredit has one admin account. When an admin logs in, they are redirected to t
 **View scheduled pickups**
 
 This page shows all pickups that have been scheduled by users, sorted from the latest pickup. The pickup information contains:
+
 - pickup date
 - pickup time
 - first and last name of user who scheduled the pickup
@@ -65,6 +66,7 @@ An admin can create a bid of a waste item. To do this, the admin needs to enter 
 **View bids**
 
 An admin can view all bids, both active and inactive. Each bid contains the following information:
+
 - waste item's ID
 - waste item's category
 - waste item's weight (kg)
@@ -81,8 +83,6 @@ An admin can view all active bids.
 
 #### Part 2: Recycler Dashboard
 
-
-
 ## References
 
 | Topic                      | URL                                                                                       |
@@ -90,4 +90,6 @@ An admin can view all active bids.
 | Forgot Password Flow       | https://supertokens.com/blog/implementing-a-forgot-password-flow                          |
 | Forgot Password Psuedocode | https://stackoverflow.com/questions/1102781/best-way-for-a-forgot-password-implementation |
 | React Bootstrap            | https://react-bootstrap.netlify.app/docs/getting-started/introduction                     |
+| Bootstrap                  | https://getbootstrap.com/docs/5.3/getting-started/introduction/                           |
 | Submit Form Data to API    | https://www.techomoro.com/submit-a-form-data-to-rest-api-in-a-react-app/                  |
+| Display Duration           | https://momentjs.com/docs/#/durations/                                                    |
