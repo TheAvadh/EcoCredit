@@ -49,8 +49,8 @@ public class AuctionServiceTests {
         Bid bid = new Bid();
         bid.setId(1L);
         bid.setWaste(mockWaste);
-        bid.setBase_price(100);
-        bid.setTop_bid_amount(150);
+        bid.setBase_price(100d);
+        bid.setTop_bid_amount(150d);
         bid.setDate(LocalDateTime.now());
         bid.set_active(true);
 
@@ -89,7 +89,7 @@ public class AuctionServiceTests {
         // Setup mock data
         DisplayBidRequest request = new DisplayBidRequest();
         request.setBidId(1L);
-        request.setNewBidAmount(30);
+        request.setNewBidAmount(30d);
 
         User user = User.builder()
                 .id(1)
@@ -107,7 +107,7 @@ public class AuctionServiceTests {
 
         // Setup mock Bid
         Bid bid = createMockBid();
-        bid.setTop_bid_amount(20);
+        bid.setTop_bid_amount(20d);
         bid.setWaste(mockWaste);
 
         // Mock repository interactions
@@ -160,7 +160,7 @@ public class AuctionServiceTests {
         // Setup
         DisplayBidRequest request = new DisplayBidRequest();
         request.setBidId(1L);
-        request.setNewBidAmount(5);
+        request.setNewBidAmount(5d);
 
         User user = User.builder()
                 .id(1)
@@ -176,7 +176,7 @@ public class AuctionServiceTests {
         when(mockWaste.getCategory()).thenReturn(mockCategory);
 
         Bid bid = createMockBid();
-        bid.setTop_bid_amount(20);
+        bid.setTop_bid_amount(20d);
         bid.setWaste(mockWaste);
 
         when(bidRepository.findById(request.getBidId())).thenReturn(bid);
@@ -204,7 +204,7 @@ public class AuctionServiceTests {
     void testRaiseBidWithNonexistentBid() {
         DisplayBidRequest request = new DisplayBidRequest();
         request.setBidId(99L);
-        request.setNewBidAmount(100);
+        request.setNewBidAmount(100d);
 
         User user = createMockBidUser().getUser();
 
@@ -246,6 +246,30 @@ public class AuctionServiceTests {
         user.setId(1);
         bidUser.setUser(user);
         return bidUser;
+    }
+
+    @Test
+    void testDiscardActiveStatus() {
+
+        List<BidUser> mockBidUsers = new ArrayList<>();
+        BidUser activeBidUser = new BidUser();
+        activeBidUser.setId(1L);
+        activeBidUser.setIs_Active(true);
+
+        Bid activeBid = new Bid();
+        activeBid.setId(1L);
+        activeBid.set_active(false);
+        activeBidUser.setBid(activeBid);
+        mockBidUsers.add(activeBidUser);
+
+        when(bidUserRepository.findByActive(true)).thenReturn(mockBidUsers);
+        when(bidRepository.findById(anyLong())).thenReturn(activeBid);
+
+        auctionService.discardActiveStatus();
+
+        verify(bidUserRepository, times(1)).findByActive(true);
+        verify(bidUserRepository, times(1)).save(activeBidUser);
+        assertFalse(activeBidUser.getIs_Active());
     }
 }
 

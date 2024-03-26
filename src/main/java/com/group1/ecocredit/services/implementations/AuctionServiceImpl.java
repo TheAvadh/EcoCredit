@@ -66,46 +66,47 @@ public class AuctionServiceImpl implements AuctionService {
 
         Double enteredBid = request.getNewBidAmount();
 
+        if (enteredBid != null) {
+            processEnteredBid(bid, bidUser, user, enteredBid, nextBid);
+        }
+        else {
+            processNullBid(bid, bidUser, user, nextBid);
+        }
+
+        return bidUser;
+    }
+
+    private void processEnteredBid(Bid bid, BidUser bidUser, User user, Double enteredBid, Double nextBid) {
         if (enteredBid >= nextBid) {
             bid.setTop_bid_amount(enteredBid);
             bid.setUser(user);
-
-            bidUser.setBid_amount(enteredBid);
-            bidUser.setDate(LocalDateTime.now());
-            bidUser.setUser(user);
-            bidUser.setIs_Active(bid.is_active());
-            bidUser.setHighest_bid(bid.getTop_bid_amount());
-            bidUser.setWaste_type(bid.getWaste().getCategory().getValue());
-            bidUser.setWaste_weight(bid.getWaste().getWeight());
-            bidUser.setBid(bid);
-
-            bidUserRepository.save(bidUser);
-            bidRepository.save(bid);
+            saveBidAndBidUser(bid, bidUser, user, enteredBid);
             System.out.println("You successfully place a bid of " + enteredBid + ". Refresh the page to see the changes.");
-            return bidUser;
-        }
 
-        if (enteredBid == null) {
-            bid.setTop_bid_amount(nextBid);
-            bid.setUser(user);
-
-            bidUser.setBid_amount(nextBid);
-            bidUser.setDate(LocalDateTime.now());
-            bidUser.setUser(user);
-            bidUser.setIs_Active(bid.is_active());
-            bidUser.setHighest_bid(bid.getTop_bid_amount());
-            bidUser.setWaste_type(bid.getWaste().getCategory().getValue());
-            bidUser.setWaste_weight(bid.getWaste().getWeight());
-            bidUser.setBid(bid);
-
-            bidUserRepository.save(bidUser);
-            bidRepository.save(bid);
-            System.out.println("You successfully place a bid of " + nextBid + ". Refresh the page to see the changes.");
-            return bidUser;
         } else {
             throw new IllegalArgumentException("Entered amount should be greater than or equal to " + nextBid);
         }
+    }
 
+    private void processNullBid(Bid bid, BidUser bidUser, User user, Double nextBid) {
+        bid.setTop_bid_amount(nextBid);
+        bid.setUser(user);
+        saveBidAndBidUser(bid, bidUser, user, nextBid);
+        System.out.println("You successfully place a bid of " + nextBid + ". Refresh the page to see the changes.");
+    }
+
+    private void saveBidAndBidUser(Bid bid, BidUser bidUser, User user, Double bidAmount) {
+        bidUser.setBid_amount(bidAmount);
+        bidUser.setDate(LocalDateTime.now());
+        bidUser.setUser(user);
+        bidUser.setIs_Active(bid.is_active());
+        bidUser.setHighest_bid(bid.getTop_bid_amount());
+        bidUser.setWaste_type(bid.getWaste().getCategory().getValue());
+        bidUser.setWaste_weight(bid.getWaste().getWeight());
+        bidUser.setBid(bid);
+
+        bidUserRepository.save(bidUser);
+        bidRepository.save(bid);
     }
 
 
@@ -143,11 +144,11 @@ public class AuctionServiceImpl implements AuctionService {
         } else if (currentPrice > 250 && currentPrice <= 500) {
             return 50;
         } else {
-            return 100; // Return null or handle the case when currentPrice is out of specified ranges.
+            return 100;
         }
     }
 
-    private void discardActiveStatus(){
+    public void discardActiveStatus(){
        List<BidUser> listBidUser = bidUserRepository.findByActive(true);
        for(BidUser bidUser:listBidUser){
            Long idBid = bidUser.getBid().getId();
