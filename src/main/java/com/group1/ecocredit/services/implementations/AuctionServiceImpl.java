@@ -115,15 +115,15 @@ public class AuctionServiceImpl implements AuctionService {
         if (bid.is_active() == true) {
             //Here I am using the BidUser just to ensure that only certain fields will be displayed to the recycler.
             //Do not save this BidUser object into the database, this just for retrieving purpose.
-            BidUser dummyBidUser = new BidUser();
-            dummyBidUser.setId(bid.getId());
-            dummyBidUser.setDate(bid.getDate());
-            dummyBidUser.setWaste_type(bid.getWaste().getCategory().getValue());
-            dummyBidUser.setWaste_weight(bid.getWaste().getWeight());
-            dummyBidUser.setBid_amount(bid.getBase_price());
-            dummyBidUser.setHighest_bid(bid.getTop_bid_amount());
+            BidUser storeBidUser = new BidUser();
+            storeBidUser.setId(bid.getId());
+            storeBidUser.setDate(bid.getDate());
+            storeBidUser.setWaste_type(bid.getWaste().getCategory().getValue());
+            storeBidUser.setWaste_weight(bid.getWaste().getWeight());
+            storeBidUser.setBid_amount(bid.getBase_price());
+            storeBidUser.setHighest_bid(bid.getTop_bid_amount());
 
-            return dummyBidUser;
+            return storeBidUser;
         } else {
             throw new RuntimeException("The bid is no longer active");
         }
