@@ -1,6 +1,6 @@
 package com.group1.ecocredit;
 
-import com.group1.ecocredit.models.CategoryPrice;
+import com.group1.ecocredit.enums.Role;
 import com.group1.ecocredit.models.PickupStatus;
 import com.group1.ecocredit.models.Category;
 import com.group1.ecocredit.models.Status;

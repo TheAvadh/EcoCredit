@@ -5,7 +5,7 @@ import com.group1.ecocredit.dto.BidCreateRequest;
 import com.group1.ecocredit.dto.admin.PickupAdminResponse;
 import com.group1.ecocredit.dto.admin.WasteUpdateRequest;
 import com.group1.ecocredit.models.Bid;
-import com.group1.ecocredit.models.Role;
+import com.group1.ecocredit.enums.Role;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.services.BidService;
 import com.group1.ecocredit.services.admin.implementations.PickupAdminServiceImpl;
