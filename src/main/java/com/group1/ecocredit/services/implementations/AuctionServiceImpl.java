@@ -81,7 +81,6 @@ public class AuctionServiceImpl implements AuctionService {
             bid.setTop_bid_amount(enteredBid);
             bid.setUser(user);
             saveBidAndBidUser(bid, bidUser, user, enteredBid);
-            System.out.println("You successfully place a bid of " + enteredBid + ". Refresh the page to see the changes.");
 
         } else {
             throw new IllegalArgumentException("Entered amount should be greater than or equal to " + nextBid);
@@ -92,7 +91,6 @@ public class AuctionServiceImpl implements AuctionService {
         bid.setTop_bid_amount(nextBid);
         bid.setUser(user);
         saveBidAndBidUser(bid, bidUser, user, nextBid);
-        System.out.println("You successfully place a bid of " + nextBid + ". Refresh the page to see the changes.");
     }
 
     private void saveBidAndBidUser(Bid bid, BidUser bidUser, User user, Double bidAmount) {
