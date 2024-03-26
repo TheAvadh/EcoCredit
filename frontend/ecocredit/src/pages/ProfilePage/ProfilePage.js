@@ -3,6 +3,8 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import ProfileForm from "../../components/ProfileForm";
 import Toast from "../../components/Toast/Toast";
 import profilePicURL from "../../assets/images/profilePic.jpg";
@@ -24,26 +26,38 @@ const ProfilePage = () => {
       country: "",
     },
   });
-  const [editMode, setEditMode] = useState(true);
+  const [editMode, setEditMode] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState("");
+  const [creditAmount, setCreditAmount] = useState(0);
 
   useEffect(() => {
-    fetch(
-      `${process.env.REACT_APP_BASE_URL}/users/getprofile`,
-      {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          Authorization: `Bearer ${Cookies.get("token")}`,
-          Accept: "application/json",
-        },
-      }
-    )
+    fetch(`${process.env.REACT_APP_BASE_URL}/users/getprofile`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+        Accept: "application/json",
+      },
+    })
       .then((response) => response.json())
       .then((data) => setProfileData(data))
       .catch((error) => console.error("Fetching profile data failed:", error));
+
+    fetch(`${process.env.REACT_APP_BASE_URL}/wallet/getCredit`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+        Accept: "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setCreditAmount(data.creditAmount);
+      })
+      .catch((error) => console.error("Error fetching credit amount:", error));
   }, []);
 
   const handleInputChange = (event) => {
@@ -104,6 +118,13 @@ const ProfilePage = () => {
               roundedCircle
               style={{ width: "200px", height: "200px" }}
             />
+            <h3 className="mt-4 text-ec-dark-green fw-bold fs-4">
+              EcoCredits in Wallet
+            </h3>
+            <p className="text-ec-dark-green fw-bold fs-5">
+              <FontAwesomeIcon icon={faCoins} className="fa-icon" />{" "}
+              {creditAmount}
+            </p>
           </Col>
           <Col lg={1}>
             <div className="profile-divider"></div>
