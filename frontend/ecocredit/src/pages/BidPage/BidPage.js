@@ -41,7 +41,29 @@ const rangeDifference = (currentPrice) => {
 
 const BidPage = () => {
   const { bidId } = useParams();
-  const [bidData, setBidData] = useState(null);
+  const [bidData, setBidData] = useState({
+    id: "",
+    date: "",
+    waste_type: "",
+    waste_weight: "",
+    bid_amount: "",
+    is_Active: "",
+    highest_bid: "",
+    user: {
+      id: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      address: {
+        street: "",
+        city: "",
+        province: "",
+        postalCode: "",
+        country: ""
+      }
+    }
+  });
   const [nextBid, setNextBid] = useState(0);
 
   useEffect(() => {
