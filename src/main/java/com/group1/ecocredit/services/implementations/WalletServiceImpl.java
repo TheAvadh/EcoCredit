@@ -1,9 +1,6 @@
 package com.group1.ecocredit.services.implementations;
 
-import com.group1.ecocredit.models.Pickup;
-import com.group1.ecocredit.models.Transaction;
-import com.group1.ecocredit.models.TransactionType;
-import com.group1.ecocredit.models.Wallet;
+import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.repositories.TransactionRepository;
 import com.group1.ecocredit.repositories.WalletRepository;
 import com.group1.ecocredit.services.TransactionService;
@@ -84,5 +81,13 @@ public class WalletServiceImpl implements WalletService {
         } catch (Exception e) {
             throw new RuntimeException("Error fetching transactions for user ID: " + userId, e);
         }
+    }
+
+    @Override
+    public void createWalletForUser(User user) {
+
+        Wallet wallet = new Wallet();
+        wallet.setUserId(Long.valueOf(user.getId()));
+        walletRepository.save(wallet);
     }
 }

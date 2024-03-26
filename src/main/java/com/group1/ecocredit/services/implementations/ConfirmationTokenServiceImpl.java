@@ -2,9 +2,11 @@ package com.group1.ecocredit.services.implementations;
 
 import com.google.common.hash.Hashing;
 import com.group1.ecocredit.models.ConfirmationToken;
+import com.group1.ecocredit.models.Wallet;
 import com.group1.ecocredit.repositories.ConfirmationTokenRepository;
 import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.ConfirmationTokenService;
+import com.group1.ecocredit.services.WalletService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import com.group1.ecocredit.models.User;
@@ -27,6 +29,8 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
 
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final UserRepository userRepository;
+
+    private final WalletService walletService;
 
 
     @Override
@@ -79,7 +83,8 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
         confirmationTokenRepository.save(tokenObj);
         userRepository.save(userToEnable);
 
-
+        walletService.createWalletForUser(userToEnable);
+        
         return true;
     }
 
