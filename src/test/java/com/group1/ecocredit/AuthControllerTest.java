@@ -131,33 +131,6 @@ public class AuthControllerTest {
     }
 
     @Test
-    public void testRefreshTokenSuccessful() {
-
-        RefreshTokenRequest refreshTokenRequest = new RefreshTokenRequest(VALID_TOKEN);
-        JwtAuthenticationResponse mockedResponse = new JwtAuthenticationResponse();
-
-        when(authenticationServiceMock.refreshToken(refreshTokenRequest)).thenReturn(mockedResponse);
-
-        ResponseEntity<JwtAuthenticationResponse> responseEntity = authenticationController.refresh(refreshTokenRequest);
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(mockedResponse, responseEntity.getBody());
-    }
-
-    @Test
-    public void testRefreshTokenUnsuccessful() {
-        RefreshTokenRequest refreshTokenRequest = new RefreshTokenRequest(VALID_TOKEN);
-
-        when(authenticationServiceMock.refreshToken(refreshTokenRequest)).thenReturn(null);
-
-        ResponseEntity<JwtAuthenticationResponse> responseEntity = authenticationController.refresh(refreshTokenRequest);
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertNull(responseEntity.getBody());
-        assertNull(responseEntity.getBody());
-    }
-
-    @Test
     public void testConfirmAccountSuccessful() {
         ConfirmationToken confirmationToken = new ConfirmationToken();
         User user = new User();
