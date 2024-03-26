@@ -15,6 +15,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.core.env.Environment;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -26,6 +30,11 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/*@TestPropertySource(properties = {
+        "signup.verification.token.hours=24" // Set the value to whatever you want for testing
+})
+@SpringBootTest
+@ContextConfiguration*/
 public class ConfirmationTokenTest {
 
 
@@ -42,11 +51,12 @@ public class ConfirmationTokenTest {
     private ConfirmationToken confirmationToken;
 
 
-
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         confirmationTokenService = new ConfirmationTokenServiceImpl(confirmationTokenRepository, userRepository);
+
+        /*validityInHours = Integer.parseInt(env.getProperty("signup.verification.token.hours"));*/
     }
 
 
@@ -85,18 +95,29 @@ public class ConfirmationTokenTest {
         assertTrue(token.length()>1);
     }
 
-/*    @Test
-    @DisplayName("This should save the token")
-    public void saveConfirmationTokenTest(){
+    /*@Test
+    @DisplayName("This should save confirmation token")
+    public void saveConfirmationTokenTest() {
+        // Arrange
+        User user = new User();
+        user.setId(1);
+        user.setFirstName("John");
+        user.setLastName("Wick");
+        user.setEmail("JohnWick@kmail.com");
+        user.setPhoneNumber("1234567890");
 
-        when(confirmationTokenRepository.save(any(ConfirmationToken.class))).thenReturn(confirmationToken);
+        String token = "3478e41e-59d4-4d3c-afe5-8ff5195cd8ff";
 
-        String savedToken = confirmationTokenService.saveConfirmationToken(token, confirmationToken.getUser());
+        when(confirmationTokenRepository.save(any(ConfirmationToken.class))).thenReturn(new ConfirmationToken());
 
+        String savedToken = confirmationTokenService.saveConfirmationToken(token, user);
+
+        assertNotNull(savedToken);
         assertEquals(token, savedToken);
 
         verify(confirmationTokenRepository).save(any(ConfirmationToken.class));
     }*/
+
 
     @Test
     @DisplayName("This should return true when token confirms")
