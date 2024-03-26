@@ -88,6 +88,7 @@ public class EcocreditApplication implements CommandLineRunner {
         return categories;
     }
 
+
     private void prefillWasteCategoryLookup(List<Category> categories) {
         for (var category : categories) {
 
@@ -110,6 +111,7 @@ public class EcocreditApplication implements CommandLineRunner {
         statuses.add(new Status(5, PickupStatus.AWAITING_PAYMENT));
         return statuses;
     }
+
 
 
     private void prefillPickupStatusLookup(List<Status> statuses) {
