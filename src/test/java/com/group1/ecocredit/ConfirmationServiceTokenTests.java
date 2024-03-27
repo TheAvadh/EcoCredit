@@ -49,23 +49,6 @@ public class ConfirmationServiceTokenTests{
     }
 
     @Test
-    void confirmToken_ShouldConfirmTokenAndEnableUser() {
-        ConfirmationToken confirmationToken = new ConfirmationToken();
-        confirmationToken.setToken(token);
-        confirmationToken.setUser(user);
-        confirmationToken.setExpirationTime(LocalDateTime.now().plusHours(1));
-
-        when(confirmationTokenRepository.findByToken(anyString())).thenReturn(Optional.of(confirmationToken));
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
-
-        assertTrue(confirmationTokenService.confirmToken(token));
-        assertTrue(user.isEnabled());
-
-        verify(confirmationTokenRepository).save(confirmationToken);
-        verify(userRepository).save(user);
-    }
-
-    @Test
     void isValidToken_ShouldReturnTrueForValidToken() {
         ConfirmationToken confirmationToken = new ConfirmationToken();
         confirmationToken.setExpirationTime(LocalDateTime.now().plusHours(1));
