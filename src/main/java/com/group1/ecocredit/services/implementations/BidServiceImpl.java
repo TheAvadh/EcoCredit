@@ -5,7 +5,7 @@ import com.group1.ecocredit.models.Bid;
 import com.group1.ecocredit.models.CategoryPrice;
 import com.group1.ecocredit.models.Waste;
 import com.group1.ecocredit.repositories.BidService;
-import com.group1.ecocredit.repositories.CategoryPriceRepository;
+import com.group1.ecocredit.repositories.CategoryPriceService;
 import com.group1.ecocredit.services.WasteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +28,7 @@ public class BidServiceImpl implements com.group1.ecocredit.services.BidService 
     @Autowired
     WasteService wasteService;
     @Autowired
-    CategoryPriceRepository categoryPriceRepository; // TODO - service
+    CategoryPriceService categoryPriceService;
 
 
     @Override
@@ -57,7 +57,7 @@ public class BidServiceImpl implements com.group1.ecocredit.services.BidService 
 
             Waste waste = wasteService.findById(bidCreateRequest.getWasteId()).get();
 //          Base Price = category base price multiply by weight of the waste.
-            Optional<CategoryPrice> categoryPrice = categoryPriceRepository.findByCategoryId(waste.getCategory().getId());
+            Optional<CategoryPrice> categoryPrice = categoryPriceService.findByCategoryId(waste.getCategory().getId());
             Float basePriceF = (float)categoryPrice.get().getValue() * waste.getWeight();
             Double basePrice = (double)Math.round(basePriceF);
 
@@ -141,13 +141,11 @@ public class BidServiceImpl implements com.group1.ecocredit.services.BidService 
 
     @Override
     public List<Bid> getAllActiveBids() {
-        List<Bid> bidList = bidRepository.findByIsActive(true);
-        return bidList;
+        return bidRepository.findByIsActive(true);
     }
 
     @Override
     public List<Bid> getAllBids() {
-        List<Bid> bidList = bidRepository.findAll();
-        return bidList;
+        return bidRepository.findAll();
     }
 }

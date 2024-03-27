@@ -1,6 +1,6 @@
 package com.group1.ecocredit;
 
-import com.group1.ecocredit.repositories.CategoryPriceRepository;
+import com.group1.ecocredit.repositories.CategoryPriceService;
 import com.group1.ecocredit.services.PriceMapperService;
 import com.group1.ecocredit.services.implementations.PriceMapperServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,13 +19,13 @@ class PriceMapperServiceTest {
     private PriceMapperService priceMapperService;
 
     @Mock
-    private CategoryPriceRepository categoryPriceRepository;
+    private CategoryPriceService categoryPriceRepository;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         priceMapperService = PriceMapperServiceImpl.getInstance();
-        categoryPriceRepository = mock(CategoryPriceRepository.class);
+        categoryPriceRepository = mock(CategoryPriceService.class);
     }
 
 

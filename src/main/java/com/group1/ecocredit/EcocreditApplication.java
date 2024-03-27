@@ -6,7 +6,7 @@ import com.group1.ecocredit.models.Category;
 import com.group1.ecocredit.models.Status;
 import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.repositories.CategoryRepository;
-import com.group1.ecocredit.repositories.CategoryPriceRepository;
+import com.group1.ecocredit.repositories.CategoryPriceService;
 import com.group1.ecocredit.repositories.StatusRepository;
 import com.group1.ecocredit.repositories.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class EcocreditApplication implements CommandLineRunner {
     private StatusRepository statusRepository;
 
     @Autowired
-    CategoryPriceRepository categoryPriceRepository;
+    CategoryPriceService categoryPriceRepository;
 
 
     public static void main(String[] args) {

@@ -1,7 +1,7 @@
 package com.group1.ecocredit.services.implementations;
 
 import com.group1.ecocredit.models.CategoryPrice;
-import com.group1.ecocredit.repositories.CategoryPriceRepository;
+import com.group1.ecocredit.repositories.CategoryPriceService;
 import com.group1.ecocredit.services.PriceMapperService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class PriceMapperServiceImpl implements PriceMapperService {
     private final HashMap<String, Float> priceMap;
 
     @Autowired
-    private CategoryPriceRepository categoryPriceRepository; // TODO
+    private CategoryPriceService categoryPriceRepository; // TODO
 
     private static PriceMapperService instance;
     private PriceMapperServiceImpl() {

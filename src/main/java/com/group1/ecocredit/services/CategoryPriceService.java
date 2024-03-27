@@ -1,0 +1,10 @@
+package com.group1.ecocredit.services;
+
+import com.group1.ecocredit.models.CategoryPrice;
+
+import java.util.Optional;
+
+public interface CategoryPriceService {
+    Optional<CategoryPrice> findByCategoryId(int categoryId);
+    CategoryPrice findByCategoryName(String categoryName);
+}

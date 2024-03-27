@@ -1,6 +1,6 @@
 package com.group1.ecocredit;
 
-import com.group1.ecocredit.repositories.CategoryPriceRepository;
+import com.group1.ecocredit.repositories.CategoryPriceService;
 import com.group1.ecocredit.services.WasteService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +28,7 @@ public class BidServiceTests {
     private WasteService wasteService;
 
     @Mock
-    private CategoryPriceRepository categoryPriceRepository;
+    private CategoryPriceService categoryPriceService;
 
 
     @InjectMocks
@@ -78,7 +78,7 @@ public class BidServiceTests {
         categoryPrice.setValue(2f);
 
         when(wasteService.findById(request.getWasteId())).thenReturn(Optional.of(waste));
-        when(categoryPriceRepository.findByCategoryId(waste.getCategory().getId())).thenReturn(Optional.of(categoryPrice));
+        when(categoryPriceService.findByCategoryId(waste.getCategory().getId())).thenReturn(Optional.of(categoryPrice));
 
         Bid result = bidService.putWasteForBid(request);
 
