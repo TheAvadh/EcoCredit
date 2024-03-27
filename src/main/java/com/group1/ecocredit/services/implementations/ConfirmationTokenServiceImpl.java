@@ -35,28 +35,6 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
         return java.util.UUID.randomUUID().toString();
     }
 
-
-//    @Override
-//    public String saveConfirmationToken(String token, User user) {
-//        var hashedToken = Hashing.sha256()
-//                .hashString(token, StandardCharsets.UTF_8)
-//                .toString();
-//
-//        var confirmationToken = ConfirmationToken
-//                .builder()
-//                .token(hashedToken)
-//                .createdTime(LocalDateTime.now())
-//                .expirationTime(LocalDateTime.now().plusHours(validityInHours))
-//                .user(user)
-//                .build();
-//
-//        confirmationTokenRepository.save(confirmationToken);
-//
-//        return token;
-//
-//    }
-
-
     @Override
     public String saveConfirmationToken(String token, User user) {
         String hashedToken = hashToken(token);
@@ -99,7 +77,6 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
         userRepository.save(userToEnable);
         return true;
     }
-
 
     @Override
     public boolean isValidToken(ConfirmationToken token) {
