@@ -106,6 +106,8 @@ To build in `dev` environment, type `npm start`.
 
 #### Customer Dashboard
 
+Upon selecting the customer role, users access the Customer Dashboard. Here, they can schedule waste pickups and track their status.
+
 #### [Pickup Scheduling](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/13)
 
 **Pickup schedule**
@@ -117,6 +119,8 @@ To build in `dev` environment, type `npm start`.
 #### [Pickup Status Tracking](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/14)
 
 **Pickup status**
+
+Users can view the date, time, and current status of their pickups. If a pickup is scheduled or in progress, users have the option to cancel it directly through the cancel button provided.
 
 #### Recycler Dashboard
 
