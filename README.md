@@ -90,9 +90,47 @@ To build in `dev` environment, type `npm start`.
 
 ## User Scenarios
 
+### [User Authentication](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/1)
+
+#### Signup
+
+#### Login
+
+**Forget password**
+
+**Reset password**
+
+#### Role Selection
+
+### [Homepage](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/19)
+
+#### Customer Dashboard
+
+#### [Pickup Scheduling](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/13)
+
+**Pickup schedule**
+
+#### [Payment for Pickup Service](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/55)
+
+**Payment for pickup service**
+
+#### [Pickup Status Tracking](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/14)
+
+**Pickup status**
+
+#### Recycler Dashboard
+
+**Active Bids**
+
+**View my bids**
+
+### [Account Management](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/2)
+
+**Profile page**
+
 ### [Admin](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/16)
 
-#### Part 1: Admin Dashboard
+#### Admin Dashboard
 
 EcoCredit has one admin account. When an admin logs in, they are redirected to their dashboard, which allows them to do the following:
 
@@ -142,8 +180,6 @@ An admin can view all bids, both active and inactive. Each bid contains the foll
 **View active bids**
 
 An admin can view all active bids.
-
-#### Part 2: Recycler Dashboard
 
 ## References
 
