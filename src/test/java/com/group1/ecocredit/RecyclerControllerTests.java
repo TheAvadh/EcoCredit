@@ -313,9 +313,7 @@ public class RecyclerControllerTests {
     }
 
     private void getUserBidAuth(User user){
-        BidUser bidUser = new BidUser();
-        bidUser.setUser(user);
-        authentication = new UsernamePasswordAuthenticationToken(user, null);
+        when(authentication.getPrincipal()).thenReturn(user);
         when(securityContext.getAuthentication()).thenReturn(authentication);
     }
 }
