@@ -120,7 +120,8 @@ Upon selecting the customer role, users access the Customer Dashboard. Here, the
 
 **Pickup status**
 
-Users can view the date, time, and current status of their pickups. If a pickup is scheduled or in progress, users have the option to cancel it directly through the cancel button provided.
+Users can view the date, time, and current status of their pickups.  
+If a pickup is scheduled or in progress, users have the option to cancel it directly through the cancel button provided.
 
 #### Recycler Dashboard
 
@@ -134,13 +135,15 @@ After selecting a bid, users can either choose to bid at the next suggested incr
 
 **View my bids**
 
-Users can track all the bids they've participated in. For active bids, the option to place further bids is available, directing users back to the specific bid page for continued engagement.
+Users can track all the bids they've participated in.  
+For active bids, the option to place further bids is available, directing users back to the specific bid page for continued engagement.
 
 ### [Account Management](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/2)
 
 **Profile page**
 
-Accessible from both customer and recycler dashboards, the Profile Page enables users to manage their personal details, such as name, contact, and address. The page displays the user's EcoCredit balance for quick reference. Profile updates trigger on-site notifications and confirmation emails for seamless user experience.
+Accessible from both customer and recycler dashboards, the Profile Page enables users to manage their personal details, such as name, contact, and address. The page displays the user's EcoCredit balance for quick reference.  
+Profile updates trigger on-site notifications and confirmation emails for seamless user experience.
 
 ### [Admin](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/16)
 

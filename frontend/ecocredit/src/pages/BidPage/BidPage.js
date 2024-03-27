@@ -121,7 +121,7 @@ const BidPage = () => {
         setShowToast(true);
         setTimeout(() => {
           navigate("/recycler/active-bids");
-        }, 2000);
+        }, 3000);
       })
       .catch((error) => {
         console.error("Error:", error);
