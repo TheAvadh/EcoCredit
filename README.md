@@ -120,13 +120,22 @@ To build in `dev` environment, type `npm start`.
 
 #### Recycler Dashboard
 
+Upon selecting the recycler role, users access the Recycler Dashboard. Here, they can view active bids, participate in bidding, and monitor their bid history.
+
 **Active Bids**
 
+This tab lists ongoing bids. Users can view item details and enter the bidding process.
+
+After selecting a bid, users can either choose to bid at the next suggested increment or enter a custom amount higher than the current bid using their EcoCredits
+
 **View my bids**
+
+Users can track all the bids they've participated in. For active bids, the option to place further bids is available, directing users back to the specific bid page for continued engagement.
 
 ### [Account Management](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/2)
 
 **Profile page**
+
 Accessible from both customer and recycler dashboards, the Profile Page enables users to manage their personal details, such as name, contact, and address. The page displays the user's EcoCredit balance for quick reference. Profile updates trigger on-site notifications and confirmation emails for seamless user experience.
 
 ### [Admin](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/16)
