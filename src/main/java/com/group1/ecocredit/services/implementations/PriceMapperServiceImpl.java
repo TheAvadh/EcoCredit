@@ -41,6 +41,7 @@ public class PriceMapperServiceImpl implements PriceMapperService {
     }
 
     public float getPrice(String category) {
+        if(category == null) throw new IllegalArgumentException("null category");
         return priceMap.get(category);
     }
 

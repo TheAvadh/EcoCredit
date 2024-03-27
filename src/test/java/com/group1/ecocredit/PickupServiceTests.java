@@ -1,20 +1,18 @@
 package com.group1.ecocredit;
 
-import com.group1.ecocredit.dto.PickupCancelRequest;
+import com.group1.ecocredit.dto.PickupActionRequest;
 import com.group1.ecocredit.dto.PickupRequest;
 import com.group1.ecocredit.dto.PickupWaste;
 import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.repositories.*;
-import com.group1.ecocredit.services.PickupPaymentActionService;
+import com.group1.ecocredit.services.*;
 import com.group1.ecocredit.repositories.WasteRepository;
-import com.group1.ecocredit.services.PickupService;
 import com.group1.ecocredit.services.implementations.PickupServiceImpl;
 import com.stripe.exception.StripeException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -34,6 +32,10 @@ public class PickupServiceTests {
     private static StatusRepository statusRepository;
     private static CategoryRepository categoryRepository;
     private static PickupService pickupService;
+    private static WalletService walletService;
+    private static PriceMapperService priceMapperService;
+    private static CreditConversionService creditConversionService;
+    private static WasteServiceCustomer wasteServiceCustomer;
 
     private static PickupPaymentActionService pickupPaymentActionService;
     private static String PICKUP_DATE = "2024-05-01T15:00";
@@ -56,12 +58,17 @@ public class PickupServiceTests {
         statusRepository = Mockito.mock(StatusRepository.class);
         categoryRepository = Mockito.mock(CategoryRepository.class);
         pickupPaymentActionService = Mockito.mock(PickupPaymentActionService.class);
+        walletService = Mockito.mock(WalletService.class);
+        priceMapperService = Mockito.mock(PriceMapperService.class);
+        creditConversionService = Mockito.mock(CreditConversionService.class);
+        wasteServiceCustomer = Mockito.mock(WasteServiceCustomer.class);
         pickupService = Mockito.mock(PickupService.class);
 
 
-
         pickupService = new PickupServiceImpl(pickupRepository,
-                wasteRepository, statusRepository, categoryRepository, pickupPaymentActionService);
+                wasteRepository, statusRepository, categoryRepository,
+                pickupPaymentActionService, walletService, priceMapperService,
+                creditConversionService, wasteServiceCustomer);
     }
 
     @Test
@@ -180,7 +187,7 @@ public class PickupServiceTests {
     @Test
     void testCancelPickupSuccess() throws StripeException {
         // Arrange
-        PickupCancelRequest pickupToCancel = new PickupCancelRequest(PICKUP_ID);
+        PickupActionRequest pickupToCancel = new PickupActionRequest(PICKUP_ID);
         User user = new User();
         Status status = new Status(STATUS_CANCELED_ID, STATUS_CANCELED);
         Pickup pickup = new Pickup(PICKUP_ID,
@@ -210,7 +217,7 @@ public class PickupServiceTests {
     @Test
     void testCancelPickupWhenPickupNotFound() throws StripeException {
         // Arrange
-        PickupCancelRequest pickupToCancel = new PickupCancelRequest(PICKUP_ID);
+        PickupActionRequest pickupToCancel = new PickupActionRequest(PICKUP_ID);
         Mockito.when(pickupRepository.findById(pickupToCancel.getId()))
                 .thenReturn(Optional.empty());
 
@@ -229,7 +236,7 @@ public class PickupServiceTests {
     @Test
     void testCancelPickupWhenStatusNotFound() throws StripeException {
         // Arrange
-        PickupCancelRequest pickupToCancel = new PickupCancelRequest(PICKUP_ID);
+        PickupActionRequest pickupToCancel = new PickupActionRequest(PICKUP_ID);
         User user = new User();
         Status status = new Status(STATUS_CANCELED_ID, STATUS_CANCELED);
         Pickup pickup = new Pickup(PICKUP_ID,

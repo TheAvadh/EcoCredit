@@ -1,30 +1,26 @@
 package com.group1.ecocredit.controllers;
 
 import com.group1.ecocredit.dto.*;
-import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.services.*;
-import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import jakarta.servlet.http.HttpServletRequest;
-import com.group1.ecocredit.dto.PickupCancelRequest;
+import com.group1.ecocredit.dto.PickupActionRequest;
 import com.group1.ecocredit.dto.PickupRequest;
 import com.group1.ecocredit.dto.PickupStatusResponse;
 import com.group1.ecocredit.models.Pickup;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.services.JWTService;
 import com.group1.ecocredit.services.PickupService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -35,14 +31,15 @@ import java.util.List;
 @CrossOrigin
 public class PickupController {
 
+    @Autowired
     private final PickupService pickUpService;
-
+    @Autowired
     private final JWTService jwtService;
-
+    @Autowired
     private final StripeService stripeService;
-
+    @Autowired
     private final CheckoutService checkoutService;
-
+    @Autowired
     private final WalletService walletService;
 
     @Value("${base.url.frontend}")
@@ -52,7 +49,7 @@ public class PickupController {
 
     @PostMapping("/cancel")
     @Transactional
-    public ResponseEntity<Pickup> pickupCancellation(@RequestBody PickupCancelRequest pickupToCancel) throws StripeException {
+    public ResponseEntity<Pickup> pickupCancellation(@RequestBody PickupActionRequest pickupToCancel) throws StripeException {
 
         boolean success = pickUpService.cancelPickup(pickupToCancel);
 
@@ -137,6 +134,12 @@ public class PickupController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping("/complete")
+    @Transactional
+    public void completePickup(PickupActionRequest pickupActionRequest) {
+        pickUpService.completePickup(pickupActionRequest.getId());
     }
 
 }
