@@ -14,15 +14,15 @@
 ## Technical Stack
 
 - Frontend:
-  - React 18.2.0
-  - React Bootstrap 2.10.0
-  - Bootstrap 5.3.2
-  - Sass 1.70.0
-  - Strip.js 2.6.0
-  - Font Awesome 6.5.1
+  - React: `v18.2.0`
+  - React Bootstrap: `v2.10.0`
+  - Bootstrap: `v5.3.2`
+  - Sass: `v1.70.0`
+  - Strip.js: `v2.6.0`
+  - Font Awesome: `v6.5.1`
 - Backend:
-  - Java 21
-  - Spring Boot version 3.2.2
+  - Java: `v21`
+  - Spring Boot: `v3.2.2`
   - Maven
 
 ## Dependencies
