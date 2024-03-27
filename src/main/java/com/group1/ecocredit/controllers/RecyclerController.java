@@ -4,7 +4,6 @@ import com.group1.ecocredit.dto.DisplayBidRequest;
 import com.group1.ecocredit.models.BidUser;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.services.AuctionService;
-import com.group1.ecocredit.services.implementations.AuctionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
