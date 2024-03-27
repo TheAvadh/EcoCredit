@@ -1,8 +1,8 @@
-package com.group1.ecocredit.services.admin.implementations;
+package com.group1.ecocredit.services.implementations;
 
 import com.group1.ecocredit.dto.admin.WasteUpdateRequest;
 import com.group1.ecocredit.repositories.WasteRepository;
-import com.group1.ecocredit.services.admin.WasteService;
+import com.group1.ecocredit.services.WasteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
