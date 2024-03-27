@@ -57,11 +57,6 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<JwtAuthenticationResponse> refresh(@RequestBody RefreshTokenRequest refreshTokenRequest){
-        return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequest));
-    }
-
     @GetMapping(path = "/verify-account")
     public ResponseEntity<Boolean> confirm(@RequestParam("token") String token){
         try {

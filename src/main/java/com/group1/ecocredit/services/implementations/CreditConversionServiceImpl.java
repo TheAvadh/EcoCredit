@@ -29,7 +29,7 @@ public class CreditConversionServiceImpl implements CreditConversionService {
     }
 
     @Override
-    public Double convert(Long amount, Currency currency) {
+    public Double convert(Double amount, Currency currency) {
 
         return Math.ceil(amount * conversionRates.get(currency));
     }

@@ -1,13 +1,11 @@
 package com.group1.ecocredit.services.implementations;
 
-import com.group1.ecocredit.models.Pickup;
-import com.group1.ecocredit.models.Transaction;
-import com.group1.ecocredit.models.TransactionType;
-import com.group1.ecocredit.models.Wallet;
+import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.repositories.TransactionRepository;
 import com.group1.ecocredit.repositories.WalletRepository;
 import com.group1.ecocredit.services.TransactionService;
 import com.group1.ecocredit.services.WalletService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +25,7 @@ public class WalletServiceImpl implements WalletService {
     private TransactionService transactionService;
 
     @Override
+    @Transactional
     public Optional<Wallet> getWalletByUserId(Long userId) {
         try {
             return walletRepository.findByUserId(userId);
@@ -36,6 +35,7 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    @Transactional
     public void addCredit(Long userId, BigDecimal creditAmount) {
         try {
             Optional<Wallet> optionalWallet = walletRepository.findByUserId(userId);
@@ -55,6 +55,7 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    @Transactional
     public void updateCredit(Long userId, BigDecimal deductionAmount, Pickup pickup) {
         try {
             Optional<Wallet> optionalWallet = walletRepository.findByUserId(userId);
@@ -77,6 +78,7 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    @Transactional
     public List<Transaction> getTransactionsByUserId(Long userId) {
 
         try{
@@ -84,5 +86,14 @@ public class WalletServiceImpl implements WalletService {
         } catch (Exception e) {
             throw new RuntimeException("Error fetching transactions for user ID: " + userId, e);
         }
+    }
+
+    @Override
+    @Transactional
+    public void createWalletForUser(User user) {
+
+        Wallet wallet = new Wallet();
+        wallet.setUserId(Long.valueOf(user.getId()));
+        walletRepository.save(wallet);
     }
 }

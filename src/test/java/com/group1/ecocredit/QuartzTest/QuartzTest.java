@@ -1,4 +1,4 @@
-package com.group1.ecocredit.QuartzJobTest;
+package com.group1.ecocredit.QuartzTest;
 
 import com.group1.ecocredit.QuartzTest.QuartzTestJob;
 import org.junit.jupiter.api.Test;

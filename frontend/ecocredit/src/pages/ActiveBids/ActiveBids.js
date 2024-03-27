@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
+import Cookies from "js-cookie";
 import biodegradableURL from "../../assets/images/biodegradable.jpg";
 import electronicsURL from "../../assets/images/electronics.jpg";
 import glassURL from "../../assets/images/glass.jpg";
@@ -12,202 +14,101 @@ import mixedURL from "../../assets/images/mixed.jpg";
 import paperURL from "../../assets/images/paper.jpg";
 import plasticsURL from "../../assets/images/plastics.jpg";
 
+const imageMap = {
+  biodegradable: biodegradableURL,
+  electronics: electronicsURL,
+  glass: glassURL,
+  mixed: mixedURL,
+  paper: paperURL,
+  plastics: plasticsURL,
+};
+
 const ActiveBids = () => {
   const navigate = useNavigate();
 
-  const redirectToBidPage = (bidId) => {
-    navigate(`${bidId}`);
+  const [bids, setBids] = useState([]);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_BASE_URL}/recycler/active-bids`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+        Accept: "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const parsedBids = data.map((bid) => ({
+          ...bid,
+          date: moment(bid.date, "YYYYMMDDHHmm").toISOString(),
+        }));
+        setBids(parsedBids);
+      })
+      .catch((error) =>
+        console.error("Error fetching active bids data failed:", error)
+      );
+  }, []);
+
+  const calculateTimeLeft = (startDate) => {
+    const end = moment(startDate).add(24, "hours");
+    const now = moment();
+
+    if (now.isAfter(end)) {
+      return "First bidder wins";
+    } else {
+      const duration = moment.duration(end.diff(now));
+      return `Time Left: ${duration.hours()}hr ${duration.minutes()}min`;
+    }
   };
 
   return (
     <Container fluid className="background-image">
       <Row xs={1} sm={2} lg={3} className="p-4">
-        <Col className="g-3">
-          <Card className="shadow-lg rounded-4 bg-ec-grey text-ec-dark-green">
-            <Card.Img variant="top" src={biodegradableURL} />
-            <Card.Body>
-              <Card.Title className="fs-3 fw-bold">Biodegradable</Card.Title>
-              <Card.Text>
-                <dl class="row">
-                  <dt class="col-sm-5">Weight</dt>
-                  <dd class="col-sm-7">5 KG</dd>
+        {bids.map((bid) => (
+          <Col key={bid.id} className="g-3">
+            <Card className="shadow-lg rounded-4 bg-ec-grey text-ec-dark-green">
+              <Card.Img variant="top" src={imageMap[bid.waste_type]} />
+              <Card.Body>
+                <Card.Title className="fs-3 fw-bold">
+                  {bid.waste_type.charAt(0).toUpperCase() +
+                    bid.waste_type.slice(1)}
+                </Card.Title>
+                <div>
+                  <dl className="row">
+                    <dt className="col-sm-5">Weight</dt>
+                    <dd className="col-sm-7">{bid.waste_weight} KG</dd>
 
-                  <dt class="col-sm-5">Current Highest Bid</dt>
-                  <dd class="col-sm-7">10 CAD</dd>
+                    <dt className="col-sm-5">Current Highest Bid</dt>
+                    <dd className="col-sm-7">{bid.highest_bid} CAD</dd>
 
-                  <dt class="col-sm-5">Starting Bid</dt>
-                  <dd class="col-sm-7">2 CAD</dd>
-                </dl>
-                <div className="text-end">
-                  <Button
-                    variant="ec-dark-green"
-                    onClick={() => redirectToBidPage("1")}
-                  >
-                    Place a Bid
-                  </Button>
+                    <dt className="col-sm-5">Starting Bid</dt>
+                    <dd className="col-sm-7">{bid.bid_amount} CAD</dd>
+                  </dl>
+                  <div className="text-end">
+                    <Button
+                      variant="ec-dark-green"
+                      onClick={() =>
+                        navigate(`/recycler/active-bids/${bid.id}`)
+                      }
+                    >
+                      Place a Bid
+                    </Button>
+                  </div>
                 </div>
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              <small className="text-muted">Time Left: 20hr 12min</small>
-            </Card.Footer>
-          </Card>
-        </Col>
-        <Col className="g-3">
-          <Card className="shadow-lg rounded-4 bg-ec-grey text-ec-dark-green">
-            <Card.Img variant="top" src={electronicsURL} />
-            <Card.Body>
-              <Card.Title className="fs-3 fw-bold">Electronics</Card.Title>
-              <Card.Text>
-                <dl class="row">
-                  <dt class="col-sm-5">Weight</dt>
-                  <dd class="col-sm-7">5 KG</dd>
-
-                  <dt class="col-sm-5">Current Highest Bid</dt>
-                  <dd class="col-sm-7">10 CAD</dd>
-
-                  <dt class="col-sm-5">Starting Bid</dt>
-                  <dd class="col-sm-7">2 CAD</dd>
-                </dl>
-                <div className="text-end">
-                  <Button
-                    variant="ec-dark-green"
-                    onClick={() => redirectToBidPage("2")}
-                  >
-                    Place a Bid
-                  </Button>
-                </div>
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              <small className="text-muted">Time Left: 20hr 12min</small>
-            </Card.Footer>
-          </Card>
-        </Col>
-        <Col className="g-3">
-          <Card className="shadow-lg rounded-4 bg-ec-grey text-ec-dark-green">
-            <Card.Img variant="top" src={glassURL} />
-            <Card.Body>
-              <Card.Title className="fs-3 fw-bold">Glass</Card.Title>
-              <Card.Text>
-                <dl class="row">
-                  <dt class="col-sm-5">Weight</dt>
-                  <dd class="col-sm-7">5 KG</dd>
-
-                  <dt class="col-sm-5">Current Highest Bid</dt>
-                  <dd class="col-sm-7">10 CAD</dd>
-
-                  <dt class="col-sm-5">Starting Bid</dt>
-                  <dd class="col-sm-7">2 CAD</dd>
-                </dl>
-                <div className="text-end">
-                  <Button
-                    variant="ec-dark-green"
-                    onClick={() => redirectToBidPage("3")}
-                  >
-                    Place a Bid
-                  </Button>
-                </div>
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              <small className="text-muted">Time Left: 20hr 12min</small>
-            </Card.Footer>
-          </Card>
-        </Col>
-        <Col className="g-3">
-          <Card className="shadow-lg rounded-4 bg-ec-grey text-ec-dark-green">
-            <Card.Img variant="top" src={mixedURL} />
-            <Card.Body>
-              <Card.Title className="fs-3 fw-bold">Mixed</Card.Title>
-              <Card.Text>
-                <dl class="row">
-                  <dt class="col-sm-5">Weight</dt>
-                  <dd class="col-sm-7">5 KG</dd>
-
-                  <dt class="col-sm-5">Current Highest Bid</dt>
-                  <dd class="col-sm-7">10 CAD</dd>
-
-                  <dt class="col-sm-5">Starting Bid</dt>
-                  <dd class="col-sm-7">2 CAD</dd>
-                </dl>
-                <div className="text-end">
-                  <Button
-                    variant="ec-dark-green"
-                    onClick={() => redirectToBidPage("4")}
-                  >
-                    Place a Bid
-                  </Button>
-                </div>
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              <small className="text-muted">Time Left: 20hr 12min</small>
-            </Card.Footer>
-          </Card>
-        </Col>
-        <Col className="g-3">
-          <Card className="shadow-lg rounded-4 bg-ec-grey text-ec-dark-green">
-            <Card.Img variant="top" src={paperURL} />
-            <Card.Body>
-              <Card.Title className="fs-3 fw-bold">Paper</Card.Title>
-              <Card.Text>
-                <dl class="row">
-                  <dt class="col-sm-5">Weight</dt>
-                  <dd class="col-sm-7">5 KG</dd>
-
-                  <dt class="col-sm-5">Current Highest Bid</dt>
-                  <dd class="col-sm-7">10 CAD</dd>
-
-                  <dt class="col-sm-5">Starting Bid</dt>
-                  <dd class="col-sm-7">2 CAD</dd>
-                </dl>
-                <div className="text-end">
-                  <Button
-                    variant="ec-dark-green"
-                    onClick={() => redirectToBidPage("5")}
-                  >
-                    Place a Bid
-                  </Button>
-                </div>
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              <small className="text-muted">Time Left: 20hr 12min</small>
-            </Card.Footer>
-          </Card>
-        </Col>
-        <Col className="g-3">
-          <Card className="shadow-lg rounded-4 bg-ec-grey text-ec-dark-green">
-            <Card.Img variant="top" src={plasticsURL} />
-            <Card.Body>
-              <Card.Title className="fs-3 fw-bold">Plastics</Card.Title>
-              <Card.Text>
-                <dl class="row">
-                  <dt class="col-sm-5">Weight</dt>
-                  <dd class="col-sm-7">5 KG</dd>
-
-                  <dt class="col-sm-5">Current Highest Bid</dt>
-                  <dd class="col-sm-7">10 CAD</dd>
-
-                  <dt class="col-sm-5">Starting Bid</dt>
-                  <dd class="col-sm-7">2 CAD</dd>
-                </dl>
-                <div className="text-end">
-                  <Button
-                    variant="ec-dark-green"
-                    onClick={() => redirectToBidPage("6")}
-                  >
-                    Place a Bid
-                  </Button>
-                </div>
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              <small className="text-muted">Time Left: 20hr 12min</small>
-            </Card.Footer>
-          </Card>
-        </Col>
+              </Card.Body>
+              <Card.Footer>
+                <small className="text-muted">
+                  Created On: {moment(bid.date).format("LLL")}
+                  <br />
+                  <div className="fs-6 fw-bold">
+                    {calculateTimeLeft(bid.date)}
+                  </div>
+                </small>
+              </Card.Footer>
+            </Card>
+          </Col>
+        ))}
       </Row>
     </Container>
   );
