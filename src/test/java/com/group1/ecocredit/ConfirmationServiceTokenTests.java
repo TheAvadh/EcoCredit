@@ -3,6 +3,8 @@ package com.group1.ecocredit;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+
+import com.group1.ecocredit.services.UserService;
 import com.group1.ecocredit.services.implementations.ConfirmationTokenServiceImpl;
 import com.group1.ecocredit.models.ConfirmationToken;
 import com.group1.ecocredit.models.User;
@@ -27,7 +29,7 @@ public class ConfirmationServiceTokenTests{
     private ConfirmationTokenRepository confirmationTokenRepository;
 
     @Mock
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Mock
     private WalletService walletService;
@@ -92,13 +94,13 @@ public class ConfirmationServiceTokenTests{
         confirmationToken.setUsed(false);
 
         when(confirmationTokenRepository.findByToken(anyString())).thenReturn(Optional.of(confirmationToken));
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(user));
+        when(userService.findByEmail(anyString())).thenReturn(Optional.of(user));
 
         boolean result = confirmationTokenService.confirmToken(token);
 
         assertTrue(result);
         assertTrue(user.isEnabled());
-        verify(userRepository).save(any(User.class));
+        verify(userService).save(any(User.class));
         verify(walletService).createWalletForUser(any(User.class));
     }
 
@@ -132,7 +134,7 @@ public class ConfirmationServiceTokenTests{
         confirmationToken.setExpirationTime(LocalDateTime.now().plusHours(2));
 
         when(confirmationTokenRepository.findByToken(anyString())).thenReturn(Optional.of(confirmationToken));
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+        when(userService.findByEmail(anyString())).thenReturn(Optional.empty());
 
         boolean result = confirmationTokenService.confirmToken(token);
 

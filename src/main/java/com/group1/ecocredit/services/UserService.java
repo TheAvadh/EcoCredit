@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService {
@@ -20,6 +21,8 @@ public interface UserService {
     UserDetailsResponse getUserById(Integer userId);
 
     User findByRole(Role role);
+
+    Optional<User> findByEmail(String email);
 
     User save(User user);
 }

@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import static com.group1.ecocredit.dto.UpdateProfileResponse.ResponseType.*;
 
 @Service
@@ -107,6 +109,11 @@ public class UserServiceImpl implements com.group1.ecocredit.services.UserServic
     @Override
     public User findByRole(Role role) {
         return userRepository.findByRole(role);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override
