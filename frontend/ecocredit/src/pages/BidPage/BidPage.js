@@ -65,6 +65,7 @@ const BidPage = () => {
     },
   });
   const [nextBid, setNextBid] = useState(0);
+  const [customBidAmount, setCustomBidAmount] = useState("");
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_BASE_URL}/recycler/place-bid/${bidId}`, {
@@ -87,9 +88,39 @@ const BidPage = () => {
       );
   }, [bidId]);
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const bidAmount = customBidAmount ? customBidAmount : nextBid;
+
+    fetch(`${process.env.REACT_APP_BASE_URL}/recycler/raise-bid`, {
+      method: "PUT",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+      body: JSON.stringify({
+        bidId: bidId,
+        newBidAmount: bidAmount,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
   return (
     <CenterContainer title="Place a Bid" colSize={8}>
-      <Form className="mt-5">
+      <Form className="mt-5" onSubmit={handleSubmit}>
         <Row>
           <Col xxl={4} className="mb-4 text-center">
             <Image
@@ -127,9 +158,13 @@ const BidPage = () => {
               <Col lg={5} className="d-grid pb-3">
                 <Button
                   variant="ec-dark-green"
-                  type="submit"
                   size="lg"
                   className="p-3"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCustomBidAmount(nextBid.toString());
+                    handleSubmit(e);
+                  }}
                 >
                   Bid for {nextBid}$
                 </Button>
@@ -143,6 +178,8 @@ const BidPage = () => {
                     type="number"
                     placeholder="Bid Amount"
                     min={nextBid}
+                    value={customBidAmount}
+                    onChange={(e) => setCustomBidAmount(e.target.value)}
                   />
                   <label htmlFor="floatingInputCustom">
                     Enter Custom Bid Amount
