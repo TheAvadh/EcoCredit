@@ -154,7 +154,7 @@ public class AuctionServiceImpl implements AuctionService {
        }
     }
 
-    @Scheduled(fixedRate = 60000) // Run every minute
+    @Scheduled(fixedRate = 2000) // Run every minute
     public void bidUserScheduler() {
         discardActiveStatus();
     }
