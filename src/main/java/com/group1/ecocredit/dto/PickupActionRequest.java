@@ -9,12 +9,12 @@ import lombok.Getter;
 @Data
 @Getter
 @AllArgsConstructor
-public class PickupCancelRequest {
+public class PickupActionRequest {
 
     Long id;
 
     @JsonCreator
-    public static PickupCancelRequest fromJson(@JsonProperty("id") Long id) {
-        return new PickupCancelRequest(id);
+    public static PickupActionRequest fromJson(@JsonProperty("id") Long id) {
+        return new PickupActionRequest(id);
     }
 }

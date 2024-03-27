@@ -6,5 +6,5 @@ import java.math.BigDecimal;
 
 public interface CreditConversionService {
 
-    Double convert(Long amount, Currency currency);
+    Double convert(Double amount, Currency currency);
 }

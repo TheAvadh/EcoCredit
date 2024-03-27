@@ -1,14 +1,13 @@
 package com.group1.ecocredit.services.implementations;
 
-import com.group1.ecocredit.dto.PickupCancelRequest;
+import com.group1.ecocredit.dto.PickupActionRequest;
 import com.group1.ecocredit.dto.PickupRequest;
 import com.group1.ecocredit.dto.PickupStatusResponse;
+import com.group1.ecocredit.enums.Currency;
 import com.group1.ecocredit.models.PickupStatus;
 import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.repositories.*;
-import com.group1.ecocredit.services.PickupPaymentActionService;
-import com.group1.ecocredit.services.PickupService;
-import com.group1.ecocredit.services.PriceMapperService;
+import com.group1.ecocredit.services.*;
 import com.stripe.exception.StripeException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +41,18 @@ public class PickupServiceImpl implements PickupService {
 
     @Autowired
     private PickupPaymentActionService pickupPaymentActionService;
+
+    @Autowired
+    private WalletService walletService;
+
+    @Autowired
+    private PriceMapperService priceMapperService;
+
+    @Autowired
+    private CreditConversionService creditConversionService;
+
+    @Autowired
+    private WasteServiceCustomer wasteServiceCustomer;
 
 
 
@@ -78,7 +89,7 @@ public class PickupServiceImpl implements PickupService {
         return savedPickup;
     }
     @Override
-    public boolean cancelPickup(PickupCancelRequest pickupToCancel) throws StripeException {
+    public boolean cancelPickup(PickupActionRequest pickupToCancel) throws StripeException {
 
         Optional<Pickup> pickupOptional = pickupRepository.findById(pickupToCancel.getId());
         if(pickupOptional.isEmpty()) return false;
@@ -154,5 +165,33 @@ public class PickupServiceImpl implements PickupService {
         pickup.setPaymentId(sessionId);
 
         pickupRepository.save(pickup);
+    }
+
+    @Override
+    public void completePickup(Long pickupId) {
+        Optional<Pickup> pickupOptional = pickupRepository.findById(pickupId);
+
+        if(pickupOptional.isEmpty()) return;
+
+        Pickup pickup = pickupOptional.get();
+
+        double amount = 0;
+
+        List<Waste> wastes = wasteServiceCustomer.getAllWasteForPickup(pickupId);
+
+        for(Waste waste : wastes) {
+            amount += (waste.getWeight() * priceMapperService.getPrice(waste.getCategory().getValue()));
+        }
+
+        creditConversionService.convert(amount, Currency.CAD);
+
+        walletService.addCredit(Long.valueOf(pickup.getUser().getUserID()), BigDecimal.valueOf(amount));
+
+        Status status = statusRepository.findByValue(PickupStatus.COMPLETED).get();
+
+        pickup.setStatus(status);
+
+        pickupRepository.save(pickup);
+
     }
 }
