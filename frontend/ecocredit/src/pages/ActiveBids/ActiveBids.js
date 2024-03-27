@@ -38,7 +38,13 @@ const ActiveBids = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) => setBids(data))
+      .then((data) => {
+        const parsedBids = data.map((bid) => ({
+          ...bid,
+          date: moment(bid.date, "YYYYMMDDHHmm").toISOString(),
+        }));
+        setBids(parsedBids);
+      })
       .catch((error) =>
         console.error("Error fetching active bids data failed:", error)
       );
@@ -93,7 +99,11 @@ const ActiveBids = () => {
               </Card.Body>
               <Card.Footer>
                 <small className="text-muted">
-                  {calculateTimeLeft(bid.date)}
+                  Created On: {moment(bid.date).format("LLL")}
+                  <br />
+                  <div className="fs-6 fw-bold">
+                    {calculateTimeLeft(bid.date)}
+                  </div>
                 </small>
               </Card.Footer>
             </Card>

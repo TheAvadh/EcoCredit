@@ -60,9 +60,9 @@ const BidPage = () => {
         city: "",
         province: "",
         postalCode: "",
-        country: ""
-      }
-    }
+        country: "",
+      },
+    },
   });
   const [nextBid, setNextBid] = useState(0);
 
