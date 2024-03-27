@@ -31,6 +31,7 @@ public class BidServiceImpl implements BidService {
     @Autowired
     CategoryPriceRepository categoryPriceRepository;
 
+    private int expireHours=24;
 
     @Override
     public Bid putWasteForBid(BidCreateRequest bidCreateRequest) {
@@ -101,7 +102,7 @@ public class BidServiceImpl implements BidService {
 
         for (Bid bid : activeBids) {
             LocalDateTime bidCreationDateTime = bid.getDate();
-            LocalDateTime bidExpiryDateTime = bidCreationDateTime.plusHours(24); // Bid expires after 24 hours
+            LocalDateTime bidExpiryDateTime = bidCreationDateTime.plusHours(expireHours); // Bid expires after 24 hours
 
             //Note that bid will only expire if any user has participated else it will stay until the first bidder will bid
             if (currentDateTime.isAfter(bidExpiryDateTime) && bid.getUser()!=null) {
