@@ -81,6 +81,18 @@ To build in `dev` environment, type `npm start`.
 
 ### Backend
 
+Clean Build:
+```
+mvn clean package -DskipTests
+```
+
+Tests:
+```
+mvn test
+```
+
+
+
 ## User Scenarios
 
 ### [Admin](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/16)
