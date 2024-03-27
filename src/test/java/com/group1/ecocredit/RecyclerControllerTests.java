@@ -106,6 +106,84 @@ public class RecyclerControllerTests {
         verify(auctionService, times(1)).viewUserBids(anyInt());
     }
 
+    @Test
+    public void testGetAllActiveBids_Authenticated() {
+
+        authenticated();
+
+        List<BidUser> expectedBids = new ArrayList<>();
+        expectedBids.add(new BidUser());
+        when(auctionService.viewAllActiveBids()).thenReturn(expectedBids);
+
+        ResponseEntity<?> responseEntity = recyclerController.getAllActiveBids();
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(expectedBids, responseEntity.getBody());
+        verify(auctionService, times(1)).viewAllActiveBids();
+    }
+
+    @Test
+    public void testGetAllActiveBids_Unauthenticated() {
+        is_authenticated(false);
+
+        ResponseEntity<?> responseEntity = recyclerController.getAllActiveBids();
+
+        assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        verify(auctionService, never()).viewAllActiveBids();
+    }
+
+    @Test
+    public void testGetAllActiveBids_NoActiveBids() {
+
+        is_authenticated(true);
+
+        ResponseEntity<?> responseEntity = recyclerController.getAllActiveBids();
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertEquals(null, responseEntity.getBody());
+        verify(auctionService, times(1)).viewAllActiveBids();
+    }
+
+    @Test
+    public void testGetAllActiveBids_IllegalArgumentException() {
+        is_authenticated(true);
+
+        when(auctionService.viewAllActiveBids()).thenThrow(IllegalArgumentException.class);
+
+        ResponseEntity<?> responseEntity = recyclerController.getAllActiveBids();
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        verify(auctionService, times(1)).viewAllActiveBids();
+    }
+
+
+    @Test
+    public void testGetAllActiveBids_Exception() {
+        is_authenticated(true);
+
+        when(auctionService.viewAllActiveBids()).thenThrow(HttpClientErrorException.NotFound.class);
+
+        ResponseEntity<?> responseEntity = recyclerController.getAllActiveBids();
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+        verify(auctionService, times(1)).viewAllActiveBids();
+    }
+
+
+    public void authenticated(){
+        User user = new User();
+
+        Authentication authentication = mock(Authentication.class);
+        when(authentication.isAuthenticated()).thenReturn(true);
+        when(authentication.getPrincipal()).thenReturn(user);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    public void is_authenticated(boolean is_auth){
+        Authentication authentication = mock(Authentication.class);
+        when(authentication.isAuthenticated()).thenReturn(is_auth);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
 
 
 
