@@ -26,4 +26,6 @@ public interface BidService {
     List<Bid> findAllActiveBids();
 
     Bid findById(Long bidId);
+
+    Bid save(Bid bid);
 }

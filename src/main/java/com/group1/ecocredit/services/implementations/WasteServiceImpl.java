@@ -36,4 +36,9 @@ public class WasteServiceImpl implements WasteService {
     public List<Waste> findByPickupId(Long pickupId) {
         return wasteRepository.findByPickupId(pickupId);
     }
+
+    @Override
+    public Waste save(Waste waste) {
+        return wasteRepository.save(waste);
+    }
 }

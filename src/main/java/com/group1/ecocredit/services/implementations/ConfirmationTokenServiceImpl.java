@@ -3,7 +3,7 @@ package com.group1.ecocredit.services.implementations;
 import com.google.common.hash.Hashing;
 import com.group1.ecocredit.models.ConfirmationToken;
 import com.group1.ecocredit.repositories.ConfirmationTokenRepository;
-import com.group1.ecocredit.repositories.UserService;
+import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.ConfirmationTokenService;
 import com.group1.ecocredit.services.WalletService;
 import com.group1.ecocredit.models.User;
@@ -25,7 +25,7 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
 
 
     private final ConfirmationTokenRepository confirmationTokenRepository;
-    private final UserService userService;
+    private final UserRepository userService;
 
     private final WalletService walletService;
 

@@ -11,4 +11,6 @@ public interface WasteService {
     Optional<Waste> findById(Long wasteId);
 
     List<Waste> findByPickupId(Long pickupId);
+
+    Waste save(Waste waste);
 }

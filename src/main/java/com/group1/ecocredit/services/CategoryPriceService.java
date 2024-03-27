@@ -7,4 +7,5 @@ import java.util.Optional;
 public interface CategoryPriceService {
     Optional<CategoryPrice> findByCategoryId(int categoryId);
     CategoryPrice findByCategoryName(String categoryName);
+    CategoryPrice save(CategoryPrice categoryPrice);
 }

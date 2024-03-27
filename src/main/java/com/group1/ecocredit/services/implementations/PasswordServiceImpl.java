@@ -5,7 +5,7 @@ import com.group1.ecocredit.dto.PasswordResetRequest;
 import com.group1.ecocredit.models.PasswordResetToken;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.PasswordResetTokenRepository;
-import com.group1.ecocredit.repositories.UserService;
+import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.EmailService;
 import com.group1.ecocredit.services.PasswordService;
 import com.group1.ecocredit.services.TokenService;
@@ -19,13 +19,13 @@ import java.util.Optional;
 @Service
 public class PasswordServiceImpl implements PasswordService {
 
-    private final UserService userService;
+    private final UserRepository userService;
     private final TokenService tokenService;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final EmailService emailService;
 
     private final PasswordEncoder passwordEncoder;
-    public PasswordServiceImpl(UserService userService,
+    public PasswordServiceImpl(UserRepository userService,
                                TokenService tokenService,
                                EmailService emailService,
                                PasswordResetTokenRepository passwordResetTokenRepository, PasswordEncoder passwordEncoder) {

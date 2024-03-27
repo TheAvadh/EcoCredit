@@ -5,8 +5,8 @@ import com.group1.ecocredit.dto.DisplayBidRequest;
 import com.group1.ecocredit.models.Bid;
 import com.group1.ecocredit.models.BidUser;
 import com.group1.ecocredit.models.User;
-import com.group1.ecocredit.repositories.BidService;
-import com.group1.ecocredit.repositories.BidUserService;
+import com.group1.ecocredit.services.BidService;
+import com.group1.ecocredit.services.BidUserService;
 import com.group1.ecocredit.services.AuctionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -155,7 +155,7 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     @Scheduled(fixedRate = 60000) // Run every minute
-    public void bidUserSchedular() {
+    public void bidUserScheduler() {
         discardActiveStatus();
     }
 

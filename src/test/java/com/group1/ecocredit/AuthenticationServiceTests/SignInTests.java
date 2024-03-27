@@ -10,7 +10,7 @@ import com.group1.ecocredit.dto.SignInRequest;
 import com.group1.ecocredit.enums.HttpMessage;
 import com.group1.ecocredit.enums.Role;
 import com.group1.ecocredit.models.User;
-import com.group1.ecocredit.repositories.UserService;
+import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.JWTService;
 import com.group1.ecocredit.services.implementations.AuthenticationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +32,7 @@ public class SignInTests {
     private AuthenticationManager authenticationManager;
 
     @Mock
-    private UserService userRepository;
+    private UserRepository userRepository;
 
     @Mock
     private JWTService jwtService;

@@ -9,4 +9,6 @@ public interface BidUserService {
     List<BidUser> findByUserId(Integer userId);
 
     List<BidUser> findByActive(boolean isActive);
+
+    BidUser save(BidUser bidUser);
 }

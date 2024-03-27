@@ -31,7 +31,7 @@ public class PasswordResetTokenServiceTests {
 
     private static TokenService tokenService;
 
-    private static UserService userRepository;
+    private static UserRepository userRepository;
 
     private static EmailService emailService;
 
@@ -39,7 +39,7 @@ public class PasswordResetTokenServiceTests {
     public void setUp() {
         passwordResetTokenRepository = Mockito.mock(PasswordResetTokenRepository.class);
         tokenService = Mockito.mock(TokenService.class);
-        userRepository = Mockito.mock(UserService.class);
+        userRepository = Mockito.mock(UserRepository.class);
         emailService = Mockito.mock(EmailService.class);
         PasswordEncoder passwordEncoder = Mockito.mock(PasswordEncoder.class);
 

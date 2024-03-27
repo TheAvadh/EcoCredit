@@ -9,7 +9,7 @@ import java.util.Optional;
 
 
 @Repository
-public interface CategoryPriceService extends JpaRepository<CategoryPrice, Integer> {
+public interface CategoryPriceRepository extends JpaRepository<CategoryPrice, Integer> {
     Optional<CategoryPrice> findByCategoryId(int category_id);
 
     @Query("SELECT cp FROM CategoryPrice cp WHERE cp.category.value = :categoryName")

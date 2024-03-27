@@ -4,8 +4,8 @@ import com.group1.ecocredit.dto.BidCreateRequest;
 import com.group1.ecocredit.models.Bid;
 import com.group1.ecocredit.models.CategoryPrice;
 import com.group1.ecocredit.models.Waste;
-import com.group1.ecocredit.repositories.BidService;
-import com.group1.ecocredit.repositories.CategoryPriceService;
+import com.group1.ecocredit.repositories.BidRepository;
+import com.group1.ecocredit.services.CategoryPriceService;
 import com.group1.ecocredit.services.WasteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class BidServiceImpl implements com.group1.ecocredit.services.BidService {
 
     @Autowired
-    BidService bidRepository;
+    BidRepository bidRepository;
     @Autowired
     WasteService wasteService;
     @Autowired
@@ -148,4 +148,7 @@ public class BidServiceImpl implements com.group1.ecocredit.services.BidService 
     public List<Bid> getAllBids() {
         return bidRepository.findAll();
     }
+
+    @Override
+    public Bid save(Bid bid) { return bidRepository.save(bid); }
 }

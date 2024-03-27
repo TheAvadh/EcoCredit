@@ -1,6 +1,7 @@
 package com.group1.ecocredit;
 
-import com.group1.ecocredit.repositories.CategoryPriceService;
+import com.group1.ecocredit.repositories.BidRepository;
+import com.group1.ecocredit.services.CategoryPriceService;
 import com.group1.ecocredit.services.WasteService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +13,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.group1.ecocredit.models.*;
-import com.group1.ecocredit.repositories.BidService;
 import com.group1.ecocredit.services.implementations.BidServiceImpl;
 import com.group1.ecocredit.dto.BidCreateRequest;
 
@@ -22,7 +22,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 public class BidServiceTests {
     @Mock
-    private BidService bidRepository;
+    private BidRepository bidRepository;
 
     @Mock
     private WasteService wasteService;

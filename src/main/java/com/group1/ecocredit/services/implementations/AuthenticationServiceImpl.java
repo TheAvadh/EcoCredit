@@ -8,7 +8,7 @@ import com.group1.ecocredit.enums.HttpMessage;
 import com.group1.ecocredit.models.Address;
 import com.group1.ecocredit.enums.Role;
 import com.group1.ecocredit.models.User;
-import com.group1.ecocredit.repositories.UserService;
+import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.AuthenticationService;
 import com.group1.ecocredit.services.ConfirmationTokenService;
 import com.group1.ecocredit.services.EmailService;
@@ -29,7 +29,7 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private final UserService userService;
+    private final UserRepository userService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;

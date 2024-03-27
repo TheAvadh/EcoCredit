@@ -2,7 +2,7 @@ package com.group1.ecocredit.services.implementations;
 
 import com.group1.ecocredit.models.ConfirmationEmail;
 import com.group1.ecocredit.models.Pickup;
-import com.group1.ecocredit.repositories.ConfirmationEmailService;
+import com.group1.ecocredit.repositories.ConfirmationEmailRepository;
 import com.group1.ecocredit.services.EmailScheduler;
 import com.group1.ecocredit.services.EmailService;
 import com.group1.ecocredit.services.PickupService;
@@ -26,7 +26,7 @@ public class EmailSchedulerImpl implements EmailScheduler, Job {
     private EmailService emailService;
 
     @Autowired
-    private ConfirmationEmailService confirmationEmailService;
+    private ConfirmationEmailRepository confirmationEmailService;
     // - service
 
     @Value("${max.retries}")
