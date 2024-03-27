@@ -8,13 +8,19 @@ import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.repositories.CategoryRepository;
 import com.group1.ecocredit.repositories.CategoryPriceRepository;
 import com.group1.ecocredit.repositories.StatusRepository;
-import com.group1.ecocredit.repositories.UserService;
+import com.group1.ecocredit.services.EmailScheduler;
+import com.group1.ecocredit.services.PickupService;
+import com.group1.ecocredit.services.implementations.EmailSchedulerImpl;
+import org.quartz.*;
+import com.group1.ecocredit.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +31,7 @@ import java.util.Optional;
 public class EcocreditApplication implements CommandLineRunner {
 
     @Autowired
-    private UserService userRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;

@@ -1,14 +1,12 @@
 package com.group1.ecocredit.services.implementations;
 
 import com.group1.ecocredit.dto.BidCreateRequest;
-import com.group1.ecocredit.dto.admin.WasteUpdateRequest;
 import com.group1.ecocredit.models.Bid;
 import com.group1.ecocredit.models.CategoryPrice;
 import com.group1.ecocredit.models.Waste;
 import com.group1.ecocredit.repositories.BidRepository;
 import com.group1.ecocredit.repositories.CategoryPriceRepository;
 import com.group1.ecocredit.repositories.WasteRepository;
-import com.group1.ecocredit.services.AuthenticationService;
 import com.group1.ecocredit.services.BidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -132,23 +130,5 @@ public class BidServiceImpl implements BidService {
     public List<Bid> getAllBids() {
         List<Bid> bidList = bidRepository.findAll();
         return bidList;
-    }
-
-    @Service
-    public static class WasteServiceImpl implements AuthenticationService.WasteService {
-        @Autowired
-        private WasteRepository wasteRepository;
-
-        @Override
-        public boolean updateWeight(Long id, WasteUpdateRequest request) {
-            var optionalWaste = wasteRepository.findById(id);
-            if (optionalWaste.isEmpty()) {
-                return false;
-            }
-            var waste = optionalWaste.get();
-            waste.setWeight(request.getWeight());
-            wasteRepository.save(waste);
-            return true;
-        }
     }
 }
