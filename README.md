@@ -127,6 +127,7 @@ To build in `dev` environment, type `npm start`.
 ### [Account Management](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/2)
 
 **Profile page**
+Accessible from both customer and recycler dashboards, the Profile Page enables users to manage their personal details, such as name, contact, and address. The page displays the user's EcoCredit balance for quick reference. Profile updates trigger on-site notifications and confirmation emails for seamless user experience.
 
 ### [Admin](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/16)
 
