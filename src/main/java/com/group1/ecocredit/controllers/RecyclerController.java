@@ -75,7 +75,7 @@ public class RecyclerController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        catch(RuntimeException e){
+        catch (RuntimeException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         catch (Exception e) {
