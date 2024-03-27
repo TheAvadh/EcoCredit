@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Cookies from "js-cookie";
 import CenterContainer from "../../components/CenterContainer";
+import Toast from "../../components/Toast/Toast";
 import biodegradableURL from "../../assets/images/biodegradable.jpg";
 import electronicsURL from "../../assets/images/electronics.jpg";
 import glassURL from "../../assets/images/glass.jpg";
@@ -41,6 +42,7 @@ const rangeDifference = (currentPrice) => {
 
 const BidPage = () => {
   const { bidId } = useParams();
+  const navigate = useNavigate();
   const [bidData, setBidData] = useState({
     id: "",
     date: "",
@@ -66,6 +68,9 @@ const BidPage = () => {
   });
   const [nextBid, setNextBid] = useState(0);
   const [customBidAmount, setCustomBidAmount] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("");
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_BASE_URL}/recycler/place-bid/${bidId}`, {
@@ -111,91 +116,107 @@ const BidPage = () => {
         return response.json();
       })
       .then((data) => {
-        console.log("Success:", data);
+        setToastMessage("Bid placed successfully!");
+        setToastType("success");
+        setShowToast(true);
+        setTimeout(() => {
+          navigate("/recycler/active-bids");
+        }, 2000);
       })
       .catch((error) => {
         console.error("Error:", error);
+        setToastMessage("Error placing bid");
+        setToastType("error");
+        setShowToast(true);
       });
   };
 
   return (
-    <CenterContainer title="Place a Bid" colSize={8}>
-      <Form className="mt-5" onSubmit={handleSubmit}>
-        <Row>
-          <Col xxl={4} className="mb-4 text-center">
-            <Image
-              rounded
-              src={imageMap[bidData.waste_type]}
-              alt={bidData.waste_type}
-              style={{ width: "338px", height: "190px" }}
-            />
-          </Col>
-          <Col xxl={1}></Col>
-          <Col xxl={7}>
-            <dl className="row text-end text-ec-dark-green fs-5 pb-4">
-              <dt className="col-7">Waste Type</dt>
-              <dd className="col-5">
-                {bidData.waste_type.charAt(0).toUpperCase() +
-                  bidData.waste_type.slice(1)}
-              </dd>
+    <div>
+      <CenterContainer title="Place a Bid" colSize={8}>
+        <Form className="mt-5" onSubmit={handleSubmit}>
+          <Row>
+            <Col xxl={4} className="mb-4 text-center">
+              <Image
+                rounded
+                src={imageMap[bidData.waste_type]}
+                alt={bidData.waste_type}
+                style={{ width: "338px", height: "190px" }}
+              />
+            </Col>
+            <Col xxl={1}></Col>
+            <Col xxl={7}>
+              <dl className="row text-end text-ec-dark-green fs-5 pb-4">
+                <dt className="col-7">Waste Type</dt>
+                <dd className="col-5">
+                  {bidData.waste_type.charAt(0).toUpperCase() +
+                    bidData.waste_type.slice(1)}
+                </dd>
 
-              <dt className="col-7">Weight</dt>
-              <dd className="col-5">{bidData.waste_weight} KG</dd>
+                <dt className="col-7">Weight</dt>
+                <dd className="col-5">{bidData.waste_weight} KG</dd>
 
-              <dt className="col-7">Current Highest Bid</dt>
-              <dd className="col-5">{bidData.highest_bid} CAD</dd>
+                <dt className="col-7">Current Highest Bid</dt>
+                <dd className="col-5">{bidData.highest_bid} CAD</dd>
 
-              <dt className="col-7">Starting Bid</dt>
-              <dd className="col-5">{bidData.bid_amount} CAD</dd>
-            </dl>
-            <Row className="mt-5">
-              <Col
-                lg={7}
-                className="d-flex align-items-center text-ec-dark-green"
-              >
-                <p className="fs-5 fw-bold">Next Bid Amount: ${nextBid}</p>
-              </Col>
-              <Col lg={5} className="d-grid pb-3">
-                <Button
-                  variant="ec-dark-green"
-                  size="lg"
-                  className="p-3"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setCustomBidAmount(nextBid.toString());
-                    handleSubmit(e);
-                  }}
+                <dt className="col-7">Starting Bid</dt>
+                <dd className="col-5">{bidData.bid_amount} CAD</dd>
+              </dl>
+              <Row className="mt-5">
+                <Col
+                  lg={7}
+                  className="d-flex align-items-center text-ec-dark-green"
                 >
-                  Bid for {nextBid}$
-                </Button>
-              </Col>
-            </Row>
-            <Row>
-              <Col lg={7}>
-                <Form.Floating className="mb-3">
-                  <Form.Control
-                    id="floatingInputCustom"
-                    type="number"
-                    placeholder="Bid Amount"
-                    min={nextBid}
-                    value={customBidAmount}
-                    onChange={(e) => setCustomBidAmount(e.target.value)}
-                  />
-                  <label htmlFor="floatingInputCustom">
-                    Enter Custom Bid Amount
-                  </label>
-                </Form.Floating>
-              </Col>
-              <Col lg={5} className="d-grid text-end mb-3">
-                <Button variant="ec-dark-green" type="submit" size="lg">
-                  Place Bid
-                </Button>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Form>
-    </CenterContainer>
+                  <p className="fs-5 fw-bold">Next Bid Amount: ${nextBid}</p>
+                </Col>
+                <Col lg={5} className="d-grid pb-3">
+                  <Button
+                    variant="ec-dark-green"
+                    size="lg"
+                    className="p-3"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setCustomBidAmount(nextBid.toString());
+                      handleSubmit(e);
+                    }}
+                  >
+                    Bid for {nextBid}$
+                  </Button>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={7}>
+                  <Form.Floating className="mb-3">
+                    <Form.Control
+                      id="floatingInputCustom"
+                      type="number"
+                      placeholder="Bid Amount"
+                      min={nextBid}
+                      value={customBidAmount}
+                      onChange={(e) => setCustomBidAmount(e.target.value)}
+                    />
+                    <label htmlFor="floatingInputCustom">
+                      Enter Custom Bid Amount
+                    </label>
+                  </Form.Floating>
+                </Col>
+                <Col lg={5} className="d-grid text-end mb-3">
+                  <Button variant="ec-dark-green" type="submit" size="lg">
+                    Place Bid
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Form>
+      </CenterContainer>
+      <Toast
+        showToast={showToast}
+        setShowToast={setShowToast}
+        toastMessage={toastMessage}
+        toastType={toastType}
+      />
+    </div>
   );
 };
 
