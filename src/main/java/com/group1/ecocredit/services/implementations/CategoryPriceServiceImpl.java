@@ -6,6 +6,7 @@ import com.group1.ecocredit.services.CategoryPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,5 +28,10 @@ public class CategoryPriceServiceImpl implements CategoryPriceService {
     @Override
     public CategoryPrice save(CategoryPrice categoryPrice) {
         return categoryPriceRepository.save(categoryPrice);
+    }
+
+    @Override
+    public List<CategoryPrice> findAll() {
+        return categoryPriceRepository.findAll();
     }
 }
