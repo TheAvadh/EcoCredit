@@ -12,3 +12,4 @@ export { default as InProgressPickups } from "./Admin/Pickup/InProgress/InProgre
 export { default as CreateBid } from "./Admin/Bid/Create/CreateBid";
 export { default as ViewBids } from "./Admin/Bid/View/ViewBids";
 export { default as ViewActiveBids } from "./Admin/Bid/View/ViewActiveBids";
+export { default as PaymentFailurePage } from "./PaymentFailure/PaymentFailure";

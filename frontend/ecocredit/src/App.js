@@ -10,6 +10,7 @@ import {
   RecyclerDashboard,
   ProfilePage,
   AdminDashboard,
+  PaymentFailurePage
 } from "./pages";
 
 // import CheckoutComponent from "./pages/Payment/Payment";
@@ -30,6 +31,7 @@ function App() {
         <Route path="/profile-page" element={<ProfilePage />} />
         <Route path="/admin/*" element={<AdminDashboard />} />
         <Route path="/success" element={<SuccessPage />} />
+        <Route path="/failure" element={<PaymentFailurePage />} />
 
       </Routes>
     </BrowserRouter>
