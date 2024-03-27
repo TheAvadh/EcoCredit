@@ -6,6 +6,7 @@ import com.group1.ecocredit.dto.PickupStatusResponse;
 import com.group1.ecocredit.enums.Currency;
 import com.group1.ecocredit.models.PickupStatus;
 import com.group1.ecocredit.models.*;
+import com.group1.ecocredit.models.admin.PickupQueryResult;
 import com.group1.ecocredit.repositories.*;
 import com.group1.ecocredit.services.*;
 import com.stripe.exception.StripeException;
@@ -193,5 +194,30 @@ public class PickupServiceImpl implements PickupService {
 
         pickupRepository.save(pickup);
 
+    }
+
+    @Override
+    public List<Pickup> findByUserId(Long userId) {
+        return pickupRepository.findByUserId(userId);
+    }
+
+    @Override
+    public List<Pickup> findAllPickupsWithEmailsNotSent() {
+        return pickupRepository.findAllPickupsWithEmailsNotSent();
+    }
+
+    @Override
+    public List<PickupQueryResult> findScheduledPickups() {
+        return pickupRepository.findScheduledPickups();
+    }
+
+    @Override
+    public List<PickupQueryResult> findCompletedPickups() {
+        return pickupRepository.findCompletedPickups();
+    }
+
+    @Override
+    public List<PickupQueryResult> findInProgressPickups() {
+        return pickupRepository.findInProgressPickups();
     }
 }
