@@ -2,6 +2,7 @@ package com.group1.ecocredit;
 
 import com.group1.ecocredit.dto.PickupActionRequest;
 import com.group1.ecocredit.dto.PickupRequest;
+import com.group1.ecocredit.dto.PickupStatusResponse;
 import com.group1.ecocredit.dto.PickupWaste;
 import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.repositories.*;
@@ -257,5 +258,77 @@ public class PickupServiceTests {
         verify(pickupRepository, times(1)).findById(anyLong());
         verify(statusRepository, times(1)).findByValue(anyString());
         verify(pickupRepository, never()).save(any(Pickup.class));
+    }
+
+    @Test
+    void getPickupStatus_WhenUserHasPickups_ShouldReturnStatusList() {
+        // Arrange
+        Long userId = 1L;
+        List<Pickup> pickups = List.of(
+                new Pickup(1L, LocalDateTime.now(), new User(), new Status(1, "AWAITING_PAYMENT"), "paymentId1"),
+                new Pickup(2L, LocalDateTime.now(), new User(), new Status(2, "COMPLETED"), "paymentId2")
+        );
+        when(pickupRepository.findByUserId(userId)).thenReturn(pickups);
+
+        // Act
+        List<PickupStatusResponse> statusResponses = pickupService.getPickupStatus(userId);
+
+        // Assert
+        assertEquals(pickups.size(), statusResponses.size());
+        verify(pickupRepository).findByUserId(userId);
+    }
+
+    @Test
+    void getPickupStatus_WhenUserHasNoPickups_ShouldThrowException() {
+        // Arrange
+        Long userId = 1L;
+        when(pickupRepository.findByUserId(userId)).thenReturn(new ArrayList<>());
+
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> pickupService.getPickupStatus(userId));
+    }
+
+    @Test
+    void confirmPickup_WhenPaymentIsDone_ShouldUpdateStatus() throws StripeException {
+        // Arrange
+        Long pickupId = 1L;
+        Pickup pickup = new Pickup(pickupId, LocalDateTime.now(), new User(), new Status(1, "AWAITING_PAYMENT"), "paymentId");
+        when(pickupRepository.findById(pickupId)).thenReturn(Optional.of(pickup));
+        when(pickupPaymentActionService.isPaymentDone("paymentId")).thenReturn(true);
+        Status scheduledStatus = new Status(2, "SCHEDULED");
+        when(statusRepository.findByValue(PickupStatus.SCHEDULED)).thenReturn(Optional.of(scheduledStatus));
+
+        // Act
+        pickupService.confirmPickup(pickupId);
+
+        // Assert
+        assertEquals("SCHEDULED", pickup.getStatus().getValue());
+        verify(pickupRepository).save(pickup);
+    }
+
+    @Test
+    void confirmPickup_WhenPickupNotFound_ShouldNotThrowException() {
+        // Arrange
+        Long pickupId = 1L;
+        when(pickupRepository.findById(pickupId)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertDoesNotThrow(() -> pickupService.confirmPickup(pickupId));
+    }
+
+    @Test
+    void addSessionIdToPickup_WhenPickupExists_ShouldUpdatePaymentId() {
+        // Arrange
+        Long pickupId = 1L;
+        String sessionId = "newSessionId";
+        Pickup pickup = new Pickup(pickupId, LocalDateTime.now(), new User(), new Status(1, "AWAITING_PAYMENT"), "oldSessionId");
+        when(pickupRepository.findById(pickupId)).thenReturn(Optional.of(pickup));
+
+        // Act
+        pickupService.addSessionIdToPickup(pickupId, sessionId);
+
+        // Assert
+        assertEquals(sessionId, pickup.getPaymentId());
+        verify(pickupRepository).save(pickup);
     }
 }
