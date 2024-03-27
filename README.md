@@ -1,5 +1,9 @@
 # Eco Credit
 
+<p align="center">
+  <img width="120px" src="frontend/ecocredit/src/assets/images/logo.png" alt="Eco Credit Logo"/>
+</p>
+
 ## Developed by: Group 1
 
 | Name                     | Email                |
