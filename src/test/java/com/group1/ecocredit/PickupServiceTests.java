@@ -285,7 +285,7 @@ public class PickupServiceTests {
         when(pickupRepository.findById(pickupId)).thenReturn(Optional.of(pickup));
         when(pickupPaymentActionService.isPaymentDone("paymentId")).thenReturn(true);
         Status scheduledStatus = new Status(2, "SCHEDULED");
-        when(statusRepository.findByValue(PickupStatus.SCHEDULED)).thenReturn(Optional.of(scheduledStatus));
+        when(statusService.findByValue(PickupStatus.SCHEDULED)).thenReturn(Optional.of(scheduledStatus));
 
         // Act
         pickupService.confirmPickup(pickupId);
