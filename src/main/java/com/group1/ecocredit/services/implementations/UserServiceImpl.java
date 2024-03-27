@@ -6,13 +6,11 @@ import com.group1.ecocredit.dto.UpdateProfileResponse;
 import com.group1.ecocredit.dto.UserDetailsResponse;
 import com.group1.ecocredit.models.Address;
 import com.group1.ecocredit.models.User;
-import com.group1.ecocredit.repositories.UserRepository;
+import com.group1.ecocredit.repositories.UserService;
 import com.group1.ecocredit.services.EmailService;
-import com.group1.ecocredit.services.UserService;
 import com.group1.ecocredit.services.ConfirmationTokenService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,20 +21,14 @@ import static com.group1.ecocredit.dto.UpdateProfileResponse.ResponseType.*;
 @Service
 @RequiredArgsConstructor
 
-public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-    private final ConfirmationTokenService confirmationTokenService;
+public class UserServiceImpl implements com.group1.ecocredit.services.UserService {
+    private final UserService userRepository;
     private final EmailService emailService;
 
     @Override
     public UserDetailsService userDetailsService(){
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return userRepository.findByEmail(username)
-                        .orElseThrow(()-> new UsernameNotFoundException("User not found"));
-            }
-        };
+        return username -> userRepository.findByEmail(username)
+                .orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
 
 

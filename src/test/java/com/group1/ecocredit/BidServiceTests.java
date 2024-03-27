@@ -1,6 +1,7 @@
 package com.group1.ecocredit;
 
 import com.group1.ecocredit.repositories.CategoryPriceRepository;
+import com.group1.ecocredit.services.WasteService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,8 +12,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.group1.ecocredit.models.*;
-import com.group1.ecocredit.repositories.BidRepository;
-import com.group1.ecocredit.repositories.WasteRepository;
+import com.group1.ecocredit.repositories.BidService;
 import com.group1.ecocredit.services.implementations.BidServiceImpl;
 import com.group1.ecocredit.dto.BidCreateRequest;
 
@@ -22,10 +22,10 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 public class BidServiceTests {
     @Mock
-    private BidRepository bidRepository;
+    private BidService bidRepository;
 
     @Mock
-    private WasteRepository wasteRepository;
+    private WasteService wasteService;
 
     @Mock
     private CategoryPriceRepository categoryPriceRepository;
@@ -43,7 +43,7 @@ public class BidServiceTests {
     public void whenWasteIdDoesNotExist_thenThrowException() {
         BidCreateRequest request = new BidCreateRequest("2023-04-01T12:00", 1L);
 
-        when(wasteRepository.findById(request.getWasteId())).thenReturn(Optional.empty());
+        when(wasteService.findById(request.getWasteId())).thenReturn(Optional.empty());
 
         Assertions.assertThrows(NoSuchElementException.class, () -> {
             bidService.putWasteForBid(request);
@@ -56,7 +56,7 @@ public class BidServiceTests {
         BidCreateRequest request = new BidCreateRequest(LocalDateTime.now().minusDays(1).toString(), 1L);
         Waste waste = new Waste();
 
-        when(wasteRepository.findById(request.getWasteId())).thenReturn(Optional.of(waste));
+        when(wasteService.findById(request.getWasteId())).thenReturn(Optional.of(waste));
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             bidService.putWasteForBid(request);
@@ -77,7 +77,7 @@ public class BidServiceTests {
         CategoryPrice categoryPrice = new CategoryPrice();
         categoryPrice.setValue(2f);
 
-        when(wasteRepository.findById(request.getWasteId())).thenReturn(Optional.of(waste));
+        when(wasteService.findById(request.getWasteId())).thenReturn(Optional.of(waste));
         when(categoryPriceRepository.findByCategoryId(waste.getCategory().getId())).thenReturn(Optional.of(categoryPrice));
 
         Bid result = bidService.putWasteForBid(request);

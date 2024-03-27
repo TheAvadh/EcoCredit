@@ -4,10 +4,9 @@ import com.group1.ecocredit.dto.BidCreateRequest;
 import com.group1.ecocredit.models.Bid;
 import com.group1.ecocredit.models.CategoryPrice;
 import com.group1.ecocredit.models.Waste;
-import com.group1.ecocredit.repositories.BidRepository;
+import com.group1.ecocredit.repositories.BidService;
 import com.group1.ecocredit.repositories.CategoryPriceRepository;
-import com.group1.ecocredit.repositories.WasteRepository;
-import com.group1.ecocredit.services.BidService;
+import com.group1.ecocredit.services.WasteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -22,14 +21,14 @@ import java.util.Optional;
 @Service
 @Configuration
 @EnableScheduling
-public class BidServiceImpl implements BidService {
+public class BidServiceImpl implements com.group1.ecocredit.services.BidService {
 
     @Autowired
-    BidRepository bidRepository;
+    BidService bidRepository;
     @Autowired
-    WasteRepository wasteRepository;
+    WasteService wasteService;
     @Autowired
-    CategoryPriceRepository categoryPriceRepository;
+    CategoryPriceRepository categoryPriceRepository; // TODO - service
 
 
     @Override
@@ -37,7 +36,7 @@ public class BidServiceImpl implements BidService {
 
 
         Optional<Bid> optionalBid = bidRepository.findByWasteId(bidCreateRequest.getWasteId());
-        Optional<Waste> optionalWaste = wasteRepository.findById(bidCreateRequest.getWasteId());
+        Optional<Waste> optionalWaste = wasteService.findById(bidCreateRequest.getWasteId());
         LocalDateTime bidTime = LocalDateTime.parse(bidCreateRequest.getDateTime());
 
         if (optionalBid.isPresent()){
@@ -56,7 +55,7 @@ public class BidServiceImpl implements BidService {
 
         else {
 
-            Waste waste = wasteRepository.findById(bidCreateRequest.getWasteId()).get();
+            Waste waste = wasteService.findById(bidCreateRequest.getWasteId()).get();
 //          Base Price = category base price multiply by weight of the waste.
             Optional<CategoryPrice> categoryPrice = categoryPriceRepository.findByCategoryId(waste.getCategory().getId());
             Float basePriceF = (float)categoryPrice.get().getValue() * waste.getWeight();
@@ -111,6 +110,26 @@ public class BidServiceImpl implements BidService {
                 System.out.println("Bid with ID " + bid.getId() + " has expired and deactivated.");
             }
         }
+    }
+
+    @Override
+    public Optional<Bid> findByWasteId(long wasteId) {
+        return bidRepository.findByWasteId(wasteId);
+    }
+
+    @Override
+    public List<Bid> findBidsToActivate() {
+        return bidRepository.findBidsToActivate();
+    }
+
+    @Override
+    public List<Bid> findAllActiveBids() {
+        return bidRepository.findAllActiveBids();
+    }
+
+    @Override
+    public Bid findById(Long bidId) {
+        return bidRepository.findById(bidId);
     }
 
     @Scheduled(fixedRate = 60000) // Run every minute

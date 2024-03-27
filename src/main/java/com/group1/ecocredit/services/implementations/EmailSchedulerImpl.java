@@ -22,13 +22,14 @@ import java.util.List;
 public class EmailSchedulerImpl implements EmailScheduler, Job {
 
     @Autowired
-    private PickupRepository pickupRepository;
+    private PickupRepository pickupRepository; // TODO - service
 
     @Autowired
     private EmailService emailServices;
 
     @Autowired
-    private ConfirmationEmailRepository confirmationEmailRepository;
+    private ConfirmationEmailRepository confirmationEmailRepository; // TODO
+    // - service
 
     @Value("${max.retries}")
     private int maxRetries;

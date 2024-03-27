@@ -5,7 +5,7 @@ import com.group1.ecocredit.dto.UpdateProfileResponse;
 import com.group1.ecocredit.dto.UserDetailsResponse;
 import com.group1.ecocredit.models.Address;
 import com.group1.ecocredit.models.User;
-import com.group1.ecocredit.repositories.UserRepository;
+import com.group1.ecocredit.repositories.UserService;
 import com.group1.ecocredit.services.EmailService;
 import com.group1.ecocredit.services.implementations.UserServiceImpl;
 import jakarta.mail.MessagingException;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 public class UserServiceTests {
 
     @Mock
-    private UserRepository userRepository;
+    private UserService userRepository;
 
     @Mock
     private EmailService emailService;

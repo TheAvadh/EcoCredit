@@ -3,14 +3,13 @@ package com.group1.ecocredit;
 import com.group1.ecocredit.dto.DisplayBidRequest;
 import com.group1.ecocredit.enums.Role;
 import com.group1.ecocredit.models.*;
-import com.group1.ecocredit.repositories.BidRepository;
-import com.group1.ecocredit.repositories.BidUserRepository;
+import com.group1.ecocredit.repositories.BidService;
+import com.group1.ecocredit.repositories.BidUserService;
 import com.group1.ecocredit.services.implementations.AuctionServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -21,17 +20,16 @@ import static org.mockito.Mockito.*;
 
 
 import java.util.List;
-import java.util.Optional;
 
 public class AuctionServiceTests {
     @InjectMocks
     private AuctionServiceImpl auctionService;
 
     @Mock
-    private BidRepository bidRepository;
+    private BidService bidService;
 
     @Mock
-    private BidUserRepository bidUserRepository;
+    private BidUserService bidUserService;
 
     @BeforeEach
     void setUp() {
@@ -54,7 +52,7 @@ public class AuctionServiceTests {
         bid.setDate(LocalDateTime.now());
         bid.set_active(true);
 
-        when(bidRepository.findAllActiveBids()).thenReturn(Arrays.asList(bid));
+        when(bidService.findAllActiveBids()).thenReturn(Arrays.asList(bid));
 
         // Execute the method to test
         List<BidUser> result = auctionService.viewAllActiveBids();
@@ -64,7 +62,7 @@ public class AuctionServiceTests {
         assertFalse(result.isEmpty());
         assertEquals(bid.getId(), result.get(0).getId());
         assertEquals("Plastic", result.get(0).getWaste_type());
-        verify(bidRepository, times(1)).findAllActiveBids();
+        verify(bidService, times(1)).findAllActiveBids();
     }
 
     @Test
@@ -72,7 +70,7 @@ public class AuctionServiceTests {
         // Setup mock data
         Integer userId = 1;
         BidUser bidUser = createMockBidUser();
-        when(bidUserRepository.findByUserId(userId)).thenReturn(Arrays.asList(bidUser));
+        when(bidUserService.findByUserId(userId)).thenReturn(Arrays.asList(bidUser));
 
         // Execute the method to test
         List<BidUser> result = auctionService.viewUserBids(userId);
@@ -81,7 +79,7 @@ public class AuctionServiceTests {
         assertNotNull(result);
         assertFalse(result.isEmpty());
         assertEquals(userId, result.get(0).getUser().getId());
-        verify(bidUserRepository, times(1)).findByUserId(userId);
+        verify(bidUserService, times(1)).findByUserId(userId);
     }
 
     @Test
@@ -111,9 +109,9 @@ public class AuctionServiceTests {
         bid.setWaste(mockWaste);
 
         // Mock repository interactions
-        when(bidRepository.findById(request.getBidId())).thenReturn(bid);
-        when(bidRepository.save(any(Bid.class))).thenAnswer(i -> i.getArguments()[0]);
-        when(bidUserRepository.save(any(BidUser.class))).thenAnswer(i -> i.getArguments()[0]);
+        when(bidService.findById(request.getBidId())).thenReturn(bid);
+        when(bidService.save(any(Bid.class))).thenAnswer(i -> i.getArguments()[0]);
+        when(bidUserService.save(any(BidUser.class))).thenAnswer(i -> i.getArguments()[0]);
 
         // Execute the method to test
         BidUser result = auctionService.raiseBid(request, user);
@@ -122,9 +120,9 @@ public class AuctionServiceTests {
         assertNotNull(result);
         assertEquals(request.getNewBidAmount(), result.getBid_amount());
         assertEquals(bid.getTop_bid_amount(), result.getHighest_bid());
-        verify(bidRepository, times(1)).findById(request.getBidId());
-        verify(bidRepository, times(1)).save(any(Bid.class));
-        verify(bidUserRepository, times(1)).save(any(BidUser.class));
+        verify(bidService, times(1)).findById(request.getBidId());
+        verify(bidService, times(1)).save(any(Bid.class));
+        verify(bidUserService, times(1)).save(any(BidUser.class));
     }
 
 
@@ -143,7 +141,7 @@ public class AuctionServiceTests {
         bid.set_active(true);
         bid.setWaste(mockWaste);
 
-        when(bidRepository.findById(bidId)).thenReturn(bid);
+        when(bidService.findById(bidId)).thenReturn(bid);
 
         // Execute the method to test
         BidUser result = auctionService.placeBid(bidId);
@@ -152,7 +150,7 @@ public class AuctionServiceTests {
         assertNotNull(result);
         assertEquals(bid.getId(), result.getId());
         assertEquals(bid.getBase_price(), result.getBid_amount());
-        verify(bidRepository, times(1)).findById(bidId);
+        verify(bidService, times(1)).findById(bidId);
     }
 
     @Test
@@ -179,7 +177,7 @@ public class AuctionServiceTests {
         bid.setTop_bid_amount(20d);
         bid.setWaste(mockWaste);
 
-        when(bidRepository.findById(request.getBidId())).thenReturn(bid);
+        when(bidService.findById(request.getBidId())).thenReturn(bid);
 
         // Execute & Assert
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -192,12 +190,12 @@ public class AuctionServiceTests {
     @Test
     void testViewUserBidsWithNoBids() {
         Integer userId = 2;
-        when(bidUserRepository.findByUserId(userId)).thenReturn(new ArrayList<>());
+        when(bidUserService.findByUserId(userId)).thenReturn(new ArrayList<>());
 
         List<BidUser> result = auctionService.viewUserBids(userId);
 
         assertTrue(result.isEmpty());
-        verify(bidUserRepository, times(1)).findByUserId(userId);
+        verify(bidUserService, times(1)).findByUserId(userId);
     }
 
     @Test
@@ -208,10 +206,10 @@ public class AuctionServiceTests {
 
         User user = createMockBidUser().getUser();
 
-        when(bidRepository.findById(anyLong())).thenReturn(null);
+        when(bidService.findById(anyLong())).thenReturn(null);
 
         assertThrows(RuntimeException.class, () -> auctionService.raiseBid(request, user));
-        verify(bidRepository, times(1)).findById(anyLong());
+        verify(bidService, times(1)).findById(anyLong());
     }
 
 
@@ -221,10 +219,10 @@ public class AuctionServiceTests {
         Bid bid = createMockBid();
         bid.set_active(false);
 
-        when(bidRepository.findById(bidId)).thenReturn(bid);
+        when(bidService.findById(bidId)).thenReturn(bid);
 
         assertThrows(RuntimeException.class, () -> auctionService.placeBid(bidId));
-        verify(bidRepository, times(1)).findById(bidId);
+        verify(bidService, times(1)).findById(bidId);
     }
 
 
@@ -262,13 +260,13 @@ public class AuctionServiceTests {
         activeBidUser.setBid(activeBid);
         mockBidUsers.add(activeBidUser);
 
-        when(bidUserRepository.findByActive(true)).thenReturn(mockBidUsers);
-        when(bidRepository.findById(anyLong())).thenReturn(activeBid);
+        when(bidUserService.findByActive(true)).thenReturn(mockBidUsers);
+        when(bidService.findById(anyLong())).thenReturn(activeBid);
 
         auctionService.discardActiveStatus();
 
-        verify(bidUserRepository, times(1)).findByActive(true);
-        verify(bidUserRepository, times(1)).save(activeBidUser);
+        verify(bidUserService, times(1)).findByActive(true);
+        verify(bidUserService, times(1)).save(activeBidUser);
         assertFalse(activeBidUser.getIs_Active());
     }
 }

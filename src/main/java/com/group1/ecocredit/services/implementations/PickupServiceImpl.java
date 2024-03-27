@@ -30,13 +30,13 @@ public class PickupServiceImpl implements PickupService {
     private PickupRepository pickupRepository;
 
     @Autowired
-    private WasteRepository wasteRepository;
+    private WasteRepository wasteRepository; // TODO
 
     @Autowired
-    private StatusRepository statusRepository;
+    private StatusRepository statusRepository; // TODO
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository; // TODO
 
 
     @Autowired

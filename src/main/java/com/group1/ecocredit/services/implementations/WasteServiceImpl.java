@@ -1,10 +1,14 @@
 package com.group1.ecocredit.services.implementations;
 
 import com.group1.ecocredit.dto.admin.WasteUpdateRequest;
+import com.group1.ecocredit.models.Waste;
 import com.group1.ecocredit.repositories.WasteRepository;
 import com.group1.ecocredit.services.WasteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WasteServiceImpl implements WasteService {
@@ -21,5 +25,15 @@ public class WasteServiceImpl implements WasteService {
         waste.setWeight(request.getWeight());
         wasteRepository.save(waste);
         return true;
+    }
+
+    @Override
+    public Optional<Waste> findById(Long wasteId) {
+        return wasteRepository.findById(wasteId);
+    }
+
+    @Override
+    public List<Waste> findByPickupId(Long pickupId) {
+        return wasteRepository.findByPickupId(pickupId);
     }
 }

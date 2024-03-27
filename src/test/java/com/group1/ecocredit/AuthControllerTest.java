@@ -10,7 +10,7 @@ import com.group1.ecocredit.enums.HttpMessage;
 import com.group1.ecocredit.models.ConfirmationToken;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.ConfirmationTokenRepository;
-import com.group1.ecocredit.repositories.UserRepository;
+import com.group1.ecocredit.repositories.UserService;
 import com.group1.ecocredit.services.AuthenticationService;
 
 import com.group1.ecocredit.services.ConfirmationTokenService;
@@ -34,7 +34,7 @@ public class AuthControllerTest {
     private AuthenticationService authenticationServiceMock;
     private ConfirmationTokenService confirmationTokenServiceMock;
     private ConfirmationTokenRepository confirmationTokenRepositoryMock;
-    private UserRepository userRepository;
+    private UserService userRepository;
     private PasswordService passwordServiceMock;
     private PasswordEncoder passwordEncoder;
 
@@ -64,7 +64,7 @@ public class AuthControllerTest {
         confirmationTokenServiceMock = mock(ConfirmationTokenService.class);
         authenticationServiceMock = mock(AuthenticationService.class);
         confirmationTokenRepositoryMock = mock(ConfirmationTokenRepository.class);
-        userRepository = mock(UserRepository.class);
+        userRepository = mock(UserService.class);
         passwordServiceMock = mock(PasswordService.class);
         passwordEncoder = mock(PasswordEncoder.class);
 

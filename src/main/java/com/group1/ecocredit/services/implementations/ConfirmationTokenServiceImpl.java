@@ -2,13 +2,10 @@ package com.group1.ecocredit.services.implementations;
 
 import com.google.common.hash.Hashing;
 import com.group1.ecocredit.models.ConfirmationToken;
-import com.group1.ecocredit.models.Wallet;
 import com.group1.ecocredit.repositories.ConfirmationTokenRepository;
-import com.group1.ecocredit.repositories.UserRepository;
+import com.group1.ecocredit.repositories.UserService;
 import com.group1.ecocredit.services.ConfirmationTokenService;
 import com.group1.ecocredit.services.WalletService;
-import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import com.group1.ecocredit.models.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +25,7 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
 
 
     private final ConfirmationTokenRepository confirmationTokenRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     private final WalletService walletService;
 
@@ -72,7 +69,7 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
 
         tokenObj.setUsed(true);
 
-        Optional<User> userOptional = userRepository.findByEmail(tokenObj.getUser().getEmail());
+        Optional<User> userOptional = userService.findByEmail(tokenObj.getUser().getEmail());
 
         if(userOptional.isEmpty()) return false;
 
@@ -81,7 +78,7 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
         userToEnable.setEnabled(true);
 
         confirmationTokenRepository.save(tokenObj);
-        userRepository.save(userToEnable);
+        userService.save(userToEnable);
 
         walletService.createWalletForUser(userToEnable);
         

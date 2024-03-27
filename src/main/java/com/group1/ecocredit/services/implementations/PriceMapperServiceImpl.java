@@ -16,7 +16,7 @@ public class PriceMapperServiceImpl implements PriceMapperService {
     private final HashMap<String, Float> priceMap;
 
     @Autowired
-    private CategoryPriceRepository categoryPriceRepository;
+    private CategoryPriceRepository categoryPriceRepository; // TODO
 
     private static PriceMapperService instance;
     private PriceMapperServiceImpl() {
