@@ -8,8 +8,8 @@ import com.group1.ecocredit.models.Bid;
 import com.group1.ecocredit.enums.Role;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.services.BidService;
-import com.group1.ecocredit.services.admin.implementations.PickupAdminServiceImpl;
-import com.group1.ecocredit.services.admin.implementations.WasteServiceImpl;
+import com.group1.ecocredit.services.implementations.BidServiceImpl;
+import com.group1.ecocredit.services.implementations.CheckoutServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -42,9 +42,9 @@ public class AdminControllerTests {
     private BidService bidServiceMock;
 
     @Mock
-    private PickupAdminServiceImpl pickupAdminServiceMock;
+    private CheckoutServiceImpl.PickupAdminServiceImpl pickupAdminServiceMock;
     @Mock
-    private WasteServiceImpl wasteServiceMock;
+    private BidServiceImpl.WasteServiceImpl wasteServiceMock;
 
     @InjectMocks
     private AdminController adminController;

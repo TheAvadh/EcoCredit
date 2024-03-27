@@ -2,7 +2,7 @@ package com.group1.ecocredit;
 
 import com.group1.ecocredit.models.admin.PickupQueryResult;
 import com.group1.ecocredit.repositories.PickupRepository;
-import com.group1.ecocredit.services.admin.implementations.PickupAdminServiceImpl;
+import com.group1.ecocredit.services.implementations.CheckoutServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +23,7 @@ public class PickupAdminServiceTests {
     @Mock
     private PickupRepository pickupRepository;
     @InjectMocks
-    private PickupAdminServiceImpl pickupAdminService;
+    private CheckoutServiceImpl.PickupAdminServiceImpl pickupAdminService;
     private PickupQueryResult dbPickupScheduledFirst;
     private PickupQueryResult dbPickupScheduledSecond;
     private List<PickupQueryResult> dbPickupsScheduled;

@@ -4,27 +4,28 @@ package com.group1.ecocredit.services.implementations;
 import com.group1.ecocredit.dto.UpdateProfileRequest;
 import com.group1.ecocredit.dto.UpdateProfileResponse;
 import com.group1.ecocredit.dto.UserDetailsResponse;
+import com.group1.ecocredit.enums.Role;
 import com.group1.ecocredit.models.Address;
 import com.group1.ecocredit.models.User;
-import com.group1.ecocredit.repositories.UserRepository;
+import com.group1.ecocredit.repositories.UserService;
 import com.group1.ecocredit.services.EmailService;
-import com.group1.ecocredit.services.UserService;
 import com.group1.ecocredit.services.ConfirmationTokenService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 import static com.group1.ecocredit.dto.UpdateProfileResponse.ResponseType.*;
 
 @Service
 @RequiredArgsConstructor
 
-public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
+public class UserServiceImpl implements com.group1.ecocredit.services.UserService {
+    private final UserService userRepository;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailService emailService;
 
@@ -111,5 +112,20 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<User> findById(Integer id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public User findByRole(Role role) {
+        return userRepository.findByRole(role);
     }
 }

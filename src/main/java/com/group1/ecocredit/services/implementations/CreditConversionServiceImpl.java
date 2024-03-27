@@ -1,12 +1,14 @@
 package com.group1.ecocredit.services.implementations;
 
+import com.group1.ecocredit.dto.admin.PickupAdminResponse;
 import com.group1.ecocredit.enums.Currency;
 import com.group1.ecocredit.services.CreditConversionService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -26,5 +28,13 @@ public class CreditConversionServiceImpl implements CreditConversionService {
     public Double convert(Double amount, Currency currency) {
 
         return Math.ceil(amount * conversionRates.get(currency));
+    }
+
+    public static interface PickupAdminService {
+        List<PickupAdminResponse> getScheduledPickups() throws SQLException;
+
+        List<PickupAdminResponse> getCompletedPickups() throws SQLException;
+
+        List<PickupAdminResponse> getInProgressPickups() throws SQLException;
     }
 }

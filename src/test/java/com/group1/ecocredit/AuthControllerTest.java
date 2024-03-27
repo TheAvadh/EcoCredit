@@ -10,7 +10,7 @@ import com.group1.ecocredit.enums.HttpMessage;
 import com.group1.ecocredit.models.ConfirmationToken;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.ConfirmationTokenRepository;
-import com.group1.ecocredit.repositories.UserRepository;
+import com.group1.ecocredit.repositories.UserService;
 import com.group1.ecocredit.services.AuthenticationService;
 
 import com.group1.ecocredit.services.ConfirmationTokenService;
@@ -34,7 +34,7 @@ public class AuthControllerTest {
     private AuthenticationService authenticationServiceMock;
     private ConfirmationTokenService confirmationTokenServiceMock;
     private ConfirmationTokenRepository confirmationTokenRepositoryMock;
-    private UserRepository userRepository;
+    private UserService userServiceMock;
     private PasswordService passwordServiceMock;
     private PasswordEncoder passwordEncoder;
 
@@ -64,7 +64,7 @@ public class AuthControllerTest {
         confirmationTokenServiceMock = mock(ConfirmationTokenService.class);
         authenticationServiceMock = mock(AuthenticationService.class);
         confirmationTokenRepositoryMock = mock(ConfirmationTokenRepository.class);
-        userRepository = mock(UserRepository.class);
+        userServiceMock = mock(UserService.class);
         passwordServiceMock = mock(PasswordService.class);
         passwordEncoder = mock(PasswordEncoder.class);
 
@@ -139,7 +139,7 @@ public class AuthControllerTest {
 
         when(confirmationTokenServiceMock.confirmToken(VALID_TOKEN)).thenReturn(true);
         when(confirmationTokenRepositoryMock.findByToken(VALID_TOKEN)).thenReturn(Optional.of(confirmationToken));
-        when(userRepository.findByEmail(confirmationToken.getUser().getEmail())).thenReturn(Optional.of(user));
+        when(userServiceMock.findByEmail(confirmationToken.getUser().getEmail())).thenReturn(Optional.of(user));
 
         ResponseEntity<Boolean> responseEntity = authenticationController.confirm(VALID_TOKEN);
 
@@ -153,7 +153,7 @@ public class AuthControllerTest {
         PasswordResetRequest passwordResetRequest = new PasswordResetRequest();
         request.setEmail(VALID_EMAIL);
         User user = new User();
-        when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(user));
+        when(userServiceMock.findByEmail(request.getEmail())).thenReturn(Optional.of(user));
         when(passwordServiceMock.forgetPassword(request)).thenReturn(true);
         when(passwordEncoder.encode(passwordResetRequest.getNewPassword())).thenReturn(ENCODED_PASSWORD);
 
