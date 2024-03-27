@@ -1,10 +1,10 @@
-package com.group1.ecocredit.services.admin.implementations;
+package com.group1.ecocredit.services.implementations;
 
 import com.group1.ecocredit.dto.admin.PickupAdminResponse;
 import com.group1.ecocredit.dto.admin.WasteAdminResponse;
 import com.group1.ecocredit.models.admin.PickupQueryResult;
 import com.group1.ecocredit.repositories.PickupRepository;
-import com.group1.ecocredit.services.admin.PickupAdminService;
+import com.group1.ecocredit.services.PickupAdminService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -6,13 +6,13 @@ import com.group1.ecocredit.dto.PickupWaste;
 import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.repositories.*;
 import com.group1.ecocredit.services.*;
-import com.group1.ecocredit.repositories.WasteRepository;
 import com.group1.ecocredit.services.implementations.PickupServiceImpl;
 import com.stripe.exception.StripeException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -27,16 +27,25 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PickupServiceTests {
+    @Mock
     private static PickupRepository pickupRepository;
-    private static WasteRepository wasteRepository;
-    private static StatusRepository statusRepository;
-    private static CategoryRepository categoryRepository;
-    private static PickupService pickupService;
+    @Mock
+    private static WasteService wasteService;
+    @Mock
+    private static StatusService statusService;
+    @Mock
+    private static CategoryService categoryService;
+    @InjectMocks
+    private static PickupServiceImpl pickupService;
+    @Mock
     private static WalletService walletService;
+    @Mock
     private static PriceMapperService priceMapperService;
+    @Mock
     private static CreditConversionService creditConversionService;
+    @Mock
     private static WasteServiceCustomer wasteServiceCustomer;
-
+    @Mock
     private static PickupPaymentActionService pickupPaymentActionService;
     private static String PICKUP_DATE = "2024-05-01T15:00";
     private static String STATUS_SCHEDULED = "SCHEDULED";
@@ -50,26 +59,6 @@ public class PickupServiceTests {
     private static String CATEGORY_BIODEGRADABLE = "biodegradable";
 
     private static String PAYMENT_ID = "payment_id";
-
-    @BeforeEach
-    void setUp() {
-        pickupRepository = Mockito.mock(PickupRepository.class);
-        wasteRepository = Mockito.mock(WasteRepository.class);
-        statusRepository = Mockito.mock(StatusRepository.class);
-        categoryRepository = Mockito.mock(CategoryRepository.class);
-        pickupPaymentActionService = Mockito.mock(PickupPaymentActionService.class);
-        walletService = Mockito.mock(WalletService.class);
-        priceMapperService = Mockito.mock(PriceMapperService.class);
-        creditConversionService = Mockito.mock(CreditConversionService.class);
-        wasteServiceCustomer = Mockito.mock(WasteServiceCustomer.class);
-        pickupService = Mockito.mock(PickupService.class);
-
-
-        pickupService = new PickupServiceImpl(pickupRepository,
-                wasteRepository, statusRepository, categoryRepository,
-                pickupPaymentActionService, walletService, priceMapperService,
-                creditConversionService, wasteServiceCustomer);
-    }
 
     @Test
     void testSchedulePickupSuccess() {
@@ -87,11 +76,11 @@ public class PickupServiceTests {
                 LocalDateTime.parse(pickupRequest.getDateTime()), user, status, PAYMENT_ID);
         Category plasticsCategory = new Category(CATEGORY_PLASTICS_ID, CATEGORY_PLASTICS);
 
-        Mockito.when(statusRepository.findByValue(PickupStatus.AWAITING_PAYMENT))
+        Mockito.when(statusService.findByValue(PickupStatus.AWAITING_PAYMENT))
                 .thenReturn(Optional.of(status));
         Mockito.when(pickupRepository.save(any(Pickup.class)))
                 .thenReturn(pickup);
-        Mockito.when(categoryRepository.findByValue(CATEGORY_PLASTICS))
+        Mockito.when(categoryService.findByValue(CATEGORY_PLASTICS))
                 .thenReturn(Optional.of(plasticsCategory));
 
         // Act
@@ -99,7 +88,7 @@ public class PickupServiceTests {
 
         // Verify that we saved a pickup and waste item
         verify(pickupRepository, times(1)).save(any(Pickup.class));
-        verify(wasteRepository, times(1)).save(any(Waste.class));
+        verify(wasteService, times(1)).save(any(Waste.class));
     }
 
     @Test
@@ -122,13 +111,13 @@ public class PickupServiceTests {
         Category biodegradableCategory = new Category(CATEGORY_BIODEGRADABLE_ID,
                 CATEGORY_BIODEGRADABLE);
 
-        Mockito.when(statusRepository.findByValue(PickupStatus.AWAITING_PAYMENT))
+        Mockito.when(statusService.findByValue(PickupStatus.AWAITING_PAYMENT))
                 .thenReturn(Optional.of(status));
         Mockito.when(pickupRepository.save(any(Pickup.class)))
                 .thenReturn(pickup);
-        Mockito.when(categoryRepository.findByValue(CATEGORY_PLASTICS))
+        Mockito.when(categoryService.findByValue(CATEGORY_PLASTICS))
                 .thenReturn(Optional.of(plasticsCategory));
-        Mockito.when(categoryRepository.findByValue(CATEGORY_BIODEGRADABLE))
+        Mockito.when(categoryService.findByValue(CATEGORY_BIODEGRADABLE))
                 .thenReturn(Optional.of(biodegradableCategory));
 
         // Act
@@ -137,7 +126,7 @@ public class PickupServiceTests {
         // Verify that we saved a pickup
         verify(pickupRepository, times(1)).save(any(Pickup.class));
         // Verify that we saved two waste items
-        verify(wasteRepository, times(2)).save(any(Waste.class));
+        verify(wasteService, times(2)).save(any(Waste.class));
     }
 
     @Test
@@ -145,7 +134,7 @@ public class PickupServiceTests {
         // Arrange
         PickupRequest pickupRequest = new PickupRequest();
         User user = new User();
-        Mockito.when(statusRepository.findByValue(PickupStatus.AWAITING_PAYMENT))
+        Mockito.when(statusService.findByValue(PickupStatus.AWAITING_PAYMENT))
                 .thenReturn(Optional.empty());
 
         // Act & Assert that an exception is thrown
@@ -168,11 +157,11 @@ public class PickupServiceTests {
         Pickup pickup = new Pickup(PICKUP_ID,
                 LocalDateTime.parse(pickupRequest.getDateTime()), user, status, "payment");
 
-        Mockito.when(statusRepository.findByValue(PickupStatus.AWAITING_PAYMENT))
+        Mockito.when(statusService.findByValue(PickupStatus.AWAITING_PAYMENT))
                 .thenReturn(Optional.of(status));
         Mockito.when(pickupRepository.save(any(Pickup.class)))
                 .thenReturn(pickup);
-        Mockito.when(categoryRepository.findByValue(any()))
+        Mockito.when(categoryService.findByValue(any()))
                 .thenReturn(Optional.empty());
 
         // Act & Assert that exception is thrown
@@ -195,7 +184,7 @@ public class PickupServiceTests {
 
         Mockito.when(pickupRepository.findById(pickupToCancel.getId()))
                 .thenReturn(Optional.of(pickup));
-        Mockito.when(statusRepository.findByValue(PickupStatus.CANCELED))
+        Mockito.when(statusService.findByValue(PickupStatus.CANCELED))
                 .thenReturn(Optional.of(status));
 
         // Act
@@ -229,7 +218,7 @@ public class PickupServiceTests {
 
         // Verify that the right methods are called
         verify(pickupRepository, times(1)).findById(anyLong());
-        verify(statusRepository, never()).findByValue(anyString());
+        verify(statusService, never()).findByValue(anyString());
         verify(pickupRepository, never()).save(any(Pickup.class));
     }
 
@@ -244,7 +233,7 @@ public class PickupServiceTests {
 
         Mockito.when(pickupRepository.findById(pickupToCancel.getId()))
                 .thenReturn(Optional.of(pickup));
-        Mockito.when(statusRepository.findByValue(PickupStatus.CANCELED))
+        Mockito.when(statusService.findByValue(PickupStatus.CANCELED))
                 .thenReturn(Optional.empty());
 
         // Act
@@ -255,7 +244,7 @@ public class PickupServiceTests {
 
         // Verify that the right methods are called
         verify(pickupRepository, times(1)).findById(anyLong());
-        verify(statusRepository, times(1)).findByValue(anyString());
+        verify(statusService, times(1)).findByValue(anyString());
         verify(pickupRepository, never()).save(any(Pickup.class));
     }
 }

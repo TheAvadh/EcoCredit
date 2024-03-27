@@ -2,12 +2,10 @@ package com.group1.ecocredit.services.implementations;
 
 import com.group1.ecocredit.models.ConfirmationEmail;
 import com.group1.ecocredit.models.Pickup;
-import com.group1.ecocredit.models.PickupStatus;
 import com.group1.ecocredit.repositories.ConfirmationEmailRepository;
-import com.group1.ecocredit.repositories.PickupRepository;
 import com.group1.ecocredit.services.EmailScheduler;
 import com.group1.ecocredit.services.EmailService;
-import org.checkerframework.checker.units.qual.C;
+import com.group1.ecocredit.services.PickupService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -22,36 +20,38 @@ import java.util.List;
 public class EmailSchedulerImpl implements EmailScheduler, Job {
 
     @Autowired
-    private PickupRepository pickupRepository;
+    private PickupService pickupService;
 
     @Autowired
-    private EmailService emailServices;
+    private EmailService emailService;
 
     @Autowired
-    private ConfirmationEmailRepository confirmationEmailRepository;
+    private ConfirmationEmailRepository confirmationEmailService;
+    // - service
 
     @Value("${max.retries}")
     private int maxRetries;
 
-    public EmailSchedulerImpl(PickupRepository pickupRepository, EmailService emailService) {
-        this.pickupRepository = pickupRepository;
-        this.emailServices = emailService;
+    public EmailSchedulerImpl(PickupService pickupService,
+                              EmailService emailService) {
+        this.pickupService = pickupService;
+        this.emailService = emailService;
     }
 
 
     @Override
     public void sendEmailToPickupsThatAreScheduled() {
 
-        List<Pickup> pickupList = pickupRepository.findAllPickupsWithEmailsNotSent();
+        List<Pickup> pickupList = pickupService.findAllPickupsWithEmailsNotSent();
 
         for (Pickup pickup : pickupList) {
             try {
-                emailServices.sendPickupScheduledEmail(pickup);
+                emailService.sendPickupScheduledEmail(pickup);
                 ConfirmationEmail confirmationEmail = new ConfirmationEmail();
                 confirmationEmail.setEmailSent(true);
                 confirmationEmail.setPickup(pickup);
                 confirmationEmail.setRetryCounter(confirmationEmail.getRetryCounter() + 1);
-                confirmationEmailRepository.save(confirmationEmail);
+                confirmationEmailService.save(confirmationEmail);
             } catch (Exception e) {
                 System.out.println("Error while sending email to user: " + pickup.getUser().getUsername());
                 System.out.println(e.getMessage());
