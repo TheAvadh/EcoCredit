@@ -17,6 +17,9 @@
   - React 18.2.0
   - React Bootstrap 2.10.0
   - Bootstrap 5.3.2
+  - Sass 1.70.0
+  - Strip.js 2.6.0
+  - Font Awesome 6.5.1
 - Backend:
   - Java 21
   - Spring Boot version 3.2.2
@@ -76,7 +79,7 @@
 
 ### Frontend
 
-On terminal, go to the `frontend/ecocredit` directory.\
+On terminal, go to the `frontend/ecocredit` directory.  
 To build in `dev` environment, type `npm start`.
 
 ### Backend
@@ -110,12 +113,12 @@ This page shows all pickups that are completed, sorted from the latest pickup.
 
 **Update the weight of a waste item in a pickup**
 
-An admin can enter the waste item's ID and its weight in kilograms.
+An admin can enter the waste item's ID and its weight in kilograms.  
 After clicking on 'update', the weight of the item is reflected in the completed pickups table.
 
 **Create a bid**
 
-An admin can create a bid of a waste item.
+An admin can create a bid of a waste item.  
 To do this, the admin needs to enter the waste item's ID and the date and time of the bid.
 
 **View bids**
