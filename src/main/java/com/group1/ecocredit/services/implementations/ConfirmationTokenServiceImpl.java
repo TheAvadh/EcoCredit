@@ -81,7 +81,7 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
         userService.save(userToEnable);
 
         walletService.createWalletForUser(userToEnable);
-        
+
         return true;
     }
 

@@ -17,6 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -72,15 +73,16 @@ public class EcocreditApplication implements CommandLineRunner {
     }
 
     private List<Category> getWasteCategories() {
-        return Arrays.asList(
-                new Category(1, "electronics"),
-                new Category(2, "paper"),
-                new Category(3, "biodegradable"),
-                new Category(4, "plastics"),
-                new Category(5, "glass"),
-                new Category(6, "mixed")
-        );
+        List<Category> categories = new ArrayList<>();
+        categories.add(new Category(1, "electronics"));
+        categories.add(new Category(2, "paper"));
+        categories.add(new Category(3, "biodegradable"));
+        categories.add(new Category(4, "plastics"));
+        categories.add(new Category(5, "glass"));
+        categories.add(new Category(6, "mixed"));
+        return categories;
     }
+
 
     private void prefillWasteCategoryLookup(List<Category> categories) {
         for (var category : categories) {
@@ -96,14 +98,16 @@ public class EcocreditApplication implements CommandLineRunner {
     }
 
     private List<Status> getPickupStatuses() {
-        return Arrays.asList(
-                new Status(1, PickupStatus.SCHEDULED),
-                new Status(2, PickupStatus.IN_PROGRESS),
-                new Status(3, PickupStatus.COMPLETED),
-                new Status(4, PickupStatus.CANCELED),
-                new Status(5, PickupStatus.AWAITING_PAYMENT)
-        );
+        List<Status> statuses = new ArrayList<>();
+        statuses.add(new Status(1, PickupStatus.SCHEDULED));
+        statuses.add(new Status(2, PickupStatus.IN_PROGRESS));
+        statuses.add(new Status(3, PickupStatus.COMPLETED));
+        statuses.add(new Status(4, PickupStatus.CANCELED));
+        statuses.add(new Status(5, PickupStatus.AWAITING_PAYMENT));
+        return statuses;
     }
+
+
 
     private void prefillPickupStatusLookup(List<Status> statuses) {
         for (var status : statuses) {
