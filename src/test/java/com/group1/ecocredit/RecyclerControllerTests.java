@@ -169,6 +169,140 @@ public class RecyclerControllerTests {
         verify(auctionService, times(1)).viewAllActiveBids();
     }
 
+    @Test
+    public void testPlaceBid_Authenticated_Success() {
+
+        User user = new User();
+        Bid bid = new Bid();
+        bid.setId(1L);
+
+        authenticated();
+
+        BidUser expectedBidUser = new BidUser();
+        when(auctionService.placeBid(1L)).thenReturn(expectedBidUser);
+
+        ResponseEntity<BidUser> responseEntity = recyclerController.placeBid(1L);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(expectedBidUser, responseEntity.getBody());
+        verify(auctionService, times(1)).placeBid(1L);
+    }
+
+    @Test
+    public void testPlaceBid_Authenticated_NotFound() {
+
+        is_authenticated(false);
+
+        ResponseEntity<BidUser> responseEntity = recyclerController.placeBid(1L);
+
+        assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        verify(auctionService, never()).viewAllActiveBids();
+    }
+
+    @Test
+    public void testPlaceBid_Unauthenticated() {
+        is_authenticated(false);
+
+        ResponseEntity<BidUser> responseEntity = recyclerController.placeBid(1L);
+
+        assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+        verify(auctionService, never()).placeBid(anyLong());
+    }
+
+    @Test
+    public void testPlaceBid_RuntimeException() {
+        User user = new User();
+        Bid bid = new Bid();
+        bid.setId(1L);
+        authenticated();
+
+        when(auctionService.placeBid(1L)).thenThrow(RuntimeException.class);
+
+        ResponseEntity<BidUser> responseEntity = recyclerController.placeBid(1L);
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+        verify(auctionService, times(1)).placeBid(1L);
+    }
+
+    @Test
+    public void testPlaceBid_IllegalArgumentException() {
+        User user = new User();
+        Bid bid = new Bid();
+        bid.setId(1L);
+        authenticated();
+
+        when(auctionService.placeBid(1L)).thenThrow(IllegalArgumentException.class);
+
+        ResponseEntity<BidUser> responseEntity = recyclerController.placeBid(1L);
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        verify(auctionService, times(1)).placeBid(1L);
+    }
+
+
+
+
+    @Test
+    public void testRaiseBid_Authenticated() {
+        User user = new User();
+        authenticated();
+
+        DisplayBidRequest request = new DisplayBidRequest();
+
+        BidUser expectedBidUser = new BidUser();
+        when(auctionService.raiseBid(request, user)).thenReturn(expectedBidUser);
+
+        ResponseEntity<BidUser> responseEntity = recyclerController.raiseBid(request);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody());
+        verify(auctionService, times(1)).raiseBid(request, user);
+    }
+
+    @Test
+    public void testRaiseBid_Unauthenticated() {
+        is_authenticated(false);
+
+        ResponseEntity<BidUser> responseEntity = recyclerController.raiseBid(new DisplayBidRequest());
+
+        assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+    }
+
+    @Test
+    public void testRaiseBid_NotFound() {
+        User user = new User();
+        authenticated();
+
+        DisplayBidRequest request = new DisplayBidRequest();
+
+        when(auctionService.raiseBid(request, user)).thenThrow(IllegalArgumentException.class);
+
+        ResponseEntity<BidUser> responseEntity = recyclerController.raiseBid(request);
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+        verify(auctionService, times(1)).raiseBid(request, user);
+    }
+
+    @Test
+    public void testRaiseBid_Exception() {
+        User user = new User();
+        authenticated();
+
+        DisplayBidRequest request = new DisplayBidRequest();
+
+        when(auctionService.raiseBid(request, user)).thenThrow(RuntimeException.class);
+
+        ResponseEntity<BidUser> responseEntity = recyclerController.raiseBid(request);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+        assertNull(responseEntity.getBody());
+        verify(auctionService, times(1)).raiseBid(request, user);
+    }
+
 
     public void authenticated(){
         User user = new User();
@@ -184,8 +318,6 @@ public class RecyclerControllerTests {
         when(authentication.isAuthenticated()).thenReturn(is_auth);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
-
-
 
     public void getUserBid_auth(){
         User user = new User();
