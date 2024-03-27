@@ -6,6 +6,7 @@ import com.group1.ecocredit.dto.PickupStatusResponse;
 import com.group1.ecocredit.enums.Currency;
 import com.group1.ecocredit.models.PickupStatus;
 import com.group1.ecocredit.models.*;
+import com.group1.ecocredit.models.admin.PickupQueryResult;
 import com.group1.ecocredit.repositories.*;
 import com.group1.ecocredit.services.*;
 import com.stripe.exception.StripeException;
@@ -30,13 +31,13 @@ public class PickupServiceImpl implements PickupService {
     private PickupRepository pickupRepository;
 
     @Autowired
-    private WasteRepository wasteRepository;
+    private WasteService wasteService;
 
     @Autowired
-    private StatusRepository statusRepository;
+    private StatusService statusService;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
 
 
     @Autowired
@@ -59,7 +60,7 @@ public class PickupServiceImpl implements PickupService {
     @Override
     public Pickup schedulePickup(PickupRequest pickupRequest, User user) {
         Optional<Status> statusOptional =
-                statusRepository.findByValue(PickupStatus.AWAITING_PAYMENT);
+                statusService.findByValue(PickupStatus.AWAITING_PAYMENT);
         if (statusOptional.isEmpty()) {
             throw new IllegalArgumentException("Status not found: " + PickupStatus.AWAITING_PAYMENT);
         }
@@ -74,7 +75,7 @@ public class PickupServiceImpl implements PickupService {
         for (var w : pickupRequest.getWastes()) {
             Waste waste = new Waste();
             Optional<Category> categoryOptional =
-                    categoryRepository.findByValue(w.getCategory());
+                    categoryService.findByValue(w.getCategory());
             if (categoryOptional.isEmpty()) {
                 throw new IllegalArgumentException("Category not found: " + w.getCategory());
             }
@@ -82,7 +83,7 @@ public class PickupServiceImpl implements PickupService {
             waste.setCategory(category);
             waste.setPickup(savedPickup);
             waste.setWeight(w.getWeight());
-            wasteRepository.save(waste);
+            wasteService.save(waste);
         }
         System.out.println("Pickup scheduled");
 
@@ -96,7 +97,7 @@ public class PickupServiceImpl implements PickupService {
 
 
         Optional<Status> statusCanceledOptional =
-                statusRepository.findByValue(PickupStatus.CANCELED);
+                statusService.findByValue(PickupStatus.CANCELED);
         if(statusCanceledOptional.isEmpty()) return false;
 
 
@@ -146,7 +147,7 @@ public class PickupServiceImpl implements PickupService {
 
         if(pickupPaymentActionService.isPaymentDone(pickup.getPaymentId())) {
 
-            Status status = statusRepository.findByValue(PickupStatus.SCHEDULED).get();
+            Status status = statusService.findByValue(PickupStatus.SCHEDULED).get();
             pickup.setStatus(status);
             pickupRepository.save(pickup);
         }
@@ -187,11 +188,36 @@ public class PickupServiceImpl implements PickupService {
 
         walletService.addCredit(Long.valueOf(pickup.getUser().getUserID()), BigDecimal.valueOf(amount));
 
-        Status status = statusRepository.findByValue(PickupStatus.COMPLETED).get();
+        Status status = statusService.findByValue(PickupStatus.COMPLETED).get();
 
         pickup.setStatus(status);
 
         pickupRepository.save(pickup);
 
+    }
+
+    @Override
+    public List<Pickup> findByUserId(Long userId) {
+        return pickupRepository.findByUserId(userId);
+    }
+
+    @Override
+    public List<Pickup> findAllPickupsWithEmailsNotSent() {
+        return pickupRepository.findAllPickupsWithEmailsNotSent();
+    }
+
+    @Override
+    public List<PickupQueryResult> findScheduledPickups() {
+        return pickupRepository.findScheduledPickups();
+    }
+
+    @Override
+    public List<PickupQueryResult> findCompletedPickups() {
+        return pickupRepository.findCompletedPickups();
+    }
+
+    @Override
+    public List<PickupQueryResult> findInProgressPickups() {
+        return pickupRepository.findInProgressPickups();
     }
 }

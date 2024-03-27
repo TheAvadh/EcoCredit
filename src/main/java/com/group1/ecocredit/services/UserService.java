@@ -1,5 +1,6 @@
 package com.group1.ecocredit.services;
 
+import com.group1.ecocredit.enums.Role;
 import com.group1.ecocredit.models.ConfirmationToken;
 import com.group1.ecocredit.dto.UpdateProfileRequest;
 import com.group1.ecocredit.dto.UpdateProfileResponse;
@@ -18,4 +19,7 @@ public interface UserService {
 
     UserDetailsResponse getUserById(Integer userId);
 
+    User findByRole(Role role);
+
+    User save(User user);
 }

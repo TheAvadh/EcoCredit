@@ -19,17 +19,17 @@ import java.util.Optional;
 @Service
 public class PasswordServiceImpl implements PasswordService {
 
-    private final UserRepository userRepository;
+    private final UserRepository userService;
     private final TokenService tokenService;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final EmailService emailService;
 
     private final PasswordEncoder passwordEncoder;
-    public PasswordServiceImpl(UserRepository userRepository,
+    public PasswordServiceImpl(UserRepository userService,
                                TokenService tokenService,
                                EmailService emailService,
                                PasswordResetTokenRepository passwordResetTokenRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.tokenService = tokenService;
         this.emailService = emailService;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
@@ -40,7 +40,7 @@ public class PasswordServiceImpl implements PasswordService {
     public boolean forgetPassword(ForgetPasswordRequest request) {
 
         try {
-            var optionalUser = userRepository.findByEmail(request.getEmail());
+            var optionalUser = userService.findByEmail(request.getEmail());
 
             if (optionalUser.isEmpty()) {
                 throw new IllegalArgumentException("Invalid email %s"
@@ -84,7 +84,7 @@ public class PasswordServiceImpl implements PasswordService {
 
             String email = request.getEmail();
 
-            Optional<User> userOptional = userRepository.findByEmail(email);
+            Optional<User> userOptional = userService.findByEmail(email);
 
             if (userOptional.isEmpty()) return false;
 
@@ -92,7 +92,7 @@ public class PasswordServiceImpl implements PasswordService {
 
             userToChangePassword.setPassword(passwordEncoder.encode(request.getNewPassword()));
 
-            userRepository.save(userToChangePassword);
+            userService.save(userToChangePassword);
 
             tokenService.inValidateToken(token);
 

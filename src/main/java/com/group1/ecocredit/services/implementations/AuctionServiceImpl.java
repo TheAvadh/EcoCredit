@@ -5,11 +5,10 @@ import com.group1.ecocredit.dto.DisplayBidRequest;
 import com.group1.ecocredit.models.Bid;
 import com.group1.ecocredit.models.BidUser;
 import com.group1.ecocredit.models.User;
-import com.group1.ecocredit.repositories.BidRepository;
-import com.group1.ecocredit.repositories.BidUserRepository;
+import com.group1.ecocredit.services.BidService;
+import com.group1.ecocredit.services.BidUserService;
 import com.group1.ecocredit.services.AuctionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +20,16 @@ import java.util.List;
 public class AuctionServiceImpl implements AuctionService {
 
     @Autowired
-    BidRepository bidRepository;
+    BidService bidService;
 
     @Autowired
-    BidUserRepository bidUserRepository;
+    BidUserService bidUserService;
 
 
     @Override
     public List<BidUser> viewAllActiveBids() {
 
-        List<Bid> listBid = bidRepository.findAllActiveBids();
+        List<Bid> listBid = bidService.findAllActiveBids();
         List<BidUser> listBidUser = new ArrayList<>();
 
         for (Bid bid : listBid) {
@@ -51,7 +50,7 @@ public class AuctionServiceImpl implements AuctionService {
 
     @Override
     public List<BidUser> viewUserBids(Integer userId) {
-        return bidUserRepository.findByUserId(userId);
+        return bidUserService.findByUserId(userId);
     }
 
 
@@ -60,7 +59,7 @@ public class AuctionServiceImpl implements AuctionService {
 
         BidUser bidUser = new BidUser();
         Long BidId = request.getBidId();
-        Bid bid = bidRepository.findById(BidId);
+        Bid bid = bidService.findById(BidId);
 
         Double nextBid = bid.getTop_bid_amount() + rangeDifference(bid.getTop_bid_amount());
 
@@ -103,16 +102,16 @@ public class AuctionServiceImpl implements AuctionService {
         bidUser.setWaste_weight(bid.getWaste().getWeight());
         bidUser.setBid(bid);
 
-        bidUserRepository.save(bidUser);
-        bidRepository.save(bid);
+        bidUserService.save(bidUser);
+        bidService.save(bid);
     }
 
 
     @Override
     public BidUser placeBid(Long bidId) {
 
-        Bid bid = bidRepository.findById(bidId);
-        if (bid.is_active() == true) {
+        Bid bid = bidService.findById(bidId);
+        if (bid.is_active()) {
             //Here I am using the BidUser just to ensure that only certain fields will be displayed to the recycler.
             //Do not save this BidUser object into the database, this just for retrieving purpose.
             BidUser storeBidUser = new BidUser();
@@ -147,16 +146,16 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     public void discardActiveStatus(){
-       List<BidUser> listBidUser = bidUserRepository.findByActive(true);
+       List<BidUser> listBidUser = bidUserService.findByActive(true);
        for(BidUser bidUser:listBidUser){
            Long idBid = bidUser.getBid().getId();
-           bidUser.setIs_Active(bidRepository.findById(idBid).is_active());
-           bidUserRepository.save(bidUser);
+           bidUser.setIs_Active(bidService.findById(idBid).is_active());
+           bidUserService.save(bidUser);
        }
     }
 
     @Scheduled(fixedRate = 60000) // Run every minute
-    public void bidUserSchedular() {
+    public void bidUserScheduler() {
         discardActiveStatus();
     }
 

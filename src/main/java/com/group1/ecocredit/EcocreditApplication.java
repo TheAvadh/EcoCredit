@@ -5,22 +5,17 @@ import com.group1.ecocredit.models.PickupStatus;
 import com.group1.ecocredit.models.Category;
 import com.group1.ecocredit.models.Status;
 import com.group1.ecocredit.models.*;
-import com.group1.ecocredit.repositories.CategoryRepository;
 import com.group1.ecocredit.repositories.CategoryPriceRepository;
-import com.group1.ecocredit.repositories.StatusRepository;
-import com.group1.ecocredit.services.EmailScheduler;
-import com.group1.ecocredit.services.PickupService;
-import com.group1.ecocredit.services.implementations.EmailSchedulerImpl;
-import org.quartz.*;
-import com.group1.ecocredit.repositories.UserRepository;
+import com.group1.ecocredit.services.CategoryPriceService;
+import com.group1.ecocredit.services.CategoryService;
+import com.group1.ecocredit.services.StatusService;
+import com.group1.ecocredit.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,16 +27,16 @@ import java.util.Optional;
 public class EcocreditApplication implements CommandLineRunner {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
 
     @Autowired
-    private StatusRepository statusRepository;
+    private StatusService statusService;
 
     @Autowired
-    CategoryPriceRepository categoryPriceRepository;
+    private CategoryPriceService categoryPriceService;
 
 
     public static void main(String[] args) {
@@ -63,7 +58,7 @@ public class EcocreditApplication implements CommandLineRunner {
     }
 
     private void registerAdmin() {
-        var adminAccount = userRepository.findByRole(Role.ADMIN);
+        var adminAccount = userService.findByRole(Role.ADMIN);
         if (adminAccount == null) {
             var admin = new User();
             admin.setEmail("ecocredit.donotreply@gmail.com");
@@ -73,7 +68,7 @@ public class EcocreditApplication implements CommandLineRunner {
             admin.setPassword(new BCryptPasswordEncoder().encode(
                     "adminpassword"));
             admin.setEnabled(true);
-            userRepository.save(admin);
+            userService.save(admin);
         }
     }
 
@@ -93,10 +88,10 @@ public class EcocreditApplication implements CommandLineRunner {
         for (var category : categories) {
 
             Optional<Category> categoryOptional =
-                    categoryRepository.findByValue(category.getValue());
+                    categoryService.findByValue(category.getValue());
 
             if (categoryOptional.isEmpty()) {
-                categoryRepository.save(new Category(category.getId(),
+                categoryService.save(new Category(category.getId(),
                         category.getValue()));
             }
         }
@@ -118,10 +113,10 @@ public class EcocreditApplication implements CommandLineRunner {
         for (var status : statuses) {
 
             Optional<Status> statusOptional =
-                    statusRepository.findById(status.getId());
+                    statusService.findById(status.getId());
 
             if (statusOptional.isEmpty()) {
-                statusRepository.save(new Status(status.getId(),
+                statusService.save(new Status(status.getId(),
                         status.getValue()));
             }
         }
@@ -137,7 +132,7 @@ public class EcocreditApplication implements CommandLineRunner {
             base = base * multiplier;
 
 
-            CategoryPrice categoryPriceDB = categoryPriceRepository.findByCategoryName(category.getValue());
+            CategoryPrice categoryPriceDB = categoryPriceService.findByCategoryName(category.getValue());
 
             if (categoryPriceDB == null) {
 
@@ -145,7 +140,7 @@ public class EcocreditApplication implements CommandLineRunner {
 
                 categoryPrice.setCategory(category);
                 categoryPrice.setValue(base);
-                categoryPriceRepository.save(categoryPrice);
+                categoryPriceService.save(categoryPrice);
             }
 
         }

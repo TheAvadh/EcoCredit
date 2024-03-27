@@ -2,7 +2,6 @@ package com.group1.ecocredit.services.implementations;
 
 
 import com.group1.ecocredit.dto.JwtAuthenticationResponse;
-import com.group1.ecocredit.dto.RefreshTokenRequest;
 import com.group1.ecocredit.dto.SignInRequest;
 import com.group1.ecocredit.dto.SignUpRequest;
 import com.group1.ecocredit.enums.HttpMessage;
@@ -12,6 +11,7 @@ import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.AuthenticationService;
 import com.group1.ecocredit.services.ConfirmationTokenService;
+import com.group1.ecocredit.services.EmailService;
 import com.group1.ecocredit.services.JWTService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +29,12 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private final UserRepository userRepository;
+    private final UserRepository userService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
     private final ConfirmationTokenService confirmationTokenService;
-    private final EmailServiceImpl emailServiceImpl;
+    private final EmailService emailService;
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
     public JwtAuthenticationResponse signup(SignUpRequest signUpRequest) {
@@ -59,14 +59,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try{
             var token = confirmationTokenService.generateConfirmationToken(user.getId());
             confirmationTokenService.saveConfirmationToken(token, user);
-            emailServiceImpl.sendVerifyAccountEmail(user.getEmail(), token);
+            emailService.sendVerifyAccountEmail(user.getEmail(), token);
         }
         catch (MessagingException e){
             logger.error("An error occurred while sending the verification email", e);
         }
 
 
-        user = userRepository.save(user);
+        user = userService.save(user);
 
         var jwt = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
@@ -88,7 +88,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw e;
         }
         JwtAuthenticationResponse jwtAuthenticationResponse=new JwtAuthenticationResponse();
-        var user=userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(()->new IllegalArgumentException("Invalid email or password."));
+        var user= userService.findByEmail(signInRequest.getEmail()).orElseThrow(()->new IllegalArgumentException("Invalid email or password."));
         var jwt=jwtService.generateToken(user);
         var refreshToken=jwtService.generateRefreshToken(new HashMap<>(),user);
 

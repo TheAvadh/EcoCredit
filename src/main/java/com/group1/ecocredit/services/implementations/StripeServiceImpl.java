@@ -1,16 +1,9 @@
 package com.group1.ecocredit.services.implementations;
 
-import com.group1.ecocredit.models.Pickup;
-import com.group1.ecocredit.models.User;
-import com.group1.ecocredit.repositories.PickupRepository;
-import com.group1.ecocredit.repositories.UserRepository;
-import com.group1.ecocredit.services.JWTService;
 import com.group1.ecocredit.services.PickupPaymentActionService;
-import com.group1.ecocredit.services.PickupService;
 import com.group1.ecocredit.services.StripeService;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.PaymentIntent;
 import com.stripe.model.Product;
 import com.stripe.model.Refund;
 import com.stripe.model.checkout.Session;
@@ -18,7 +11,6 @@ import com.stripe.param.ProductListParams;
 import com.stripe.param.RefundCreateParams;
 import com.stripe.param.checkout.SessionCreateParams;
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

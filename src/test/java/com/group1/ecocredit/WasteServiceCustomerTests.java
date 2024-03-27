@@ -5,7 +5,7 @@ import com.group1.ecocredit.models.Category;
 import com.group1.ecocredit.models.Pickup;
 import com.group1.ecocredit.models.Waste;
 import com.group1.ecocredit.repositories.WasteRepository;
-import com.group1.ecocredit.services.admin.implementations.WasteServiceImpl;
+import com.group1.ecocredit.services.implementations.WasteServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
