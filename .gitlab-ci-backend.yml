@@ -59,7 +59,24 @@ publish:
 
   script:
     - docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_PASS" docker.io
-    - docker build -t docker.io/$DOCKER_HUB_USER/$BACKEND_APP_NAME:$CI_COMMIT_SHORT_SHA .
+    - docker build \
+      --build-arg DATASOURCE_URL_DEV="$DATASOURCE_URL_DEV" \
+      --build-arg DATASOURCE_USER_DEV="$DATASOURCE_USER_DEV" \
+      --build-arg DATASOURCE_PASSWORD="$DATASOURCE_PASSWORD" \
+      --build-arg EXPIRATION_DURATION_IN_MS="$EXPIRATION_DURATION_IN_MS" \
+      --build-arg TOKEN_SECRET_KEY="$TOKEN_SECRET_KEY" \
+      --build-arg REFRESH_TOKEN_VALIDITY_MS="$REFRESH_TOKEN_VALIDITY_MS" \
+      --build-arg EMAIL_USERNAME="$EMAIL_USERNAME" \
+      --build-arg EMAIL_PASSWORD="$EMAIL_PASSWORD" \
+      --build-arg EMAIL_HOST="$EMAIL_HOST" \
+      --build-arg EMAIL_PORT="$EMAIL_PORT" \
+      --build-arg MAIL_DEBUG_DEV="$MAIL_DEBUG_DEV" \
+      --build-arg FRONTEND_SERVER_URL="$FRONTEND_SERVER_URL" \
+      --build-arg STRIPE_PUBLIC_KEY="$STRIPE_PUBLIC_KEY" \
+      --build-arg STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" \
+      --build-arg BASE_URL_BACKEND="$BASE_URL_BACKEND" \
+      --build-arg BASE_URL_FRONTEND="$BASE_URL_FRONTEND" \
+      -t docker.io/$DOCKER_HUB_USER/$BACKEND_APP_NAME:$CI_COMMIT_SHORT_SHA .
     - docker push docker.io/$DOCKER_HUB_USER/$BACKEND_APP_NAME:$CI_COMMIT_SHORT_SHA
 
   environment:
