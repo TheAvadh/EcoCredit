@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,7 +51,7 @@ public class RecyclerControllerTests {
     public void testGetUserBids_Success() {
         User user = new User();
         user.setId(1);
-        getUserBidAuth(user);
+        authenticate(user);
 
         List<BidUser> expectedBids = new ArrayList<>();
         expectedBids.add(new BidUser());
@@ -70,7 +69,7 @@ public class RecyclerControllerTests {
     public void testGetUserBids_NoBids() {
         User user = new User();
         user.setId(1);
-        getUserBidAuth(user);
+        authenticate(user);
 
         List<BidUser> expectedBids = new ArrayList<>();
         when(auctionService.viewUserBids(1)).thenReturn(expectedBids);
@@ -97,7 +96,7 @@ public class RecyclerControllerTests {
     public void testGetUserBids_IllegalException() {
         User user = new User();
         user.setId(1);
-        getUserBidAuth(user);
+        authenticate(user);
 
         when(auctionService.viewUserBids(anyInt())).thenThrow(IllegalArgumentException.class);
 
@@ -111,7 +110,7 @@ public class RecyclerControllerTests {
     public void testGetUserBids_Exception() {
         User user = new User();
         user.setId(1);
-        getUserBidAuth(user);
+        authenticate(user);
 
         when(auctionService.viewUserBids(anyInt())).thenThrow(RuntimeException.class);
 
@@ -123,7 +122,7 @@ public class RecyclerControllerTests {
 
     @Test
     public void testGetAllActiveBids_Authenticated() {
-        authenticate(true);
+        setAuthenticated(true);
 
         List<BidUser> expectedBids = new ArrayList<>();
         expectedBids.add(new BidUser());
@@ -138,7 +137,7 @@ public class RecyclerControllerTests {
 
     @Test
     public void testGetAllActiveBids_Unauthenticated() {
-        authenticate(false);
+        setAuthenticated(false);
 
         ResponseEntity<?> responseEntity = recyclerController.getAllActiveBids();
 
@@ -148,7 +147,7 @@ public class RecyclerControllerTests {
 
     @Test
     public void testGetAllActiveBids_NoActiveBids() {
-        authenticate(true);
+        setAuthenticated(true);
 
         ResponseEntity<?> responseEntity = recyclerController.getAllActiveBids();
 
@@ -159,7 +158,7 @@ public class RecyclerControllerTests {
 
     @Test
     public void testGetAllActiveBids_IllegalArgumentException() {
-        authenticate(true);
+        setAuthenticated(true);
 
         when(auctionService.viewAllActiveBids()).thenThrow(IllegalArgumentException.class);
 
@@ -172,7 +171,7 @@ public class RecyclerControllerTests {
 
     @Test
     public void testGetAllActiveBids_Exception() {
-        authenticate(true);
+        setAuthenticated(true);
 
         when(auctionService.viewAllActiveBids()).thenThrow(HttpClientErrorException.NotFound.class);
 
@@ -184,7 +183,7 @@ public class RecyclerControllerTests {
 
     @Test
     public void testPlaceBid_Authenticated_Success() {
-        authenticate(true);
+        setAuthenticated(true);
 
         BidUser expectedBidUser = new BidUser();
         when(auctionService.placeBid(1L)).thenReturn(expectedBidUser);
@@ -198,8 +197,7 @@ public class RecyclerControllerTests {
 
     @Test
     public void testPlaceBid_Authenticated_NotFound() {
-
-        authenticate(false);
+        setAuthenticated(false);
 
         ResponseEntity<BidUser> responseEntity = recyclerController.placeBid(1L);
 
@@ -209,7 +207,7 @@ public class RecyclerControllerTests {
 
     @Test
     public void testPlaceBid_Unauthenticated() {
-        authenticate(false);
+        setAuthenticated(false);
 
         ResponseEntity<BidUser> responseEntity = recyclerController.placeBid(1L);
 
@@ -220,7 +218,7 @@ public class RecyclerControllerTests {
 
     @Test
     public void testPlaceBid_RuntimeException() {
-        authenticate(true);
+        setAuthenticated(true);
 
         when(auctionService.placeBid(1L)).thenThrow(RuntimeException.class);
 
@@ -233,7 +231,7 @@ public class RecyclerControllerTests {
 
     @Test
     public void testPlaceBid_IllegalArgumentException() {
-        authenticate(true);
+        setAuthenticated(true);
 
         when(auctionService.placeBid(1L)).thenThrow(IllegalArgumentException.class);
 
@@ -246,8 +244,7 @@ public class RecyclerControllerTests {
     @Test
     public void testRaiseBid_Authenticated() {
         User user = new User();
-        when(authentication.getPrincipal()).thenReturn(user);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
+        authenticate(user);
 
         DisplayBidRequest request = new DisplayBidRequest();
 
@@ -275,8 +272,7 @@ public class RecyclerControllerTests {
     @Test
     public void testRaiseBid_NotFound() {
         User user = new User();
-        when(authentication.getPrincipal()).thenReturn(user);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
+        authenticate(user);
 
         DisplayBidRequest request = new DisplayBidRequest();
 
@@ -292,8 +288,7 @@ public class RecyclerControllerTests {
     @Test
     public void testRaiseBid_Exception() {
         User user = new User();
-        when(authentication.getPrincipal()).thenReturn(user);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
+        authenticate(user);
 
         DisplayBidRequest request = new DisplayBidRequest();
 
@@ -307,12 +302,12 @@ public class RecyclerControllerTests {
         verify(auctionService, times(1)).raiseBid(request, user);
     }
 
-    private void authenticate(boolean isAuthenticated){
+    private void setAuthenticated(boolean isAuthenticated){
         when(authentication.isAuthenticated()).thenReturn(isAuthenticated);
         when(securityContext.getAuthentication()).thenReturn(authentication);
     }
 
-    private void getUserBidAuth(User user){
+    private void authenticate(User user){
         when(authentication.getPrincipal()).thenReturn(user);
         when(securityContext.getAuthentication()).thenReturn(authentication);
     }
