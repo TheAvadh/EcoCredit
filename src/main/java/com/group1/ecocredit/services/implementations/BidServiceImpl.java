@@ -133,7 +133,7 @@ public class BidServiceImpl implements com.group1.ecocredit.services.BidService 
         return bidRepository.findById(bidId);
     }
 
-    @Scheduled(fixedRate = 60000) // Run every minute
+    @Scheduled(fixedRate = 2000) // Run every minute
     public void bidSchedular() {
         activateBids();
         expireBids();
