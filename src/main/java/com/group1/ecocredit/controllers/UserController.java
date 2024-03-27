@@ -24,12 +24,7 @@ public class UserController {
 
     private final JWTService jwtService;
 
-
-    @GetMapping
-    public ResponseEntity<String> sayHello(){
-        return ResponseEntity.ok("Hi user");
-    }
-
+    private static final String AUTHORIZATION_HEADER = "Authorization";
 
     @PutMapping("/update-profile")
     public ResponseEntity<?> updateProfile(
@@ -57,7 +52,9 @@ public class UserController {
         if (!authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        Integer userId = Integer.parseInt(jwtService.extractUserID(request.getHeader("Authorization")));
+
+        String requestHeader = request.getHeader(AUTHORIZATION_HEADER);
+        Integer userId = Integer.parseInt(jwtService.extractUserID(requestHeader));
 
         UserDetailsResponse userDTO = userService.getUserById(userId);
         if (userDTO != null) {
