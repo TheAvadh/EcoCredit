@@ -85,7 +85,7 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/putwasteforbid")
+    @PostMapping("/put-waste-for-bid")
     public ResponseEntity<Bid> putWasteForBid(@RequestBody BidCreateRequest bidCreateRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
@@ -109,7 +109,7 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/allactivebids")
+    @GetMapping("/all-active-bids")
     public ResponseEntity<List<Bid>> getAllActiveBids(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
@@ -131,7 +131,7 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/allbids")
+    @GetMapping("/all-bids")
     public ResponseEntity<List<Bid>> getAllBids(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();

@@ -88,7 +88,7 @@ public class RecyclerController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
-        if (user == null) {
+         if (user == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 

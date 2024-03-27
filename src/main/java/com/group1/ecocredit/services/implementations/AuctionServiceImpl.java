@@ -5,13 +5,16 @@ import com.group1.ecocredit.dto.DisplayBidRequest;
 import com.group1.ecocredit.models.Bid;
 import com.group1.ecocredit.models.BidUser;
 import com.group1.ecocredit.models.User;
+import com.group1.ecocredit.models.Wallet;
 import com.group1.ecocredit.services.BidService;
 import com.group1.ecocredit.services.BidUserService;
 import com.group1.ecocredit.services.AuctionService;
+import com.group1.ecocredit.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,9 @@ public class AuctionServiceImpl implements AuctionService {
 
     @Autowired
     BidUserService bidUserService;
+
+    @Autowired
+    WalletService walletService;
 
 
     @Override
@@ -61,38 +67,50 @@ public class AuctionServiceImpl implements AuctionService {
         Long BidId = request.getBidId();
         Bid bid = bidService.findById(BidId);
 
+        Long usersId = Long.valueOf(user.getId());
+        Wallet wallet = walletService.getWalletByUserId(usersId).get();
+        Double balance = wallet.getCreditAmount().doubleValue();
+
         Double nextBid = bid.getTop_bid_amount() + rangeDifference(bid.getTop_bid_amount());
 
         Double enteredBid = request.getNewBidAmount();
 
-        if (enteredBid != null) {
-            processEnteredBid(bid, bidUser, user, enteredBid, nextBid);
+        if (enteredBid != null && balance >= enteredBid){
+            processEnteredBid(bid, bidUser, user, enteredBid, nextBid, wallet, balance);
+            return bidUser;
+        } else if (enteredBid == null && balance >= nextBid) {
+            processNullBid(bid, bidUser, user, nextBid, wallet, balance);
+            return bidUser;
         }
         else {
-            processNullBid(bid, bidUser, user, nextBid);
+            throw new IllegalArgumentException("Your wallet balance is not sufficient" + balance);
         }
 
-        return bidUser;
     }
 
-    private void processEnteredBid(Bid bid, BidUser bidUser, User user, Double enteredBid, Double nextBid) {
+    private void processEnteredBid(Bid bid, BidUser bidUser, User user, Double enteredBid, Double nextBid, Wallet wallet, Double balance) {
         if (enteredBid >= nextBid) {
             bid.setTop_bid_amount(enteredBid);
             bid.setUser(user);
-            saveBidAndBidUser(bid, bidUser, user, enteredBid);
+            BigDecimal newBalance = BigDecimal.valueOf((balance - enteredBid));
+            wallet.setCreditAmount(newBalance);
+            saveBidAndBidUser(bid, bidUser, user, enteredBid, wallet);
+
 
         } else {
             throw new IllegalArgumentException("Entered amount should be greater than or equal to " + nextBid);
         }
     }
 
-    private void processNullBid(Bid bid, BidUser bidUser, User user, Double nextBid) {
+    private void processNullBid(Bid bid, BidUser bidUser, User user, Double nextBid, Wallet wallet, Double balance) {
         bid.setTop_bid_amount(nextBid);
         bid.setUser(user);
-        saveBidAndBidUser(bid, bidUser, user, nextBid);
+        BigDecimal newBalance = BigDecimal.valueOf((balance - nextBid));
+        wallet.setCreditAmount(newBalance);
+        saveBidAndBidUser(bid, bidUser, user, nextBid, wallet);
     }
 
-    private void saveBidAndBidUser(Bid bid, BidUser bidUser, User user, Double bidAmount) {
+    private void saveBidAndBidUser(Bid bid, BidUser bidUser, User user, Double bidAmount, Wallet wallet) {
         bidUser.setBid_amount(bidAmount);
         bidUser.setDate(LocalDateTime.now());
         bidUser.setUser(user);
@@ -104,6 +122,8 @@ public class AuctionServiceImpl implements AuctionService {
 
         bidUserService.save(bidUser);
         bidService.save(bid);
+
+        walletService.save(wallet);
     }
 
 

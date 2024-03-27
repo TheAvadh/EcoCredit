@@ -20,4 +20,6 @@ public interface WalletService {
 
     void createWalletForUser(User user);
 
+    Wallet save (Wallet wallet);
+
 }

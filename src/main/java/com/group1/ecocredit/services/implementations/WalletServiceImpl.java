@@ -96,4 +96,9 @@ public class WalletServiceImpl implements WalletService {
         wallet.setUserId(Long.valueOf(user.getId()));
         walletRepository.save(wallet);
     }
+
+    @Override
+    public Wallet save(Wallet wallet) {
+        return walletRepository.save(wallet);
+    }
 }
