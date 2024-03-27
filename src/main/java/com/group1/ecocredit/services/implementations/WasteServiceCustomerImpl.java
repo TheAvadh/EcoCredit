@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class WasteServiceCustomerCustomerImpl implements WasteServiceCustomer {
+public class WasteServiceCustomerImpl implements WasteServiceCustomer {
 
     @Autowired
     private WasteRepository wasteRepository;
