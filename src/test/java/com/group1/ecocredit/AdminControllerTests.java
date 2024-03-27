@@ -8,7 +8,6 @@ import com.group1.ecocredit.models.Bid;
 import com.group1.ecocredit.enums.Role;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.services.BidService;
-import com.group1.ecocredit.services.admin.PickupAdminService;
 import com.group1.ecocredit.services.admin.implementations.PickupAdminServiceImpl;
 import com.group1.ecocredit.services.admin.implementations.WasteServiceImpl;
 import org.junit.jupiter.api.BeforeEach;

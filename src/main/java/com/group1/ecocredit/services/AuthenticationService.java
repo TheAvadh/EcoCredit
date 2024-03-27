@@ -10,7 +10,4 @@ public interface AuthenticationService {
     JwtAuthenticationResponse signup(SignUpRequest signUpRequest) throws MessagingException;
 
     JwtAuthenticationResponse signIn(SignInRequest signInRequest);
-
-    JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
-
 }
