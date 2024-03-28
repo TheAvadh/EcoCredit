@@ -4,11 +4,13 @@ import com.group1.ecocredit.dto.PickupActionRequest;
 import com.group1.ecocredit.dto.PickupRequest;
 import com.group1.ecocredit.dto.PickupStatusResponse;
 import com.group1.ecocredit.dto.PickupWaste;
+import com.group1.ecocredit.enums.Currency;
 import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.repositories.*;
 import com.group1.ecocredit.services.*;
 import com.group1.ecocredit.services.implementations.PickupServiceImpl;
 import com.stripe.exception.StripeException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -17,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +63,22 @@ public class PickupServiceTests {
     private static String CATEGORY_BIODEGRADABLE = "biodegradable";
 
     private static String PAYMENT_ID = "payment_id";
+    private Pickup pickup = new Pickup();
+
+
+
+    @BeforeEach
+    void setup() {
+        User user = new User();
+        user.setId(123);
+        user.setEmail("email@email.com");
+
+        pickup.setId(1L);
+        pickup.setStatus(new Status());
+        pickup.setUser(user);
+        pickup.setDateTime(LocalDateTime.now());
+        pickup.setPaymentId("payment_id");
+    }
 
     @Test
     void testSchedulePickupSuccess() {
@@ -250,22 +269,83 @@ public class PickupServiceTests {
     }
 
     @Test
-    void getPickupStatus_WhenUserHasPickups_ShouldReturnStatusList() {
-        // Arrange
-        Long userId = 1L;
-        List<Pickup> pickups = List.of(
-                new Pickup(1L, LocalDateTime.now(), new User(), new Status(1, "AWAITING_PAYMENT"), "paymentId1"),
-                new Pickup(2L, LocalDateTime.now(), new User(), new Status(2, "COMPLETED"), "paymentId2")
-        );
-        when(pickupRepository.findByUserId(userId)).thenReturn(pickups);
+    void getPickupStatusFromUserID() {
 
-        // Act
-        List<PickupStatusResponse> statusResponses = pickupService.getPickupStatus(userId);
+        List<Pickup> pickups = new ArrayList<>();
+        pickups.add(pickup);
 
-        // Assert
-        assertEquals(pickups.size(), statusResponses.size());
-        verify(pickupRepository).findByUserId(userId);
+        when(pickupRepository.findByUserId(1L)).thenReturn(pickups);
+
+        List<PickupStatusResponse> pickupStatusResponses = pickupService.getPickupStatus(1L);
+
+        assertEquals(1, pickupStatusResponses.size());
+        verify(pickupRepository, times(1)).findByUserId(anyLong());
     }
+
+    @Test
+    void confirmPickupTest() throws StripeException {
+
+
+
+        when(pickupRepository.findById(1L)).thenReturn(Optional.of(pickup));
+        when(pickupPaymentActionService.isPaymentDone("payment_id")).thenReturn(true);
+
+        Status status = new Status();
+        status.setId(1);
+        status.setValue(STATUS_SCHEDULED);
+
+        when(statusService.findByValue(PickupStatus.SCHEDULED)).thenReturn(Optional.of(status));
+
+        pickupService.confirmPickup(1L);
+
+        verify(pickupRepository, times(1)).save(pickup);
+
+    }
+
+    @Test
+    void addSessionToPickupIdTest() {
+        when(pickupRepository.findById(1L)).thenReturn(Optional.of(pickup));
+
+        pickupService.addSessionIdToPickup(1L, "session_id");
+
+        verify(pickupRepository, times(1)).save(pickup);
+    }
+
+    @Test
+    void completePickupTest() {
+        Long pickupId = 1L;
+
+        Waste waste1 = new Waste();
+        waste1.setWeight(10.0f);
+        waste1.setCategory(new Category());
+        Waste waste2 = new Waste();
+        waste2.setWeight(5.0f);
+        waste2.setCategory(new Category());
+        List<Waste> wastes = new ArrayList<>();
+        wastes.add(waste1);
+        wastes.add(waste2);
+
+        when(pickupRepository.findById(pickupId)).thenReturn(Optional.of(pickup));
+        when(wasteServiceCustomer.getAllWasteForPickup(pickupId)).thenReturn(wastes);
+        when(priceMapperService.getPrice(null)).thenReturn(2.0f);
+        when(priceMapperService.getPrice(null)).thenReturn(3.0f);
+        Status status = new Status();
+        status.setValue(PickupStatus.COMPLETED);
+
+        when(statusService.findByValue(PickupStatus.COMPLETED)).thenReturn(Optional.of(status));
+
+        doAnswer(invocation -> {
+            double amount = invocation.getArgument(0);
+            assertEquals(45.0, amount);
+            return 45.0;
+        }).when(creditConversionService).convert(anyDouble(), any(Currency.class));
+
+        pickupService.completePickup(1L);
+
+        assertEquals(PickupStatus.COMPLETED, pickup.getStatus().getValue());
+        verify(pickupRepository, times(1)).save(pickup);
+    }
+
 
     @Test
     void getPickupStatus_WhenUserHasNoPickups_ShouldThrowException() {
