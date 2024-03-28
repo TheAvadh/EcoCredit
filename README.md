@@ -41,7 +41,6 @@
 | @testing-library/react              | 13.4.0  | Facilitates writing unit and integration tests for React components. Created by default.                   |
 | @testing-library/user-event         | 13.5.0  | Simulates user events (click, type, etc.) for testing user interactions in components. Created by default. |
 | bootstrap                           | 5.3.2   | Framework for building responsive website, providing styling and layout.                                   |
-| has-flag                            | 5.0.1   | Checks if CLI flags are present. Useful for script configuration and conditional logic.                    |
 | js-cookie                           | 3.0.5   | A simple, lightweight JavaScript API for handling browser cookies.                                         |
 | moment                              | 2.30.1  | Parse, manipulate, and display dates and times in JavaScript.                                              |
 | react                               | 18.2.0  | A JavaScript library for building user interfaces. Created by default.                                     |
