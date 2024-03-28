@@ -22,8 +22,6 @@
   - React Bootstrap: `v2.10.0`
   - Bootstrap: `v5.3.2`
   - Sass: `v1.70.0`
-  - Strip.js: `v2.6.0`
-  - Font Awesome: `v6.5.1`
 - Backend:
   - Java: `v21`
   - Spring Boot: `v3.2.2`
@@ -39,7 +37,6 @@
 | @fortawesome/free-regular-svg-icons | 6.5.1   | Includes regular style icons from the Font Awesome library.                                                |
 | @fortawesome/free-solid-svg-icons   | 6.5.1   | Includes solid style icons from the Font Awesome library.                                                  |
 | @fortawesome/react-fontawesome      | 0.2.0   | React component for Font Awesome, simplifying the use of icons within React applications.                  |
-| @stripe/react-stripe-js             | 2.6.0   | Official React library to integrate Stripe.js and Stripe Elements for payment features.                    |
 | @testing-library/jest-dom           | 5.17.0  | Extends Jest testing framework with DOM element matchers, facilitating UI tests. Created by default.       |
 | @testing-library/react              | 13.4.0  | Facilitates writing unit and integration tests for React components. Created by default.                   |
 | @testing-library/user-event         | 13.5.0  | Simulates user events (click, type, etc.) for testing user interactions in components. Created by default. |
@@ -79,15 +76,16 @@
 | org.quartz-scheduler         | quartz                         | 2.3.2      |         |         |
 | com.stripe                   | stripe-java                    | 24.19.0    |         |         |
 
-
 ## Build and Deploy Instructions
 
 ### Build
+
 ```
 mvn clean package -DskipTests
 ```
 
 ### Test
+
 ```
 mvn test
 ```
@@ -96,16 +94,18 @@ mvn test
 
 First, we need to set environment variables
 
-Edit ```ecocredit_environment_setup.bar``` or ```eco_credit_environment_setup.sh``` and add all the values
+Edit `ecocredit_environment_setup.bar` or `eco_credit_environment_setup.sh` and add all the values
 
 Then run the following command:
 
 **Windows:**
+
 ```
 > bat ecocredit_env_setup.bat
 ```
 
 **Linux/Mac**
+
 ```
 $ source ecocredit_env_setup.sh
 ```
@@ -118,7 +118,6 @@ This will set up all the required environment variables
 mvn spring-boot:run
 ```
 
-
 ### Building and Running the docker container (Optional)
 
 cd to the root directory
@@ -128,6 +127,7 @@ cd <ecocredit_root_directory>
 ```
 
 Then build and run the container for backend
+
 ```
 docker run -it $(docker build \
       --build-arg DATASOURCE_URL_DEV="$DATASOURCE_URL_DEV" \
@@ -153,7 +153,7 @@ Now we have the backend up, we need to set up our front-end
 
 ### Frontend
 
-On terminal, go to the frontend directory 
+On terminal, go to the frontend directory
 
 `cd frontend/ecocredit`
 
@@ -170,10 +170,10 @@ npm run build
 ```
 
 Building and running the docker container:
+
 ```
 docker run -it $(docker build -q .)
 ```
-
 
 ## Deployment through docker image (backend and frontend)
 
@@ -196,9 +196,6 @@ docker run -d -p 8080:8080 --name ecocredit_backend docker.io/ecocredit/ecocredi
 
 docker run -d -p 3000:3000 --name ecocredit_frontend docker.io/ecocredit/ecocredit-frontend:latest
 ```
-
-
-
 
 Clean Build:
 
