@@ -9,9 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
@@ -21,20 +18,20 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CheckoutServiceTests {
-    @Mock
-    WalletService walletService;
+    private WalletService walletService;
 
-    @Mock
-    CreditConversionService creditConversionService;
+    private CreditConversionService creditConversionService;
 
-    @InjectMocks
     private CheckoutServiceImpl checkoutService;
 
     private static final Long USER_ID = 1L;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        walletService = mock(WalletService.class);
+        creditConversionService = mock(CreditConversionService.class);
+        checkoutService = new CheckoutServiceImpl(walletService,
+                creditConversionService);
     }
 
     @Test

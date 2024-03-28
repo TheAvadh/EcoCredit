@@ -6,6 +6,7 @@ import com.group1.ecocredit.services.CheckoutService;
 import com.group1.ecocredit.services.CreditConversionService;
 import com.group1.ecocredit.services.JWTService;
 import com.group1.ecocredit.services.WalletService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.util.Optional;
 import java.util.Random;
 
 @Service
+@AllArgsConstructor
 public class CheckoutServiceImpl implements CheckoutService {
 
     @Autowired
