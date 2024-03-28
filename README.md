@@ -89,16 +89,16 @@ To build in `dev` environment, type `npm start`.
 ### Backend
 
 Clean Build:
+
 ```
 mvn clean package -DskipTests
 ```
 
 Tests:
+
 ```
 mvn test
 ```
-
-
 
 ## User Scenarios
 
@@ -106,13 +106,37 @@ mvn test
 
 #### Signup
 
+The SignUp functionality allows new users to create an account by providing their personal information, including their name, email address, password, and physical address.  
+Upon successful account creation, a verification email is sent to the user's provided email address with a confirmation token.
+
+Input from the User:
+
+- Email
+- ⁠Password
+- First Name
+- ⁠Last Name
+- ⁠Address (Street, City, Province, Postal Code)
+
 #### Login
+
+The Login functionality allows existing users to log into their accounts.
+
+Input from the User:
+
+- ⁠Email
+- ⁠Password
 
 **Forget password**
 
+Allows users to request a password reset. By entering their registered email, they receive a link to securely create a new password.
+
 **Reset password**
 
+Accessed via the received email link, this page prompts users to enter and confirm a new password, effectively updating their account security.
+
 #### Role Selection
+
+Upon successful login, users can select their role Customer or Recycler to be directed to the respective dashboard with tailored functionalities.
 
 ### [Homepage](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/19)
 
