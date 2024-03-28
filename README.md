@@ -285,6 +285,29 @@ After selecting a bid, users can either choose to bid at the next suggested incr
 
 Users can track all the bids they've participated in.  
 For active bids, the option to place further bids is available, directing users back to the specific bid page for continued engagement.
+### [Pickup Schedule](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/13)
+
+The Pickup module of the EcoCredit lets the user schedule a pickup, cancel the scheduled pickup and track the status of the scheduled pickup.
+
+**Schedule Pickup**
+
+The schedule pickup functionality let the user schedule a pickup of the waste whenever the user wants. The user can schedule a pickup in the future, add multiple wastes and the weight of the waste. The user have to input following info
+
+- Date and time of the schedule
+- Type of the waste
+
+The user can see the status of the pickup. The status will be reflected in any of following state:
+
+- Scheduled
+- In Progress
+- Completed
+- Canceled
+- Awaiting Payment
+
+**Cancel Pickup**
+
+The user can cancel a scheduled pickup before the waste gets picked up.
+
 
 ### [Account Management](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/2)
 
