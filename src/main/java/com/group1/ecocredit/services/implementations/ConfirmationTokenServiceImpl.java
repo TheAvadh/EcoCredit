@@ -3,8 +3,8 @@ package com.group1.ecocredit.services.implementations;
 import com.google.common.hash.Hashing;
 import com.group1.ecocredit.models.ConfirmationToken;
 import com.group1.ecocredit.repositories.ConfirmationTokenRepository;
-import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.ConfirmationTokenService;
+import com.group1.ecocredit.services.UserService;
 import com.group1.ecocredit.services.WalletService;
 import com.group1.ecocredit.models.User;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +23,8 @@ public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
     @Value("${signup.verification.token.hours}")
     private Integer validityInHours;
 
-
     private final ConfirmationTokenRepository confirmationTokenRepository;
-    private final UserRepository userService;
-
+    private final UserService userService;
     private final WalletService walletService;
 
 

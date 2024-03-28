@@ -9,6 +9,7 @@ import com.group1.ecocredit.repositories.UserRepository;
 import com.group1.ecocredit.services.EmailService;
 import com.group1.ecocredit.services.PasswordService;
 import com.group1.ecocredit.services.TokenService;
+import com.group1.ecocredit.services.UserService;
 import com.group1.ecocredit.utils.Utils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,13 +20,13 @@ import java.util.Optional;
 @Service
 public class PasswordServiceImpl implements PasswordService {
 
-    private final UserRepository userService;
+    private final UserService userService;
     private final TokenService tokenService;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final EmailService emailService;
 
     private final PasswordEncoder passwordEncoder;
-    public PasswordServiceImpl(UserRepository userService,
+    public PasswordServiceImpl(UserService userService,
                                TokenService tokenService,
                                EmailService emailService,
                                PasswordResetTokenRepository passwordResetTokenRepository, PasswordEncoder passwordEncoder) {

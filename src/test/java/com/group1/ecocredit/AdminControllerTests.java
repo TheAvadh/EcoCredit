@@ -7,22 +7,14 @@ import com.group1.ecocredit.dto.admin.WasteUpdateRequest;
 import com.group1.ecocredit.models.Bid;
 import com.group1.ecocredit.enums.Role;
 import com.group1.ecocredit.models.User;
-import com.group1.ecocredit.services.BidService;
-import com.group1.ecocredit.services.implementations.PickupAdminServiceImpl;
-import com.group1.ecocredit.services.implementations.WasteServiceImpl;
+import com.group1.ecocredit.services.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -33,25 +25,27 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@RestController
-@RequestMapping("/api/v1/auth")
-@CrossOrigin
 public class AdminControllerTests {
-
-    @Mock
     private BidService bidServiceMock;
 
-    @Mock
-    private PickupAdminServiceImpl pickupAdminServiceMock;
-    @Mock
-    private WasteServiceImpl wasteServiceMock;
+    private PickupAdminService pickupAdminServiceMock;
+    private WasteService wasteServiceMock;
 
-    @InjectMocks
     private AdminController adminController;
+    private static Authentication authentication;
+    private static SecurityContext securityContext;
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        bidServiceMock = mock(BidService.class);
+        pickupAdminServiceMock = mock(PickupAdminService.class);
+        wasteServiceMock = mock(WasteService.class);
+        authentication = mock(Authentication.class);
+        securityContext = mock(SecurityContext.class);
+        SecurityContextHolder.setContext(securityContext);
+
+        adminController = new AdminController(pickupAdminServiceMock,
+                wasteServiceMock, bidServiceMock);
     }
 
     @Test
@@ -61,7 +55,9 @@ public class AdminControllerTests {
         Bid expectedBid = new Bid();
         when(bidServiceMock.putWasteForBid(request)).thenReturn(expectedBid);
 
-        setAuthenticatedUserWithRole(Role.ADMIN);
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        authenticate(user);
 
         ResponseEntity<Bid> response = adminController.putWasteForBid(request);
 
@@ -73,7 +69,10 @@ public class AdminControllerTests {
     public void testPutWasteForBid_UnauthorizedUser() {
 
         BidCreateRequest request = new BidCreateRequest();
-        setAuthenticatedUserWithRole(Role.USER);
+
+        User user = new User();
+        user.setRole(Role.USER);
+        authenticate(user);
 
         ResponseEntity<Bid> response1 = adminController.putWasteForBid(request);
         ResponseEntity<List<Bid>> response2 = adminController.getAllActiveBids();
@@ -90,7 +89,9 @@ public class AdminControllerTests {
         BidCreateRequest request = new BidCreateRequest();
         when(bidServiceMock.putWasteForBid(request)).thenThrow(NoSuchElementException.class);
 
-        setAuthenticatedUserWithRole(Role.ADMIN);
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        authenticate(user);
 
         ResponseEntity<Bid> response = adminController.putWasteForBid(request);
 
@@ -103,7 +104,9 @@ public class AdminControllerTests {
         BidCreateRequest request = new BidCreateRequest();
         when(bidServiceMock.putWasteForBid(request)).thenThrow(IllegalArgumentException.class);
 
-        setAuthenticatedUserWithRole(Role.ADMIN);
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        authenticate(user);
 
         ResponseEntity<Bid> response = adminController.putWasteForBid(request);
 
@@ -115,7 +118,9 @@ public class AdminControllerTests {
         BidCreateRequest request = new BidCreateRequest();
         when(bidServiceMock.putWasteForBid(request)).thenThrow(RuntimeException.class);
 
-        setAuthenticatedUserWithRole(Role.ADMIN);
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        authenticate(user);
 
         ResponseEntity<Bid> response = adminController.putWasteForBid(request);
 
@@ -127,7 +132,9 @@ public class AdminControllerTests {
         List<Bid> activeBids = Collections.singletonList(new Bid());
         when(bidServiceMock.getAllActiveBids()).thenReturn(activeBids);
 
-        setAuthenticatedUserWithRole(Role.ADMIN);
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        authenticate(user);
 
         ResponseEntity<List<Bid>> response = adminController.getAllActiveBids();
 
@@ -141,7 +148,9 @@ public class AdminControllerTests {
     public void testGetAllActiveBids_IllegalArgumentException() {
         when(bidServiceMock.getAllActiveBids()).thenThrow(IllegalArgumentException.class);
 
-        setAuthenticatedUserWithRole(Role.ADMIN);
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        authenticate(user);
 
         ResponseEntity<List<Bid>> response = adminController.getAllActiveBids();
 
@@ -152,7 +161,9 @@ public class AdminControllerTests {
     public void testGetAllActiveBids_OtherException() {
         when(bidServiceMock.getAllActiveBids()).thenThrow(RuntimeException.class);
 
-        setAuthenticatedUserWithRole(Role.ADMIN);
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        authenticate(user);
 
         ResponseEntity<List<Bid>> response = adminController.getAllActiveBids();
 
@@ -165,7 +176,9 @@ public class AdminControllerTests {
         List<Bid> bids = new ArrayList<>();
         when(bidServiceMock.getAllBids()).thenReturn(bids);
 
-        setAuthenticatedUserWithRole(Role.ADMIN);
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        authenticate(user);
 
         ResponseEntity<List<Bid>> response = adminController.getAllBids();
 
@@ -177,19 +190,13 @@ public class AdminControllerTests {
     public void testGetAllBids_OtherException() {
         when(bidServiceMock.getAllBids()).thenThrow(RuntimeException.class);
 
-        setAuthenticatedUserWithRole(Role.ADMIN);
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        authenticate(user);
 
         ResponseEntity<List<Bid>> response = adminController.getAllBids();
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-    }
-
-
-    private void setAuthenticatedUserWithRole(Role role) {
-        User user = new User();
-        user.setRole(role);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     @Test
@@ -278,5 +285,9 @@ public class AdminControllerTests {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
+    private void authenticate(User user){
+        when(authentication.getPrincipal()).thenReturn(user);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+    }
 }
 
