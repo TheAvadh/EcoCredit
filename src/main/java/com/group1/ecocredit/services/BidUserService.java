@@ -11,4 +11,6 @@ public interface BidUserService {
     List<BidUser> findByActive(boolean isActive);
 
     BidUser save(BidUser bidUser);
+
+    List<BidUser> findAll();
 }

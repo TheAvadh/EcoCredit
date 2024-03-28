@@ -174,9 +174,19 @@ public class AuctionServiceImpl implements AuctionService {
        }
     }
 
+    public void updateHighestBid(){
+        List<BidUser> listBidUser = bidUserService.findAll();
+        for(BidUser bidUser:listBidUser){
+            Long idBid = bidUser.getBid().getId();
+            bidUser.setHighest_bid(bidService.findById(idBid).getTop_bid_amount());
+            bidUserService.save(bidUser);
+        }
+    }
+
     @Scheduled(fixedRate = 2000) // Run every minute
     public void bidUserScheduler() {
         discardActiveStatus();
+        updateHighestBid();
     }
 
 }

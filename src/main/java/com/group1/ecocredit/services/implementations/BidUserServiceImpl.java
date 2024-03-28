@@ -26,4 +26,9 @@ public class BidUserServiceImpl implements com.group1.ecocredit.services.BidUser
     public BidUser save(BidUser bidUser) {
         return bidUserRepository.save(bidUser);
     }
+
+    @Override
+    public List<BidUser> findAll() {
+        return bidUserRepository.findAll();
+    }
 }
