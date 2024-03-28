@@ -79,14 +79,126 @@
 | org.quartz-scheduler         | quartz                         | 2.3.2      |         |         |
 | com.stripe                   | stripe-java                    | 24.19.0    |         |         |
 
+
 ## Build and Deploy Instructions
+
+### Build
+```
+mvn clean package -DskipTests
+```
+
+### Test
+```
+mvn test
+```
+
+### Setting up environment
+
+First, we need to set environment variables
+
+Edit ```ecocredit_environment_setup.bar``` or ```eco_credit_environment_setup.sh``` and add all the values
+
+Then run the following command:
+
+**Windows:**
+```
+> bat ecocredit_env_setup.bat
+```
+
+**Linux/Mac**
+```
+$ source ecocredit_env_setup.sh
+```
+
+This will set up all the required environment variables
+
+### Running the application directly
+
+```
+mvn spring-boot:run
+```
+
+
+### Building and Running the docker container (Optional)
+
+cd to the root directory
+
+```
+cd <ecocredit_root_directory>
+```
+
+Then build and run the container for backend
+```
+docker run -it $(docker build \
+      --build-arg DATASOURCE_URL_DEV="$DATASOURCE_URL_DEV" \
+      --build-arg DATASOURCE_USER_DEV="$DATASOURCE_USER_DEV" \
+      --build-arg DATASOURCE_PASSWORD="$DATASOURCE_PASSWORD" \
+      --build-arg EXPIRATION_DURATION_IN_MS="$EXPIRATION_DURATION_IN_MS" \
+      --build-arg TOKEN_SECRET_KEY="$TOKEN_SECRET_KEY" \
+      --build-arg REFRESH_TOKEN_VALIDITY_MS="$REFRESH_TOKEN_VALIDITY_MS" \
+      --build-arg EMAIL_USERNAME="$EMAIL_USERNAME" \
+      --build-arg EMAIL_PASSWORD="$EMAIL_PASSWORD" \
+      --build-arg EMAIL_HOST="$EMAIL_HOST" \
+      --build-arg EMAIL_PORT="$EMAIL_PORT" \
+      --build-arg MAIL_DEBUG_DEV="$MAIL_DEBUG_DEV" \
+      --build-arg FRONTEND_SERVER_URL="$FRONTEND_SERVER_URL" \
+      --build-arg STRIPE_PUBLIC_KEY="$STRIPE_PUBLIC_KEY" \
+      --build-arg STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" \
+      --build-arg BASE_URL_BACKEND="$BASE_URL_BACKEND" \
+      --build-arg BASE_URL_FRONTEND="$BASE_URL_FRONTEND" \
+      -q .)
+```
+
+Now we have the backend up, we need to set up our front-end
 
 ### Frontend
 
-On terminal, go to the `frontend/ecocredit` directory.  
-To build in `dev` environment, type `npm start`.
+On terminal, go to the frontend directory 
 
-### Backend
+`cd frontend/ecocredit`
+
+Installing necessary dependencies:
+
+```
+npm ci
+```
+
+Building frontend:
+
+```
+npm run build
+```
+
+Building and running the docker container:
+```
+docker run -it $(docker build -q .)
+```
+
+
+## Deployment through docker image (backend and frontend)
+
+```
+Note: This is assuming you have already logged into docker and have the daemon running
+```
+
+pull the docker image:
+
+```
+docker pull docker.io/ecocredit/ecocredit-backend:latest
+
+dockerpull docker.io/ecocredit/ecocredit-frontend:latest
+```
+
+running docker container on remote server:
+
+```
+docker run -d -p 8080:8080 --name ecocredit_backend docker.io/ecocredit/ecocredit-backend:latest
+
+docker run -d -p 3000:3000 --name ecocredit_frontend docker.io/ecocredit/ecocredit-frontend:latest
+```
+
+
+
 
 Clean Build:
 
