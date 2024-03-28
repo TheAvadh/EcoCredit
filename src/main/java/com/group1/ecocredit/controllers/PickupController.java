@@ -136,10 +136,15 @@ public class PickupController {
         }
     }
 
-    @GetMapping("/complete")
+    @PostMapping("/complete")
     @Transactional
-    public void completePickup(PickupActionRequest pickupActionRequest) {
-        pickUpService.completePickup(pickupActionRequest.getId());
+    public ResponseEntity<?> completePickup(@RequestBody PickupActionRequest pickupActionRequest) {
+        try {
+            pickUpService.completePickup(pickupActionRequest.getId());
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }

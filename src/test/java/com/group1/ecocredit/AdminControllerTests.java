@@ -260,7 +260,7 @@ public class AdminControllerTests {
 
     @Test
     public void testGetInProgressPickups_Exception() throws SQLException {
-        when(pickupAdminServiceMock.getCompletedPickups()).thenThrow(RuntimeException.class);
+        when(pickupAdminServiceMock.getInProgressPickups()).thenThrow(RuntimeException.class);
 
         ResponseEntity<?> response = adminController.getInProgressPickups();
 
