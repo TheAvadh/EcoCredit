@@ -1,0 +1,978 @@
+[1mdiff --git a/.gitlab-ci-backend.yml b/.gitlab-ci-backend.yml[m
+[1mindex 0a499b0..9c770ca 100644[m
+[1m--- a/.gitlab-ci-backend.yml[m
+[1m+++ b/.gitlab-ci-backend.yml[m
+[36m@@ -76,6 +76,7 @@[m [mpublish:[m
+       --build-arg STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" \[m
+       --build-arg BASE_URL_BACKEND="$BASE_URL_BACKEND" \[m
+       --build-arg BASE_URL_FRONTEND="$BASE_URL_FRONTEND" \[m
+[32m+[m[32m      -t docker.io/$DOCKER_HUB_USER/$BACKEND_APP_NAME:latest \[m
+       -t docker.io/$DOCKER_HUB_USER/$BACKEND_APP_NAME:$CI_COMMIT_SHORT_SHA .[m
+     - docker push docker.io/$DOCKER_HUB_USER/$BACKEND_APP_NAME:$CI_COMMIT_SHORT_SHA[m
+ [m
+[1mdiff --git a/README.md b/README.md[m
+[1mindex bbbfe02..198750b 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -1,5 +1,9 @@[m
+ # Eco Credit[m
+ [m
+[32m+[m[32m<p align="center">[m
+[32m+[m[32m  <img width="120px" src="frontend/ecocredit/src/assets/images/logo.png" alt="Eco Credit Logo"/>[m
+[32m+[m[32m</p>[m
+[32m+[m
+ ## Developed by: Group 1[m
+ [m
+ | Name                     | Email                |[m
+[36m@@ -14,69 +18,72 @@[m
+ ## Technical Stack[m
+ [m
+ - Frontend:[m
+[31m-  - React 18.2.0[m
+[31m-  - React Bootstrap 2.10.0[m
+[31m-  - Bootstrap 5.3.2[m
+[32m+[m[32m  - React: `v18.2.0`[m
+[32m+[m[32m  - React Bootstrap: `v2.10.0`[m
+[32m+[m[32m  - Bootstrap: `v5.3.2`[m
+[32m+[m[32m  - Sass: `v1.70.0`[m
+[32m+[m[32m  - Strip.js: `v2.6.0`[m
+[32m+[m[32m  - Font Awesome: `v6.5.1`[m
+ - Backend:[m
+[31m-  - Java 21[m
+[31m-  - Spring Boot version 3.2.2[m
+[32m+[m[32m  - Java: `v21`[m
+[32m+[m[32m  - Spring Boot: `v3.2.2`[m
+   - Maven[m
+ [m
+ ## Dependencies[m
+ [m
+ ### Frontend[m
+ [m
+[31m-| Dependency                          | Version   | Purpose          |[m
+[31m-| ------------------------------------| --------- | ---------------- |[m
+[31m-| @fortawesome/fontawesome-svg-core   | 6.5.1     | |[m
+[31m-| @fortawesome/free-regular-svg-icons | 6.5.1     | |[m
+[31m-| @fortawesome/free-solid-svg-icons   | 6.5.1     | |[m
+[31m-| @fortawesome/react-fontawesome      | 0.2.0     | |[m
+[31m-| @stripe/react-stripe-js             | 2.6.0     | |[m
+[31m-| @testing-library/jest-dom           | 5.17.0    | |[m
+[31m-| @testing-library/react              | 13.4.0    | |[m
+[31m-| @testing-library/user-event         | 13.5.0    | |[m
+[31m-| bootstrap                           | 5.3.2     | |[m
+[31m-| has-flag                            | 5.0.1     | |[m
+[31m-| js-cookie                           | 3.0.5     | |[m
+[31m-| react                               | 18.2.0    | |[m
+[31m-| react-bootstrap                     | 2.10.0    | |[m
+[31m-| react-dom                           | 18.2.0    | |[m
+[31m-| react-router-dom                    | 6.22.0    | |[m
+[31m-| react-scripts                       | 5.0.1     | |[m
+[31m-| react-toastify                      | 10.0.4    | |[m
+[31m-| sass                                | 1.70.0    | |[m
+[31m-| web-vitals                          | 2.1.4     | |[m
+[32m+[m[32m| Dependency                          | Version | Purpose                                                                                                    |[m
+[32m+[m[32m| ----------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------- |[m
+[32m+[m[32m| @fortawesome/fontawesome-svg-core   | 6.5.1   | Provides the core functionality for using Font Awesome icons in a React project.                           |[m
+[32m+[m[32m| @fortawesome/free-regular-svg-icons | 6.5.1   | Includes regular style icons from the Font Awesome library.                                                |[m
+[32m+[m[32m| @fortawesome/free-solid-svg-icons   | 6.5.1   | Includes solid style icons from the Font Awesome library.                                                  |[m
+[32m+[m[32m| @fortawesome/react-fontawesome      | 0.2.0   | React component for Font Awesome, simplifying the use of icons within React applications.                  |[m
+[32m+[m[32m| @stripe/react-stripe-js             | 2.6.0   | Official React library to integrate Stripe.js and Stripe Elements for payment features.                    |[m
+[32m+[m[32m| @testing-library/jest-dom           | 5.17.0  | Extends Jest testing framework with DOM element matchers, facilitating UI tests. Created by default.       |[m
+[32m+[m[32m| @testing-library/react              | 13.4.0  | Facilitates writing unit and integration tests for React components. Created by default.                   |[m
+[32m+[m[32m| @testing-library/user-event         | 13.5.0  | Simulates user events (click, type, etc.) for testing user interactions in components. Created by default. |[m
+[32m+[m[32m| bootstrap                           | 5.3.2   | Framework for building responsive website, providing styling and layout.                                   |[m
+[32m+[m[32m| has-flag                            | 5.0.1   | Checks if CLI flags are present. Useful for script configuration and conditional logic.                    |[m
+[32m+[m[32m| js-cookie                           | 3.0.5   | A simple, lightweight JavaScript API for handling browser cookies.                                         |[m
+[32m+[m[32m| moment                              | 2.30.1  | Parse, manipulate, and display dates and times in JavaScript.                                              |[m
+[32m+[m[32m| react                               | 18.2.0  | A JavaScript library for building user interfaces. Created by default.                                     |[m
+[32m+[m[32m| react-bootstrap                     | 2.10.0  | Integrates Bootstrap with React, combining the styling of Bootstrap and the components of React.           |[m
+[32m+[m[32m| react-dom                           | 18.2.0  | Serves as the entry point to the DOM and server renderers for React. Created by default.                   |[m
+[32m+[m[32m| react-router-dom                    | 6.22.0  | DOM bindings for React Router, enabling navigation in a web app.                                           |[m
+[32m+[m[32m| react-scripts                       | 5.0.1   | Scripts and configuration used by Create React App. Created by default.                                    |[m
+[32m+[m[32m| react-toastify                      | 10.0.4  | Adds toast notifications to React applications, enhancing user feedback.                                   |[m
+[32m+[m[32m| sass                                | 1.70.0  | Used to customize Bootstrap components and for general styling of the application.                         |[m
+[32m+[m[32m| web-vitals                          | 2.1.4   | Measures web vitals performance metrics to improve user experience. Created by default.                    |[m
+ [m
+ ### Backend[m
+ [m
+[31m-| GroupID                          | ArtifactID                       | Version     | Scope    | Purpose       |[m
+[31m-| ---------------------------------| -------------------------------  | ------------|----------|---------------|[m
+[31m-| org.springframework.boot         | spring-boot-starter-data-jpa     |             |          | |[m
+[31m-| org.springframework.boot         |spring-boot-starter-mail          |             |          | |[m
+[31m-| org.springframework.boot         | spring-boot-starter-security     |             |          | |[m
+[31m-| org.springframework.boot         | spring-security-config           | 6.2.1       |          | |[m
+[31m-| org.springframework.boot         | spring-boot-starter-validation   |             |          | |[m
+[31m-| org.springframework.boot         | spring-boot-starter-web          |             |          | |[m
+[31m-| io.jsonwebtoken                  | jjwt-api                         | 0.11.5      |          | |[m
+[31m-| io.jsonwebtoken                  | jjwt-impl                        | 0.11.5      |          | |[m
+[31m-| io.jsonwebtoken                  | jjwt-jackson                     | 0.11.5      |          | |[m
+[31m-| com.mysql                        | mysql-connector-j                |             | Runtime  | |[m
+[31m-| org.projectlombok                | lombok                           |             |          | |[m
+[31m-| org.springframework.boot         | spring-boot-starter-test         |             | Test     | |[m
+[31m-| org.springframework.security     | spring-security-test             |             | Test     | |[m
+[31m-| com.google.guava                 | guava                            | 33.0.0-jre  |          | |[m
+[31m-| org.apache.commons               | commons-lang3                    |             |          | |[m
+[31m-| junit                            | junit                            |             | Test     | |[m
+[31m-| org.quartz-scheduler             | quartz                           | 2.3.2       |          | |[m
+[31m-| com.stripe                       | stripe-java                      | 24.19.0     |          | |[m
+[31m-[m
+[32m+[m[32m| GroupID                      | ArtifactID                     | Version    | Scope   | Purpose |[m
+[32m+[m[32m| ---------------------------- | ------------------------------ | ---------- | ------- | ------- |[m
+[32m+[m[32m| org.springframework.boot     | spring-boot-starter-data-jpa   |            |         |         |[m
+[32m+[m[32m| org.springframework.boot     | spring-boot-starter-mail       |            |         |         |[m
+[32m+[m[32m| org.springframework.boot     | spring-boot-starter-security   |            |         |         |[m
+[32m+[m[32m| org.springframework.boot     | spring-security-config         | 6.2.1      |         |         |[m
+[32m+[m[32m| org.springframework.boot     | spring-boot-starter-validation |            |         |         |[m
+[32m+[m[32m| org.springframework.boot     | spring-boot-starter-web        |            |         |         |[m
+[32m+[m[32m| io.jsonwebtoken              | jjwt-api                       | 0.11.5     |         |         |[m
+[32m+[m[32m| io.jsonwebtoken              | jjwt-impl                      | 0.11.5     |         |         |[m
+[32m+[m[32m| io.jsonwebtoken              | jjwt-jackson                   | 0.11.5     |         |         |[m
+[32m+[m[32m| com.mysql                    | mysql-connector-j              |            | Runtime |         |[m
+[32m+[m[32m| org.projectlombok            | lombok                         |            |         |         |[m
+[32m+[m[32m| org.springframework.boot     | spring-boot-starter-test       |            | Test    |         |[m
+[32m+[m[32m| org.springframework.security | spring-security-test           |            | Test    |         |[m
+[32m+[m[32m| com.google.guava             | guava                          | 33.0.0-jre |         |         |[m
+[32m+[m[32m| org.apache.commons           | commons-lang3                  |            |         |         |[m
+[32m+[m[32m| junit                        | junit                          |            | Test    |         |[m
+[32m+[m[32m| org.quartz-scheduler         | quartz                         | 2.3.2      |         |         |[m
+[32m+[m[32m| com.stripe                   | stripe-java                    | 24.19.0    |         |         |[m
+ [m
+ ## Build and Deploy Instructions[m
+ [m
+ ### Frontend[m
+ [m
+[31m-On terminal, go to the `frontend/ecocredit` directory.\[m
+[32m+[m[32mOn terminal, go to the `frontend/ecocredit` directory.[m[41m  [m
+ To build in `dev` environment, type `npm start`.[m
+ [m
+ ### Backend[m
+[36m@@ -103,9 +110,10 @@[m [mEcoCredit has one admin account. When an admin logs in, they are redirected to t[m
+ [m
+ **View scheduled pickups**[m
+ [m
+[31m-This page shows all pickups that have been scheduled by users, sorted from the latest pickup.\[m
+[32m+[m[32mThis page shows all pickups that have been scheduled by users, sorted from the latest pickup.[m
+ [m
+ The pickup information contains:[m
+[32m+[m
+ - pickup date[m
+ - pickup time[m
+ - first and last name of user who scheduled the pickup[m
+[36m@@ -121,12 +129,12 @@[m [mThis page shows all pickups that are completed, sorted from the latest pickup.[m
+ [m
+ **Update the weight of a waste item in a pickup**[m
+ [m
+[31m-An admin can enter the waste item's ID and its weight in kilograms.\[m
+[32m+[m[32mAn admin can enter the waste item's ID and its weight in kilograms.[m[41m  [m
+ After clicking on 'update', the weight of the item is reflected in the completed pickups table.[m
+ [m
+ **Create a bid**[m
+ [m
+[31m-An admin can create a bid of a waste item. \[m
+[32m+[m[32mAn admin can create a bid of a waste item.[m[41m  [m
+ To do this, the admin needs to enter the waste item's ID and the date and time of the bid.[m
+ [m
+ **View bids**[m
+[1mdiff --git a/frontend/ecocredit/.gitlab-ci-frontend.yml b/frontend/ecocredit/.gitlab-ci-frontend.yml[m
+[1mindex b13f741..5f3de93 100644[m
+[1m--- a/frontend/ecocredit/.gitlab-ci-frontend.yml[m
+[1m+++ b/frontend/ecocredit/.gitlab-ci-frontend.yml[m
+[36m@@ -45,7 +45,7 @@[m [mpublish:[m
+   script:[m
+     - cd $APP_DIR[m
+     - docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_PASS" docker.io[m
+[31m-    - docker build -t docker.io/$DOCKER_HUB_USER/$FRONTEND_APP_NAME:$CI_COMMIT_SHORT_SHA .[m
+[32m+[m[32m    - docker build -t docker.io/$DOCKER_HUB_USER/$FRONTEND_APP_NAME:latest -t docker.io/$DOCKER_HUB_USER/$FRONTEND_APP_NAME:$CI_COMMIT_SHORT_SHA .[m
+     - docker push docker.io/$DOCKER_HUB_USER/$FRONTEND_APP_NAME:$CI_COMMIT_SHORT_SHA[m
+   environment:[m
+     name: production[m
+[1mdiff --git a/pom.xml b/pom.xml[m
+[1mindex b03bcfa..a560e10 100644[m
+[1m--- a/pom.xml[m
+[1m+++ b/pom.xml[m
+[36m@@ -110,6 +110,19 @@[m
+ 			<version>24.19.0</version>[m
+ 		</dependency>[m
+ [m
+[32m+[m		[32m<dependency>[m
+[32m+[m			[32m<groupId>org.powermock</groupId>[m
+[32m+[m			[32m<artifactId>powermock-api-mockito2</artifactId>[m
+[32m+[m			[32m<version>2.0.9</version>[m
+[32m+[m			[32m<scope>test</scope>[m
+[32m+[m		[32m</dependency>[m
+[32m+[m		[32m<dependency>[m
+[32m+[m			[32m<groupId>org.powermock</groupId>[m
+[32m+[m			[32m<artifactId>powermock-module-junit4</artifactId>[m
+[32m+[m			[32m<version>2.0.9</version>[m
+[32m+[m			[32m<scope>test</scope>[m
+[32m+[m		[32m</dependency>[m
+[32m+[m
+ 	</dependencies>[m
+ [m
+ 	<build>[m
+[1mdiff --git a/src/main/java/com/group1/ecocredit/services/UserService.java b/src/main/java/com/group1/ecocredit/services/UserService.java[m
+[1mindex de9f98c..ab6bb91 100644[m
+[1m--- a/src/main/java/com/group1/ecocredit/services/UserService.java[m
+[1m+++ b/src/main/java/com/group1/ecocredit/services/UserService.java[m
+[36m@@ -22,6 +22,8 @@[m [mpublic interface UserService {[m
+ [m
+     User findByRole(Role role);[m
+ [m
+[32m+[m[32m    Optional<User> findByEmail(String email);[m
+[32m+[m
+     User save(User user);[m
+ [m
+     Optional<User> findByEmail(String email);[m
+[1mdiff --git a/src/main/java/com/group1/ecocredit/services/implementations/ConfirmationTokenServiceImpl.java b/src/main/java/com/group1/ecocredit/services/implementations/ConfirmationTokenServiceImpl.java[m
+[1mindex cfe8852..a76096e 100644[m
+[1m--- a/src/main/java/com/group1/ecocredit/services/implementations/ConfirmationTokenServiceImpl.java[m
+[1m+++ b/src/main/java/com/group1/ecocredit/services/implementations/ConfirmationTokenServiceImpl.java[m
+[36m@@ -3,8 +3,8 @@[m [mpackage com.group1.ecocredit.services.implementations;[m
+ import com.google.common.hash.Hashing;[m
+ import com.group1.ecocredit.models.ConfirmationToken;[m
+ import com.group1.ecocredit.repositories.ConfirmationTokenRepository;[m
+[31m-import com.group1.ecocredit.repositories.UserRepository;[m
+ import com.group1.ecocredit.services.ConfirmationTokenService;[m
+[32m+[m[32mimport com.group1.ecocredit.services.UserService;[m
+ import com.group1.ecocredit.services.WalletService;[m
+ import com.group1.ecocredit.models.User;[m
+ import lombok.RequiredArgsConstructor;[m
+[36m@@ -23,10 +23,8 @@[m [mpublic class ConfirmationTokenServiceImpl implements ConfirmationTokenService {[m
+     @Value("${signup.verification.token.hours}")[m
+     private Integer validityInHours;[m
+ [m
+[31m-[m
+     private final ConfirmationTokenRepository confirmationTokenRepository;[m
+[31m-    private final UserRepository userService;[m
+[31m-[m
+[32m+[m[32m    private final UserService userService;[m
+     private final WalletService walletService;[m
+ [m
+ [m
+[1mdiff --git a/src/main/java/com/group1/ecocredit/services/implementations/UserServiceImpl.java b/src/main/java/com/group1/ecocredit/services/implementations/UserServiceImpl.java[m
+[1mindex bbd9dc0..6985c41 100644[m
+[1m--- a/src/main/java/com/group1/ecocredit/services/implementations/UserServiceImpl.java[m
+[1m+++ b/src/main/java/com/group1/ecocredit/services/implementations/UserServiceImpl.java[m
+[36m@@ -111,6 +111,11 @@[m [mpublic class UserServiceImpl implements com.group1.ecocredit.services.UserServic[m
+         return userRepository.findByRole(role);[m
+     }[m
+ [m
+[32m+[m[32m    @Override[m
+[32m+[m[32m    public Optional<User> findByEmail(String email) {[m
+[32m+[m[32m        return userRepository.findByEmail(email);[m
+[32m+[m[32m    }[m
+[32m+[m
+     @Override[m
+     public User save(User user) {[m
+         return userRepository.save(user);[m
+[1mdiff --git a/src/test/java/PickupControllerTest.java b/src/test/java/PickupControllerTest.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..a3efd24[m
+[1m--- /dev/null[m
+[1m+++ b/src/test/java/PickupControllerTest.java[m
+[36m@@ -0,0 +1,207 @@[m
+[32m+[m[32mimport com.group1.ecocredit.controllers.PickupController;[m
+[32m+[m[32mimport com.group1.ecocredit.dto.*;[m
+[32m+[m[32mimport com.group1.ecocredit.models.Pickup;[m
+[32m+[m[32mimport com.group1.ecocredit.models.PickupStatus;[m
+[32m+[m[32mimport com.group1.ecocredit.models.User;[m
+[32m+[m[32mimport com.group1.ecocredit.services.*;[m
+[32m+[m[32mimport com.stripe.exception.StripeException;[m
+[32m+[m[32mimport jakarta.servlet.http.HttpServletRequest;[m
+[32m+[m[32mimport org.junit.jupiter.api.Test;[m
+[32m+[m[32mimport org.junit.jupiter.api.extension.ExtendWith;[m
+[32m+[m[32mimport org.mockito.InjectMocks;[m
+[32m+[m[32mimport org.mockito.Mock;[m
+[32m+[m[32mimport org.mockito.junit.jupiter.MockitoExtension;[m
+[32m+[m[32mimport org.springframework.http.HttpStatus;[m
+[32m+[m[32mimport org.springframework.http.ResponseEntity;[m
+[32m+[m[32mimport org.springframework.security.core.Authentication;[m
+[32m+[m[32mimport org.springframework.security.core.context.SecurityContextHolder;[m
+[32m+[m
+[32m+[m[32mimport java.math.BigDecimal;[m
+[32m+[m[32mimport java.util.ArrayList;[m
+[32m+[m[32mimport java.util.List;[m
+[32m+[m
+[32m+[m[32mimport static org.junit.jupiter.api.Assertions.*;[m
+[32m+[m[32mimport static org.mockito.Mockito.*;[m
+[32m+[m
+[32m+[m[32m@ExtendWith(MockitoExtension.class)[m
+[32m+[m[32mpublic class PickupControllerTest {[m
+[32m+[m
+[32m+[m[32m    @Mock[m
+[32m+[m[32m    private PickupService pickUpService;[m
+[32m+[m[32m    @Mock[m
+[32m+[m[32m    private JWTService jwtService;[m
+[32m+[m[32m    @Mock[m
+[32m+[m[32m    private StripeService stripeService;[m
+[32m+[m[32m    @Mock[m
+[32m+[m[32m    private CheckoutService checkoutService;[m
+[32m+[m[32m    @Mock[m
+[32m+[m[32m    private WalletService walletService;[m
+[32m+[m
+[32m+[m[32m    @Mock[m
+[32m+[m[32m    private Authentication authentication;[m
+[32m+[m
+[32m+[m[32m    @InjectMocks[m
+[32m+[m[32m    private PickupController pickupController;[m
+[32m+[m
+[32m+[m[32m    private PickupActionRequest pickupActionRequest = new PickupActionRequest(1L);[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testPickupCancellation_Success() throws StripeException {[m
+[32m+[m[32m        when(pickUpService.cancelPickup(pickupActionRequest)).thenReturn(true);[m
+[32m+[m[32m        ResponseEntity<Pickup> response = pickupController.pickupCancellation(pickupActionRequest);[m
+[32m+[m[32m        assertEquals(HttpStatus.OK, response.getStatusCode());[m
+[32m+[m[32m        verify(pickUpService, times(1)).cancelPickup(pickupActionRequest);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testPickupCancellation_Failure() throws StripeException {[m
+[32m+[m[32m        when(pickUpService.cancelPickup(pickupActionRequest)).thenReturn(false);[m
+[32m+[m[32m        ResponseEntity<Pickup> response = pickupController.pickupCancellation(pickupActionRequest);[m
+[32m+[m[32m        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());[m
+[32m+[m[32m        verify(pickUpService, times(1)).cancelPickup(pickupActionRequest);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testSchedulePickUp_WithValidRequest() throws StripeException {[m
+[32m+[m[32m        HttpServletRequest request = mock(HttpServletRequest.class);[m
+[32m+[m[32m        PickupRequest pickupRequest = new PickupRequest();[m
+[32m+[m[32m        User user = new User();[m
+[32m+[m[32m        user.setId(1);[m
+[32m+[m[32m        Pickup pickup = new Pickup();[m
+[32m+[m[32m        ChargeResponse chargeResponse = new ChargeResponse();[m
+[32m+[m[32m        chargeResponse.setCheckoutUrl("checkout_url");[m
+[32m+[m[32m        SecurityContextHolder.getContext().setAuthentication(authentication);[m
+[32m+[m
+[32m+[m[32m        when(authentication.getPrincipal()).thenReturn(user);[m
+[32m+[m[32m        when(pickUpService.schedulePickup(pickupRequest, user)).thenReturn(pickup);[m
+[32m+[m[32m        when(checkoutService.calculatePickupCharge()).thenReturn(100L);[m
+[32m+[m[32m        when(jwtService.extractUserID(null)).thenReturn("1");[m
+[32m+[m[32m        when(stripeService.charge(100L, null)).thenReturn("checkout_url");[m
+[32m+[m[32m        ResponseEntity<ChargeResponse> response = pickupController.schedulePickUp(request, pickupRequest);[m
+[32m+[m
+[32m+[m[32m        assertEquals(HttpStatus.OK, response.getStatusCode());[m
+[32m+[m[32m        assertEquals("checkout_url", response.getBody().getCheckoutUrl());[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testSchedulePickUp_WithInvalidUser() throws StripeException {[m
+[32m+[m[32m        HttpServletRequest request = mock(HttpServletRequest.class);[m
+[32m+[m[32m        PickupRequest pickupRequest = new PickupRequest();[m
+[32m+[m[32m        SecurityContextHolder.getContext().setAuthentication(authentication);[m
+[32m+[m
+[32m+[m[32m        when(authentication.getPrincipal()).thenReturn(null);[m
+[32m+[m
+[32m+[m[32m        ResponseEntity<ChargeResponse> response = pickupController.schedulePickUp(request, pickupRequest);[m
+[32m+[m
+[32m+[m[32m        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());[m
+[32m+[m[32m        verifyNoInteractions(pickUpService);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testSchedulePickUp_WithInvalidRequest() throws StripeException {[m
+[32m+[m[32m        HttpServletRequest request = mock(HttpServletRequest.class);[m
+[32m+[m[32m        PickupRequest pickupRequest = new PickupRequest();[m
+[32m+[m[32m        User user = new User();[m
+[32m+[m[32m        user.setId(1);[m
+[32m+[m[32m        SecurityContextHolder.getContext().setAuthentication(authentication);[m
+[32m+[m
+[32m+[m[32m        when(authentication.getPrincipal()).thenReturn(user);[m
+[32m+[m[32m        when(pickUpService.schedulePickup(pickupRequest, user)).thenThrow(IllegalArgumentException.class);[m
+[32m+[m
+[32m+[m[32m        ResponseEntity<ChargeResponse> response = pickupController.schedulePickUp(request, pickupRequest);[m
+[32m+[m
+[32m+[m[32m        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());[m
+[32m+[m[32m        verify(pickUpService, times(1)).schedulePickup(pickupRequest, user);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testSchedulePickUp_WithException() throws StripeException {[m
+[32m+[m[32m        HttpServletRequest request = mock(HttpServletRequest.class);[m
+[32m+[m[32m        PickupRequest pickupRequest = new PickupRequest();[m
+[32m+[m[32m        User user = new User();[m
+[32m+[m[32m        user.setId(1);[m
+[32m+[m
+[32m+[m[32m        Authentication authentication = mock(Authentication.class);[m
+[32m+[m
+[32m+[m[32m        when(authentication.getPrincipal()).thenReturn(user);[m
+[32m+[m
+[32m+[m[32m        SecurityContextHolder.getContext().setAuthentication(authentication);[m
+[32m+[m
+[32m+[m[32m        when(pickUpService.schedulePickup(pickupRequest, user)).thenThrow(RuntimeException.class);[m
+[32m+[m
+[32m+[m[32m        ResponseEntity<ChargeResponse> response = pickupController.schedulePickUp(request, pickupRequest);[m
+[32m+[m
+[32m+[m[32m        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());[m
+[32m+[m[32m        verify(pickUpService, times(1)).schedulePickup(pickupRequest, user);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testGetPickupStatus_WithValidRequest() {[m
+[32m+[m[32m        HttpServletRequest request = mock(HttpServletRequest.class);[m
+[32m+[m[32m        List<PickupStatusResponse> pickupStatusList = new ArrayList<>();[m
+[32m+[m[32m        pickupStatusList.add(new PickupStatusResponse(1L, PickupStatus.COMPLETED, "2024-03-27", "00:00"));[m
+[32m+[m
+[32m+[m[32m        when(authentication.isAuthenticated()).thenReturn(true);[m
+[32m+[m[32m        SecurityContextHolder.getContext().setAuthentication(authentication);[m
+[32m+[m[32m        when(jwtService.extractUserID(null)).thenReturn("1");[m
+[32m+[m[32m        when(pickUpService.getPickupStatus(1L)).thenReturn(pickupStatusList);[m
+[32m+[m
+[32m+[m[32m        ResponseEntity<?> response = pickupController.getPickupStatus(request);[m
+[32m+[m
+[32m+[m[32m        assertEquals(HttpStatus.OK, response.getStatusCode());[m
+[32m+[m[32m        assertEquals(pickupStatusList, response.getBody());[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testGetPickupStatus_WithUnauthenticatedRequest() {[m
+[32m+[m[32m        HttpServletRequest request = mock(HttpServletRequest.class);[m
+[32m+[m
+[32m+[m[32m        when(authentication.isAuthenticated()).thenReturn(false);[m
+[32m+[m[32m        SecurityContextHolder.getContext().setAuthentication(authentication);[m
+[32m+[m
+[32m+[m[32m        ResponseEntity<?> response = pickupController.getPickupStatus(request);[m
+[32m+[m
+[32m+[m[32m        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());[m
+[32m+[m[32m        verifyNoInteractions(pickUpService);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testGetPickupStatus_WithIllegalArgumentException() {[m
+[32m+[m[32m        HttpServletRequest request = mock(HttpServletRequest.class);[m
+[32m+[m
+[32m+[m[32m        when(authentication.isAuthenticated()).thenReturn(true);[m
+[32m+[m[32m        SecurityContextHolder.getContext().setAuthentication(authentication);[m
+[32m+[m[32m        when(jwtService.extractUserID(null)).thenReturn("1");[m
+[32m+[m[32m        when(pickUpService.getPickupStatus(1L)).thenThrow(IllegalArgumentException.class);[m
+[32m+[m
+[32m+[m[32m        ResponseEntity<?> response = pickupController.getPickupStatus(request);[m
+[32m+[m
+[32m+[m[32m        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());[m
+[32m+[m[32m        verify(pickUpService, times(1)).getPickupStatus(1L);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testGetPickupStatus_WithException() {[m
+[32m+[m[32m        HttpServletRequest request = mock(HttpServletRequest.class);[m
+[32m+[m
+[32m+[m[32m        when(authentication.isAuthenticated()).thenReturn(true);[m
+[32m+[m[32m        SecurityContextHolder.getContext().setAuthentication(authentication);[m
+[32m+[m[32m        when(jwtService.extractUserID(null)).thenReturn("1");[m
+[32m+[m[32m        when(pickUpService.getPickupStatus(1L)).thenThrow(RuntimeException.class);[m
+[32m+[m
+[32m+[m[32m        ResponseEntity<?> response = pickupController.getPickupStatus(request);[m
+[32m+[m
+[32m+[m[32m        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());[m
+[32m+[m[32m        verify(pickUpService, times(1)).getPickupStatus(1L);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testCompletePickup() {[m
+[32m+[m[32m        PickupActionRequest pickupActionRequest = new PickupActionRequest(1L);[m
+[32m+[m[32m        pickupActionRequest.setId(1L);[m
+[32m+[m
+[32m+[m[32m        assertDoesNotThrow(() -> pickupController.completePickup(pickupActionRequest));[m
+[32m+[m[32m        verify(pickUpService, times(1)).completePickup(1L);[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[1mdiff --git a/src/test/java/com/group1/ecocredit/ConfirmationServiceTokenTests.java b/src/test/java/com/group1/ecocredit/ConfirmationServiceTokenTests.java[m
+[1mindex 14e0b27..5213f8b 100644[m
+[1m--- a/src/test/java/com/group1/ecocredit/ConfirmationServiceTokenTests.java[m
+[1m+++ b/src/test/java/com/group1/ecocredit/ConfirmationServiceTokenTests.java[m
+[36m@@ -3,6 +3,8 @@[m [mpackage com.group1.ecocredit;[m
+ import static org.mockito.ArgumentMatchers.any;[m
+ import static org.mockito.Mockito.*;[m
+ import static org.junit.jupiter.api.Assertions.*;[m
+[32m+[m
+[32m+[m[32mimport com.group1.ecocredit.services.UserService;[m
+ import com.group1.ecocredit.services.implementations.ConfirmationTokenServiceImpl;[m
+ import com.group1.ecocredit.models.ConfirmationToken;[m
+ import com.group1.ecocredit.models.User;[m
+[36m@@ -16,14 +18,21 @@[m [mimport org.mockito.Mock;[m
+ import org.mockito.junit.jupiter.MockitoExtension;[m
+ import java.time.LocalDateTime;[m
+ import java.util.Optional;[m
+[32m+[m[32mimport com.group1.ecocredit.services.WalletService;[m
+[32m+[m[32mimport org.springframework.test.util.ReflectionTestUtils;[m
+[32m+[m[32mimport org.springframework.test.context.TestPropertySource;[m
+ [m
+ @ExtendWith(MockitoExtension.class)[m
+[32m+[m[32m@TestPropertySource(properties = {"signup.verification.token.hours=24"})[m
+ public class ConfirmationServiceTokenTests{[m
+     @Mock[m
+     private ConfirmationTokenRepository confirmationTokenRepository;[m
+ [m
+     @Mock[m
+[31m-    private UserRepository userRepository;[m
+[32m+[m[32m    private UserService userService;[m
+[32m+[m
+[32m+[m[32m    @Mock[m
+[32m+[m[32m    private WalletService walletService;[m
+ [m
+     @InjectMocks[m
+     private ConfirmationTokenServiceImpl confirmationTokenService;[m
+[36m@@ -39,6 +48,8 @@[m [mpublic class ConfirmationServiceTokenTests{[m
+         user.setEnabled(false);[m
+ [m
+         token = "test-token";[m
+[32m+[m[32m        ReflectionTestUtils.setField(confirmationTokenService, "validityInHours", 24); // Assuming 24 hours for the example[m
+[32m+[m
+     }[m
+ [m
+     @Test[m
+[36m@@ -64,5 +75,71 @@[m [mpublic class ConfirmationServiceTokenTests{[m
+         assertFalse(confirmationTokenService.isValidToken(confirmationToken));[m
+     }[m
+ [m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    void saveConfirmationToken_ShouldSaveTokenSuccessfully() {[m
+[32m+[m[32m        when(confirmationTokenRepository.save(any(ConfirmationToken.class)))[m
+[32m+[m[32m                .thenAnswer(invocation -> invocation.getArgument(0));[m
+[32m+[m
+[32m+[m[32m        String returnedToken = confirmationTokenService.saveConfirmationToken(token, user);[m
+[32m+[m[32m        assertEquals(token, returnedToken);[m
+[32m+[m[32m        verify(confirmationTokenRepository).save(any(ConfirmationToken.class));[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    void confirmToken_WithValidToken_ShouldEnableUserAndCreateWallet() {[m
+[32m+[m[32m        ConfirmationToken confirmationToken = new ConfirmationToken();[m
+[32m+[m[32m        confirmationToken.setUser(user);[m
+[32m+[m[32m        confirmationToken.setToken(token);[m
+[32m+[m[32m        confirmationToken.setExpirationTime(LocalDateTime.now().plusHours(2));[m
+[32m+[m[32m        confirmationToken.setUsed(false);[m
+[32m+[m
+[32m+[m[32m        when(confirmationTokenRepository.findByToken(anyString())).thenReturn(Optional.of(confirmationToken));[m
+[32m+[m[32m        when(userService.findByEmail(anyString())).thenReturn(Optional.of(user));[m
+[32m+[m
+[32m+[m[32m        boolean result = confirmationTokenService.confirmToken(token);[m
+[32m+[m
+[32m+[m[32m        assertTrue(result);[m
+[32m+[m[32m        assertTrue(user.isEnabled());[m
+[32m+[m[32m        verify(userService).save(any(User.class));[m
+[32m+[m[32m        verify(walletService).createWalletForUser(any(User.class));[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    void confirmToken_WithInvalidToken_ShouldReturnFalse() {[m
+[32m+[m[32m        when(confirmationTokenRepository.findByToken(anyString())).thenReturn(Optional.empty());[m
+[32m+[m
+[32m+[m[32m        boolean result = confirmationTokenService.confirmToken(token);[m
+[32m+[m
+[32m+[m[32m        assertFalse(result);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    void confirmToken_WithExpiredToken_ShouldReturnFalse() {[m
+[32m+[m[32m        ConfirmationToken expiredToken = new ConfirmationToken();[m
+[32m+[m[32m        expiredToken.setExpirationTime(LocalDateTime.now().minusHours(1));[m
+[32m+[m[32m        expiredToken.setToken(token);[m
+[32m+[m[32m        expiredToken.setUser(user);[m
+[32m+[m[32m        when(confirmationTokenRepository.findByToken(anyString())).thenReturn(Optional.of(expiredToken));[m
+[32m+[m
+[32m+[m[32m        boolean result = confirmationTokenService.confirmToken(token);[m
+[32m+[m
+[32m+[m[32m        assertFalse(result);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    void confirmToken_WhenUserNotFound_ShouldReturnFalse() {[m
+[32m+[m[32m        ConfirmationToken confirmationToken = new ConfirmationToken();[m
+[32m+[m[32m        confirmationToken.setUser(user);[m
+[32m+[m[32m        confirmationToken.setToken(token);[m
+[32m+[m[32m        confirmationToken.setExpirationTime(LocalDateTime.now().plusHours(2));[m
+[32m+[m
+[32m+[m[32m        when(confirmationTokenRepository.findByToken(anyString())).thenReturn(Optional.of(confirmationToken));[m
+[32m+[m[32m        when(userService.findByEmail(anyString())).thenReturn(Optional.empty());[m
+[32m+[m
+[32m+[m[32m        boolean result = confirmationTokenService.confirmToken(token);[m
+[32m+[m
+[32m+[m[32m        assertFalse(result);[m
+[32m+[m[32m    }[m
+[32m+[m
+ [m
+ }[m
+[1mdiff --git a/src/test/java/com/group1/ecocredit/PickupControllerTest.java b/src/test/java/com/group1/ecocredit/PickupControllerTest.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..5cd8152[m
+[1m--- /dev/null[m
+[1m+++ b/src/test/java/com/group1/ecocredit/PickupControllerTest.java[m
+[36m@@ -0,0 +1,209 @@[m
+[32m+[m[32mpackage com.group1.ecocredit;[m
+[32m+[m
+[32m+[m[32mimport com.group1.ecocredit.controllers.PickupController;[m
+[32m+[m[32mimport com.group1.ecocredit.dto.*;[m
+[32m+[m[32mimport com.group1.ecocredit.models.Pickup;[m
+[32m+[m[32mimport com.group1.ecocredit.models.PickupStatus;[m
+[32m+[m[32mimport com.group1.ecocredit.models.User;[m
+[32m+[m[32mimport com.group1.ecocredit.services.*;[m
+[32m+[m[32mimport com.stripe.exception.StripeException;[m
+[32m+[m[32mimport jakarta.servlet.http.HttpServletRequest;[m
+[32m+[m[32mimport org.junit.jupiter.api.Test;[m
+[32m+[m[32mimport org.junit.jupiter.api.extension.ExtendWith;[m
+[32m+[m[32mimport org.mockito.InjectMocks;[m
+[32m+[m[32mimport org.mockito.Mock;[m
+[32m+[m[32mimport org.mockito.junit.jupiter.MockitoExtension;[m
+[32m+[m[32mimport org.springframework.http.HttpStatus;[m
+[32m+[m[32mimport org.springframework.http.ResponseEntity;[m
+[32m+[m[32mimport org.springframework.security.core.Authentication;[m
+[32m+[m[32mimport org.springframework.security.core.context.SecurityContextHolder;[m
+[32m+[m
+[32m+[m[32mimport java.math.BigDecimal;[m
+[32m+[m[32mimport java.util.ArrayList;[m
+[32m+[m[32mimport java.util.List;[m
+[32m+[m
+[32m+[m[32mimport static org.junit.jupiter.api.Assertions.*;[m
+[32m+[m[32mimport static org.mockito.Mockito.*;[m
+[32m+[m
+[32m+[m[32m@ExtendWith(MockitoExtension.class)[m
+[32m+[m[32mpublic class PickupControllerTest {[m
+[32m+[m
+[32m+[m[32m    @Mock[m
+[32m+[m[32m    private PickupService pickUpService;[m
+[32m+[m[32m    @Mock[m
+[32m+[m[32m    private JWTService jwtService;[m
+[32m+[m[32m    @Mock[m
+[32m+[m[32m    private StripeService stripeService;[m
+[32m+[m[32m    @Mock[m
+[32m+[m[32m    private CheckoutService checkoutService;[m
+[32m+[m[32m    @Mock[m
+[32m+[m[32m    private WalletService walletService;[m
+[32m+[m
+[32m+[m[32m    @Mock[m
+[32m+[m[32m    private Authentication authentication;[m
+[32m+[m
+[32m+[m[32m    @InjectMocks[m
+[32m+[m[32m    private PickupController pickupController;[m
+[32m+[m
+[32m+[m[32m    private PickupActionRequest pickupActionRequest = new PickupActionRequest(1L);[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testPickupCancellation_Success() throws StripeException {[m
+[32m+[m[32m        when(pickUpService.cancelPickup(pickupActionRequest)).thenReturn(true);[m
+[32m+[m[32m        ResponseEntity<Pickup> response = pickupController.pickupCancellation(pickupActionRequest);[m
+[32m+[m[32m        assertEquals(HttpStatus.OK, response.getStatusCode());[m
+[32m+[m[32m        verify(pickUpService, times(1)).cancelPickup(pickupActionRequest);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testPickupCancellation_Failure() throws StripeException {[m
+[32m+[m[32m        when(pickUpService.cancelPickup(pickupActionRequest)).thenReturn(false);[m
+[32m+[m[32m        ResponseEntity<Pickup> response = pickupController.pickupCancellation(pickupActionRequest);[m
+[32m+[m[32m        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());[m
+[32m+[m[32m        verify(pickUpService, times(1)).cancelPickup(pickupActionRequest);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testSchedulePickUp_WithValidRequest() throws StripeException {[m
+[32m+[m[32m        HttpServletRequest request = mock(HttpServletRequest.class);[m
+[32m+[m[32m        PickupRequest pickupRequest = new PickupRequest();[m
+[32m+[m[32m        User user = new User();[m
+[32m+[m[32m        user.setId(1);[m
+[32m+[m[32m        Pickup pickup = new Pickup();[m
+[32m+[m[32m        ChargeResponse chargeResponse = new ChargeResponse();[m
+[32m+[m[32m        chargeResponse.setCheckoutUrl("checkout_url");[m
+[32m+[m[32m        SecurityContextHolder.getContext().setAuthentication(authentication);[m
+[32m+[m
+[32m+[m[32m        when(authentication.getPrincipal()).thenReturn(user);[m
+[32m+[m[32m        when(pickUpService.schedulePickup(pickupRequest, user)).thenReturn(pickup);[m
+[32m+[m[32m        when(checkoutService.calculatePickupCharge()).thenReturn(100L);[m
+[32m+[m[32m        when(jwtService.extractUserID(null)).thenReturn("1");[m
+[32m+[m[32m        when(stripeService.charge(100L, null)).thenReturn("checkout_url");[m
+[32m+[m[32m        ResponseEntity<ChargeResponse> response = pickupController.schedulePickUp(request, pickupRequest);[m
+[32m+[m
+[32m+[m[32m        assertEquals(HttpStatus.OK, response.getStatusCode());[m
+[32m+[m[32m        assertEquals("checkout_url", response.getBody().getCheckoutUrl());[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testSchedulePickUp_WithInvalidUser() throws StripeException {[m
+[32m+[m[32m        HttpServletRequest request = mock(HttpServletRequest.class);[m
+[32m+[m[32m        PickupRequest pickupRequest = new PickupRequest();[m
+[32m+[m[32m        SecurityContextHolder.getContext().setAuthentication(authentication);[m
+[32m+[m
+[32m+[m[32m        when(authentication.getPrincipal()).thenReturn(null);[m
+[32m+[m
+[32m+[m[32m        ResponseEntity<ChargeResponse> response = pickupController.schedulePickUp(request, pickupRequest);[m
+[32m+[m
+[32m+[m[32m        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());[m
+[32m+[m[32m        verifyNoInteractions(pickUpService);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testSchedulePickUp_WithInvalidRequest() throws StripeException {[m
+[32m+[m[32m        HttpServletRequest request = mock(HttpServletRequest.class);[m
+[32m+[m[32m        PickupRequest pickupRequest = new PickupRequest();[m
+[32m+[m[32m        User user = new User();[m
+[32m+[m[32m        user.setId(1);[m
+[32m+[m[32m        SecurityContextHolder.getContext().setAuthentication(authentication);[m
+[32m+[m
+[32m+[m[32m        when(authentication.getPrincipal()).thenReturn(user);[m
+[32m+[m[32m        when(pickUpService.schedulePickup(pickupRequest, user)).thenThrow(IllegalArgumentException.class);[m
+[32m+[m
+[32m+[m[32m        ResponseEntity<ChargeResponse> response = pickupController.schedulePickUp(request, pickupRequest);[m
+[32m+[m
+[32m+[m[32m        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());[m
+[32m+[m[32m        verify(pickUpService, times(1)).schedulePickup(pickupRequest, user);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testSchedulePickUp_WithException() throws StripeException {[m
+[32m+[m[32m        HttpServletRequest request = mock(HttpServletRequest.class);[m
+[32m+[m[32m        PickupRequest pickupRequest = new PickupRequest();[m
+[32m+[m[32m        User user = new User();[m
+[32m+[m[32m        user.setId(1);[m
+[32m+[m
+[32m+[m[32m        Authentication authentication = mock(Authentication.class);[m
+[32m+[m
+[32m+[m[32m        when(authentication.getPrincipal()).thenReturn(user);[m
+[32m+[m
+[32m+[m[32m        SecurityContextHolder.getContext().setAuthentication(authentication);[m
+[32m+[m
+[32m+[m[32m        when(pickUpService.schedulePickup(pickupRequest, user)).thenThrow(RuntimeException.class);[m
+[32m+[m
+[32m+[m[32m        ResponseEntity<ChargeResponse> response = pickupController.schedulePickUp(request, pickupRequest);[m
+[32m+[m
+[32m+[m[32m        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());[m
+[32m+[m[32m        verify(pickUpService, times(1)).schedulePickup(pickupRequest, user);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testGetPickupStatus_WithValidRequest() {[m
+[32m+[m[32m        HttpServletRequest request = mock(HttpServletRequest.class);[m
+[32m+[m[32m        List<PickupStatusResponse> pickupStatusList = new ArrayList<>();[m
+[32m+[m[32m        pickupStatusList.add(new PickupStatusResponse(1L, PickupStatus.COMPLETED, "2024-03-27", "00:00"));[m
+[32m+[m
+[32m+[m[32m        when(authentication.isAuthenticated()).thenReturn(true);[m
+[32m+[m[32m        SecurityContextHolder.getContext().setAuthentication(authentication);[m
+[32m+[m[32m        when(jwtService.extractUserID(null)).thenReturn("1");[m
+[32m+[m[32m        when(pickUpService.getPickupStatus(1L)).thenReturn(pickupStatusList);[m
+[32m+[m
+[32m+[m[32m        ResponseEntity<?> response = pickupController.getPickupStatus(request);[m
+[32m+[m
+[32m+[m[32m        assertEquals(HttpStatus.OK, response.getStatusCode());[m
+[32m+[m[32m        assertEquals(pickupStatusList, response.getBody());[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testGetPickupStatus_WithUnauthenticatedRequest() {[m
+[32m+[m[32m        HttpServletRequest request = mock(HttpServletRequest.class);[m
+[32m+[m
+[32m+[m[32m        when(authentication.isAuthenticated()).thenReturn(false);[m
+[32m+[m[32m        SecurityContextHolder.getContext().setAuthentication(authentication);[m
+[32m+[m
+[32m+[m[32m        ResponseEntity<?> response = pickupController.getPickupStatus(request);[m
+[32m+[m
+[32m+[m[32m        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());[m
+[32m+[m[32m        verifyNoInteractions(pickUpService);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testGetPickupStatus_WithIllegalArgumentException() {[m
+[32m+[m[32m        HttpServletRequest request = mock(HttpServletRequest.class);[m
+[32m+[m
+[32m+[m[32m        when(authentication.isAuthenticated()).thenReturn(true);[m
+[32m+[m[32m        SecurityContextHolder.getContext().setAuthentication(authentication);[m
+[32m+[m[32m        when(jwtService.extractUserID(null)).thenReturn("1");[m
+[32m+[m[32m        when(pickUpService.getPickupStatus(1L)).thenThrow(IllegalArgumentException.class);[m
+[32m+[m
+[32m+[m[32m        ResponseEntity<?> response = pickupController.getPickupStatus(request);[m
+[32m+[m
+[32m+[m[32m        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());[m
+[32m+[m[32m        verify(pickUpService, times(1)).getPickupStatus(1L);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testGetPickupStatus_WithException() {[m
+[32m+[m[32m        HttpServletRequest request = mock(HttpServletRequest.class);[m
+[32m+[m
+[32m+[m[32m        when(authentication.isAuthenticated()).thenReturn(true);[m
+[32m+[m[32m        SecurityContextHolder.getContext().setAuthentication(authentication);[m
+[32m+[m[32m        when(jwtService.extractUserID(null)).thenReturn("1");[m
+[32m+[m[32m        when(pickUpService.getPickupStatus(1L)).thenThrow(RuntimeException.class);[m
+[32m+[m
+[32m+[m[32m        ResponseEntity<?> response = pickupController.getPickupStatus(request);[m
+[32m+[m
+[32m+[m[32m        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());[m
+[32m+[m[32m        verify(pickUpService, times(1)).getPickupStatus(1L);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    public void testCompletePickup() {[m
+[32m+[m[32m        PickupActionRequest pickupActionRequest = new PickupActionRequest(1L);[m
+[32m+[m[32m        pickupActionRequest.setId(1L);[m
+[32m+[m
+[32m+[m[32m        assertDoesNotThrow(() -> pickupController.completePickup(pickupActionRequest));[m
+[32m+[m[32m        verify(pickUpService, times(1)).completePickup(1L);[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[1mdiff --git a/src/test/java/com/group1/ecocredit/PickupServiceTests.java b/src/test/java/com/group1/ecocredit/PickupServiceTests.java[m
+[1mindex a3fcd4b..348c6e8 100644[m
+[1m--- a/src/test/java/com/group1/ecocredit/PickupServiceTests.java[m
+[1m+++ b/src/test/java/com/group1/ecocredit/PickupServiceTests.java[m
+[36m@@ -2,6 +2,7 @@[m [mpackage com.group1.ecocredit;[m
+ [m
+ import com.group1.ecocredit.dto.PickupActionRequest;[m
+ import com.group1.ecocredit.dto.PickupRequest;[m
+[32m+[m[32mimport com.group1.ecocredit.dto.PickupStatusResponse;[m
+ import com.group1.ecocredit.dto.PickupWaste;[m
+ import com.group1.ecocredit.models.*;[m
+ import com.group1.ecocredit.repositories.*;[m
+[36m@@ -247,4 +248,76 @@[m [mpublic class PickupServiceTests {[m
+         verify(statusService, times(1)).findByValue(anyString());[m
+         verify(pickupRepository, never()).save(any(Pickup.class));[m
+     }[m
+[31m-}[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    void getPickupStatus_WhenUserHasPickups_ShouldReturnStatusList() {[m
+[32m+[m[32m        // Arrange[m
+[32m+[m[32m        Long userId = 1L;[m
+[32m+[m[32m        List<Pickup> pickups = List.of([m
+[32m+[m[32m                new Pickup(1L, LocalDateTime.now(), new User(), new Status(1, "AWAITING_PAYMENT"), "paymentId1"),[m
+[32m+[m[32m                new Pickup(2L, LocalDateTime.now(), new User(), new Status(2, "COMPLETED"), "paymentId2")[m
+[32m+[m[32m        );[m
+[32m+[m[32m        when(pickupRepository.findByUserId(userId)).thenReturn(pickups);[m
+[32m+[m
+[32m+[m[32m        // Act[m
+[32m+[m[32m        List<PickupStatusResponse> statusResponses = pickupService.getPickupStatus(userId);[m
+[32m+[m
+[32m+[m[32m        // Assert[m
+[32m+[m[32m        assertEquals(pickups.size(), statusResponses.size());[m
+[32m+[m[32m        verify(pickupRepository).findByUserId(userId);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    void getPickupStatus_WhenUserHasNoPickups_ShouldThrowException() {[m
+[32m+[m[32m        // Arrange[m
+[32m+[m[32m        Long userId = 1L;[m
+[32m+[m[32m        when(pickupRepository.findByUserId(userId)).thenReturn(new ArrayList<>());[m
+[32m+[m
+[32m+[m[32m        // Act & Assert[m
+[32m+[m[32m        assertThrows(IllegalArgumentException.class, () -> pickupService.getPickupStatus(userId));[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    void confirmPickup_WhenPaymentIsDone_ShouldUpdateStatus() throws StripeException {[m
+[32m+[m[32m        // Arrange[m
+[32m+[m[32m        Long pickupId = 1L;[m
+[32m+[m[32m        Pickup pickup = new Pickup(pickupId, LocalDateTime.now(), new User(), new Status(1, "AWAITING_PAYMENT"), "paymentId");[m
+[32m+[m[32m        when(pickupRepository.findById(pickupId)).thenReturn(Optional.of(pickup));[m
+[32m+[m[32m        when(pickupPaymentActionService.isPaymentDone("paymentId")).thenReturn(true);[m
+[32m+[m[32m        Status scheduledStatus = new Status(2, "SCHEDULED");[m
+[32m+[m[32m        when(statusService.findByValue(PickupStatus.SCHEDULED)).thenReturn(Optional.of(scheduledStatus));[m
+[32m+[m
+[32m+[m[32m        // Act[m
+[32m+[m[32m        pickupService.confirmPickup(pickupId);[m
+[32m+[m
+[32m+[m[32m        // Assert[m
+[32m+[m[32m        assertEquals("SCHEDULED", pickup.getStatus().getValue());[m
+[32m+[m[32m        verify(pickupRepository).save(pickup);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    void confirmPickup_WhenPickupNotFound_ShouldNotThrowException() {[m
+[32m+[m[32m        // Arrange[m
+[32m+[m[32m        Long pickupId = 1L;[m
+[32m+[m[32m        when(pickupRepository.findById(pickupId)).thenReturn(Optional.empty());[m
+[32m+[m
+[32m+[m[32m        // Act & Assert[m
+[32m+[m[32m        assertDoesNotThrow(() -> pickupService.confirmPickup(pickupId));[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    void addSessionIdToPickup_WhenPickupExists_ShouldUpdatePaymentId() {[m
+[32m+[m[32m        // Arrange[m
+[32m+[m[32m        Long pickupId = 1L;[m
+[32m+[m[32m        String sessionId = "newSessionId";[m
+[32m+[m[32m        Pickup pickup = new Pickup(pickupId, LocalDateTime.now(), new User(), new Status(1, "AWAITING_PAYMENT"), "oldSessionId");[m
+[32m+[m[32m        when(pickupRepository.findById(pickupId)).thenReturn(Optional.of(pickup));[m
+[32m+[m
+[32m+[m[32m        // Act[m
+[32m+[m[32m        pickupService.addSessionIdToPickup(pickupId, sessionId);[m
+[32m+[m
+[32m+[m[32m        // Assert[m
+[32m+[m[32m        assertEquals(sessionId, pickup.getPaymentId());[m
+[32m+[m[32m        verify(pickupRepository).save(pickup);[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+\ No newline at end of file[m
+[1mdiff --git a/src/test/java/com/group1/ecocredit/TokenServiceTests.java b/src/test/java/com/group1/ecocredit/TokenServiceTests.java[m
+[1mindex bed8650..ec68dc0 100644[m
+[1m--- a/src/test/java/com/group1/ecocredit/TokenServiceTests.java[m
+[1m+++ b/src/test/java/com/group1/ecocredit/TokenServiceTests.java[m
+[36m@@ -2,6 +2,7 @@[m [mpackage com.group1.ecocredit;[m
+ import static org.junit.jupiter.api.Assertions.*;[m
+ import static org.mockito.Mockito.*;[m
+ [m
+[32m+[m[32mimport com.google.common.hash.Hashing;[m
+ import com.group1.ecocredit.models.PasswordResetToken;[m
+ import com.group1.ecocredit.models.User;[m
+ import com.group1.ecocredit.repositories.PasswordResetTokenRepository;[m
+[36m@@ -18,6 +19,7 @@[m [mimport org.mockito.junit.jupiter.MockitoExtension;[m
+ import org.springframework.test.util.ReflectionTestUtils;[m
+ [m
+ [m
+[32m+[m[32mimport java.nio.charset.StandardCharsets;[m
+ import java.time.LocalDateTime;[m
+ [m
+ @ExtendWith(MockitoExtension.class)[m
+[36m@@ -78,5 +80,55 @@[m [mpublic class TokenServiceTests {[m
+         assertTrue(passwordResetToken.isUsed());[m
+         verify(passwordResetTokenRepository).save(passwordResetToken);[m
+     }[m
+[32m+[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    void savePasswordResetToken_ShouldCorrectlySaveToken() {[m
+[32m+[m[32m        String rawToken = "dummyToken";[m
+[32m+[m[32m        ArgumentCaptor<PasswordResetToken> tokenCaptor = ArgumentCaptor.forClass(PasswordResetToken.class);[m
+[32m+[m
+[32m+[m[32m        tokenService.savePasswordResetToken(rawToken, user);[m
+[32m+[m
+[32m+[m[32m        verify(passwordResetTokenRepository).save(tokenCaptor.capture());[m
+[32m+[m[32m        PasswordResetToken savedToken = tokenCaptor.getValue();[m
+[32m+[m
+[32m+[m[32m        assertNotNull(savedToken);[m
+[32m+[m[32m        assertEquals(user, savedToken.getUser());[m
+[32m+[m[32m        assertFalse(savedToken.isUsed());[m
+[32m+[m[32m        assertNotNull(savedToken.getExpirationTime());[m
+[32m+[m[32m        assertTrue(savedToken.getExpirationTime().isAfter(LocalDateTime.now()));[m
+[32m+[m
+[32m+[m[32m        // Assuming Utils.hash or similar hashing is idempotent and predictable for testing[m
+[32m+[m[32m        String expectedHashedToken = Hashing.sha256().hashString(rawToken, StandardCharsets.UTF_8).toString();[m
+[32m+[m[32m        assertEquals(expectedHashedToken, savedToken.getToken());[m
+[32m+[m[32m    }[m
+[32m+[m[32m    @Test[m
+[32m+[m[32m    void savePasswordResetToken_ShouldCorrectlySaveTokenWithHashedValueAndExpiration() {[m
+[32m+[m[32m        // Given[m
+[32m+[m[32m        String rawToken = "dummyToken";[m
+[32m+[m[32m        LocalDateTime beforeSaveTime = LocalDateTime.now();[m
+[32m+[m
+[32m+[m[32m        // Using ArgumentCaptor to capture the PasswordResetToken object when save() is called[m
+[32m+[m[32m        ArgumentCaptor<PasswordResetToken> tokenCaptor = ArgumentCaptor.forClass(PasswordResetToken.class);[m
+[32m+[m
+[32m+[m[32m        // When[m
+[32m+[m[32m        tokenService.savePasswordResetToken(rawToken, user);[m
+[32m+[m
+[32m+[m[32m        // Then[m
+[32m+[m[32m        verify(passwordResetTokenRepository).save(tokenCaptor.capture());[m
+[32m+[m[32m        PasswordResetToken capturedToken = tokenCaptor.getValue();[m
+[32m+[m
+[32m+[m[32m        assertNotNull(capturedToken);[m
+[32m+[m[32m        assertEquals(user, capturedToken.getUser());[m
+[32m+[m[32m        assertFalse(capturedToken.isUsed());[m
+[32m+[m[32m        assertTrue(capturedToken.getExpirationTime().isAfter(beforeSaveTime.plusHours(23)),[m
+[32m+[m[32m                "The token expiration time should be greater than the current time plus the validity duration minus a small delta.");[m
+[32m+[m[32m        assertTrue(capturedToken.getExpirationTime().isBefore(beforeSaveTime.plusHours(25)),[m
+[32m+[m[32m                "The token expiration time should be less than the current time plus the validity duration plus a small delta.");[m
+[32m+[m
+[32m+[m[32m        // Verifying the token is hashed correctly[m
+[32m+[m[32m        String expectedHashedToken = Hashing.sha256().hashString(rawToken, StandardCharsets.UTF_8).toString();[m
+[32m+[m[32m        assertEquals(expectedHashedToken, capturedToken.getToken(), "The saved token should be hashed.");[m
+[32m+[m[32m    }[m
+[32m+[m
+ }[m
+ [m
