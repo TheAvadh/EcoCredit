@@ -50,6 +50,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1/admin/**").hasAnyAuthority(Role.ADMIN.name())
                         .requestMatchers("/api/v1/user/**").hasAnyAuthority(Role.USER.name())
                         .requestMatchers("/api/v1/recycler/**").hasAnyAuthority(Role.USER.name())
+                        .requestMatchers("/api/v1/pickups/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
                         .anyRequest().authenticated())
 
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

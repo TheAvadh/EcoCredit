@@ -12,6 +12,7 @@ const WeightUpdateForm = () => {
     const [defaultWeight] = useState(0.00);
 
     const handleSubmit = async (event) => {
+        event.preventDefault();
         const form = event.currentTarget;
     
         if (form.checkValidity() === true) {
@@ -38,6 +39,8 @@ const WeightUpdateForm = () => {
           } catch (error) {
             console.error("Update Weight Error:", error);
           }
+          // Reload page after updating weight
+          window.location.reload();
         }
       };
 

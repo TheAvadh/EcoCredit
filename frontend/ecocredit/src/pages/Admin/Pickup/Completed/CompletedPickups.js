@@ -5,7 +5,6 @@ import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
 import Cookies from "js-cookie";
 import "../Styling/Pickups.css";
-import WeightUpdateForm from "../../Waste/WeightUpdateForm";
 
 const CompletedPickups = () => {
     const [pickups, setPickups] = useState([]);
@@ -87,7 +86,6 @@ return (
           </div>
         </Col>
       </Row>
-      <WeightUpdateForm></WeightUpdateForm>
       </Container>
     );
 };

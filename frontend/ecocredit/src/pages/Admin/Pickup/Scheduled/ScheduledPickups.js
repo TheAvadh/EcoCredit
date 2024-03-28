@@ -6,6 +6,7 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Cookies from "js-cookie";
 import "../Styling/Pickups.css";
+import WeightUpdateForm from "../../Waste/WeightUpdateForm";
 
 const ScheduledPickups = () => {
     const [pickups, setPickups] = useState([]);
@@ -39,7 +40,7 @@ const ScheduledPickups = () => {
       const completePickup = async (pickupId) => {
         try {
           const response = await fetch(
-            `${process.env.REACT_APP_BASE_URL}/admin/complete-pickup`,
+            `${process.env.REACT_APP_BASE_URL}/pickups/complete`,
             {
               method: "POST",
               headers: {
@@ -50,10 +51,13 @@ const ScheduledPickups = () => {
             }
           );
           if (!response.ok) throw new Error("Failed to complete pickup");
+
           await fetchPickups();
         } catch (error) {
           console.error("Error completing the pickup:", error);
         }
+        // Reload page after completing pickup
+        window.location.reload();
       };
 
 return (
@@ -111,7 +115,7 @@ return (
                           size="sm"
                           margin-top="0"
                           margin-bottom="0"
-                          onClick={() => completePickup(pickup.pickupId)}
+                          onClick={() => completePickup(pickup.id)}
                         >
                           Complete
                         </Button>
@@ -125,6 +129,7 @@ return (
           </div>
         </Col>
       </Row>
+      <WeightUpdateForm></WeightUpdateForm>
       </Container>
     );
 };
