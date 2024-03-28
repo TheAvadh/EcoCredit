@@ -76,6 +76,7 @@ publish:
       --build-arg STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" \
       --build-arg BASE_URL_BACKEND="$BASE_URL_BACKEND" \
       --build-arg BASE_URL_FRONTEND="$BASE_URL_FRONTEND" \
+      -t docker.io/$DOCKER_HUB_USER/$BACKEND_APP_NAME:latest \
       -t docker.io/$DOCKER_HUB_USER/$BACKEND_APP_NAME:$CI_COMMIT_SHORT_SHA .
     - docker push docker.io/$DOCKER_HUB_USER/$BACKEND_APP_NAME:$CI_COMMIT_SHORT_SHA
 

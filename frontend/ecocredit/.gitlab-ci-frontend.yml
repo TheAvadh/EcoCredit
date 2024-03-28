@@ -45,7 +45,7 @@ publish:
   script:
     - cd $APP_DIR
     - docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_PASS" docker.io
-    - docker build -t docker.io/$DOCKER_HUB_USER/$FRONTEND_APP_NAME:$CI_COMMIT_SHORT_SHA .
+    - docker build -t docker.io/$DOCKER_HUB_USER/$FRONTEND_APP_NAME:latest -t docker.io/$DOCKER_HUB_USER/$FRONTEND_APP_NAME:$CI_COMMIT_SHORT_SHA .
     - docker push docker.io/$DOCKER_HUB_USER/$FRONTEND_APP_NAME:$CI_COMMIT_SHORT_SHA
   environment:
     name: production
