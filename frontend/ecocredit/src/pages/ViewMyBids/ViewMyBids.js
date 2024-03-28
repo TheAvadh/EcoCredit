@@ -73,7 +73,7 @@ const ViewMyBids = () => {
                   <dt className="col-sm-5">Current Highest Bid</dt>
                   <dd className="col-sm-7">{bid.highest_bid} CAD</dd>
 
-                  <dt className="col-sm-5">Starting Bid</dt>
+                  <dt className="col-sm-5">User Bid Amount</dt>
                   <dd className="col-sm-7">{bid.bid_amount} CAD</dd>
 
                   <dt className="col-sm-5">Status</dt>
@@ -90,7 +90,7 @@ const ViewMyBids = () => {
                   <div className="text-end">
                     <Button
                       variant="ec-dark-green"
-                      onClick={() => redirectToBidPage(bid.id)}
+                      onClick={() => redirectToBidPage(bid.bid.id)}
                     >
                       Place a Bid
                     </Button>
