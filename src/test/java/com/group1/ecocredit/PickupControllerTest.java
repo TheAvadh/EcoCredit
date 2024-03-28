@@ -159,7 +159,7 @@ public class PickupControllerTest {
     public void testGetPickupStatus_WithUnauthenticatedRequest() {
         HttpServletRequest request = mock(HttpServletRequest.class);
 
-        when(authentication.isAuthenticated()).thenReturn(false);
+//        when(authentication.isAuthenticated()).thenReturn(false);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         ResponseEntity<?> response = pickupController.getPickupStatus(request);
