@@ -71,7 +71,10 @@ const ViewMyBids = () => {
                   <dd className="col-sm-7">{bid.waste_weight} KG</dd>
 
                   <dt className="col-sm-5">Current Highest Bid</dt>
-                  <dd className="col-sm-7">{bid.highest_bid} CAD</dd>
+                  <dd className="col-sm-7">{bid.bid.top_bid_amount} CAD</dd>
+
+                  <dt className="col-sm-5">Starting Bid</dt>
+                  <dd className="col-sm-7">{bid.bid.base_price} CAD</dd>
 
                   <dt className="col-sm-5">My Bid Amount</dt>
                   <dd className="col-sm-7">{bid.bid_amount} CAD</dd>
@@ -99,7 +102,7 @@ const ViewMyBids = () => {
               </Card.Body>
               <Card.Footer>
                 <small className="text-muted">
-                  Created On: {moment(bid.date).format("LLL")}
+                  Placed Bid On: {moment(bid.date).format("LLL")}
                 </small>
               </Card.Footer>
             </Card>
