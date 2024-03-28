@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
+import moment from "moment";
 import Cookies from "js-cookie";
 import "../Styling/Bids.css";
 
@@ -43,7 +44,10 @@ const ViewBids = () => {
           }
         )
           .then((response) => response.json())
-          .then((data) => setBids(data))
+          .then((data) => {
+              const sortedBids = [...data].sort((a, b) => moment(b.date).unix() - moment(a.date).unix());
+              setBids(sortedBids);
+          })
           .catch((error) => console.error("Fetching bids failed:", error));
       }, []);
 
