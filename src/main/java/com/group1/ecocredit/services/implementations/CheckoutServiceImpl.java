@@ -29,9 +29,9 @@ public class CheckoutServiceImpl implements CheckoutService {
 
         Wallet wallet = walletOptional.get();
 
-        Double credits = creditConversionService.convert(Double.valueOf(amountInCAD), Currency.CAD);
+        Double amountInCredits = creditConversionService.convert(Double.valueOf(amountInCAD), Currency.CAD);
 
-        return wallet.getCreditAmount().doubleValue() > credits;
+        return wallet.getCreditAmount().doubleValue() >= amountInCredits;
 
     }
 
