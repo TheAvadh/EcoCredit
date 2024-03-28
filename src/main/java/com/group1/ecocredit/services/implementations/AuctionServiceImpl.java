@@ -10,6 +10,7 @@ import com.group1.ecocredit.services.BidService;
 import com.group1.ecocredit.services.BidUserService;
 import com.group1.ecocredit.services.AuctionService;
 import com.group1.ecocredit.services.WalletService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class AuctionServiceImpl implements AuctionService {
 
     @Autowired
@@ -67,8 +69,8 @@ public class AuctionServiceImpl implements AuctionService {
         Long BidId = request.getBidId();
         Bid bid = bidService.findById(BidId);
 
-        Long usersId = Long.valueOf(user.getId());
-        Wallet wallet = walletService.getWalletByUserId(usersId).get();
+        Long userId = Long.valueOf(user.getId());
+        Wallet wallet = walletService.getWalletByUserId(userId).get();
         Double balance = wallet.getCreditAmount().doubleValue();
 
         Double nextBid = bid.getTop_bid_amount() + rangeDifference(bid.getTop_bid_amount());

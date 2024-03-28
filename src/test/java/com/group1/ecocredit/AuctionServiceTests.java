@@ -5,12 +5,12 @@ import com.group1.ecocredit.enums.Role;
 import com.group1.ecocredit.models.*;
 import com.group1.ecocredit.services.BidService;
 import com.group1.ecocredit.services.BidUserService;
+import com.group1.ecocredit.services.WalletService;
 import com.group1.ecocredit.services.implementations.AuctionServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -22,18 +22,18 @@ import static org.mockito.Mockito.*;
 import java.util.List;
 
 public class AuctionServiceTests {
-    @InjectMocks
     private AuctionServiceImpl auctionService;
-
-    @Mock
     private BidService bidService;
-
-    @Mock
     private BidUserService bidUserService;
+    private WalletService walletService;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        bidService = mock(BidService.class);
+        bidUserService = mock(BidUserService.class);
+        walletService = mock(WalletService.class);
+        auctionService = new AuctionServiceImpl(bidService, bidUserService,
+                walletService);
     }
 
     @Test
@@ -108,6 +108,11 @@ public class AuctionServiceTests {
         bid.setTop_bid_amount(20d);
         bid.setWaste(mockWaste);
 
+        // Setup Wallet
+        Wallet wallet = new Wallet();
+        wallet.setCreditAmount(BigDecimal.valueOf(50.0));
+        when(walletService.getWalletByUserId(anyLong())).thenReturn(Optional.of(wallet));
+
         // Mock repository interactions
         when(bidService.findById(request.getBidId())).thenReturn(bid);
         when(bidService.save(any(Bid.class))).thenAnswer(i -> i.getArguments()[0]);
@@ -176,8 +181,11 @@ public class AuctionServiceTests {
         Bid bid = createMockBid();
         bid.setTop_bid_amount(20d);
         bid.setWaste(mockWaste);
-
         when(bidService.findById(request.getBidId())).thenReturn(bid);
+
+        Wallet wallet = new Wallet();
+        wallet.setCreditAmount(BigDecimal.valueOf(20.0));
+        when(walletService.getWalletByUserId(anyLong())).thenReturn(Optional.of(wallet));
 
         // Execute & Assert
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
