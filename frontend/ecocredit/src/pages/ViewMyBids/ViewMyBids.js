@@ -39,10 +39,12 @@ const ViewMyBids = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const parsedBids = data.map((bid) => ({
-          ...bid,
-          date: moment(bid.date, "YYYYMMDDHHmm").toISOString(),
-        }));
+        const parsedBids = data
+          .map((bid) => ({
+            ...bid,
+            date: moment(bid.date, "YYYYMMDDHHmm").toISOString(),
+          }))
+          .sort((a, b) => moment(b.date).unix() - moment(a.date).unix());
         setBids(parsedBids);
       })
       .catch((error) => console.error("Failed to fetch bids:", error));
