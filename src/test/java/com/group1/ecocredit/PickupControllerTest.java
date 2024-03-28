@@ -8,14 +8,12 @@ import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.services.*;
 import com.stripe.exception.StripeException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.math.BigDecimal;
@@ -25,28 +23,34 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 public class PickupControllerTest {
-
-    @Mock
     private PickupService pickUpService;
-    @Mock
     private JWTService jwtService;
-    @Mock
     private StripeService stripeService;
-    @Mock
     private CheckoutService checkoutService;
-    @Mock
     private WalletService walletService;
-
-    @Mock
-    private Authentication authentication;
-
-    @InjectMocks
+    private static Authentication authentication;
+    private static SecurityContext securityContext;
     private PickupController pickupController;
 
-    private PickupActionRequest pickupActionRequest = new PickupActionRequest(1L);
+    private final PickupActionRequest pickupActionRequest =
+            new PickupActionRequest(1L);
 
+    @BeforeEach
+    void setUp() {
+        pickUpService = mock(PickupService.class);
+        jwtService = mock(JWTService.class);
+        stripeService = mock(StripeService.class);
+        checkoutService = mock(CheckoutService.class);
+        walletService = mock(WalletService.class);
+
+        authentication = mock(Authentication.class);
+        securityContext = mock(SecurityContext.class);
+        SecurityContextHolder.setContext(securityContext);
+
+        pickupController = new PickupController(pickUpService, jwtService,
+                stripeService, checkoutService, walletService);
+    }
 
     @Test
     public void testPickupCancellation_Success() throws StripeException {
@@ -68,12 +72,14 @@ public class PickupControllerTest {
     public void testSchedulePickUp_WithValidRequest() throws StripeException {
         HttpServletRequest request = mock(HttpServletRequest.class);
         PickupRequest pickupRequest = new PickupRequest();
+
         User user = new User();
         user.setId(1);
+        authenticate(user);
+
         Pickup pickup = new Pickup();
         ChargeResponse chargeResponse = new ChargeResponse();
         chargeResponse.setCheckoutUrl("checkout_url");
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         when(authentication.getPrincipal()).thenReturn(user);
         when(pickUpService.schedulePickup(pickupRequest, user)).thenReturn(pickup);
@@ -92,7 +98,7 @@ public class PickupControllerTest {
         PickupRequest pickupRequest = new PickupRequest();
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        when(authentication.getPrincipal()).thenReturn(null);
+        authenticate(null);
 
         ResponseEntity<ChargeResponse> response = pickupController.schedulePickUp(request, pickupRequest);
 
@@ -104,11 +110,11 @@ public class PickupControllerTest {
     public void testSchedulePickUp_WithInvalidRequest() throws StripeException {
         HttpServletRequest request = mock(HttpServletRequest.class);
         PickupRequest pickupRequest = new PickupRequest();
+
         User user = new User();
         user.setId(1);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        authenticate(user);
 
-        when(authentication.getPrincipal()).thenReturn(user);
         when(pickUpService.schedulePickup(pickupRequest, user)).thenThrow(IllegalArgumentException.class);
 
         ResponseEntity<ChargeResponse> response = pickupController.schedulePickUp(request, pickupRequest);
@@ -121,14 +127,10 @@ public class PickupControllerTest {
     public void testSchedulePickUp_WithException() throws StripeException {
         HttpServletRequest request = mock(HttpServletRequest.class);
         PickupRequest pickupRequest = new PickupRequest();
+
         User user = new User();
         user.setId(1);
-
-        Authentication authentication = mock(Authentication.class);
-
-        when(authentication.getPrincipal()).thenReturn(user);
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        authenticate(user);
 
         when(pickUpService.schedulePickup(pickupRequest, user)).thenThrow(RuntimeException.class);
 
@@ -144,8 +146,7 @@ public class PickupControllerTest {
         List<PickupStatusResponse> pickupStatusList = new ArrayList<>();
         pickupStatusList.add(new PickupStatusResponse(1L, PickupStatus.COMPLETED, "2024-03-27", "00:00"));
 
-        when(authentication.isAuthenticated()).thenReturn(true);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        setAuthenticated(true);
         when(jwtService.extractUserID(null)).thenReturn("1");
         when(pickUpService.getPickupStatus(1L)).thenReturn(pickupStatusList);
 
@@ -159,8 +160,7 @@ public class PickupControllerTest {
     public void testGetPickupStatus_WithUnauthenticatedRequest() {
         HttpServletRequest request = mock(HttpServletRequest.class);
 
-        when(authentication.isAuthenticated()).thenReturn(false);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        setAuthenticated(false);
 
         ResponseEntity<?> response = pickupController.getPickupStatus(request);
 
@@ -172,8 +172,7 @@ public class PickupControllerTest {
     public void testGetPickupStatus_WithIllegalArgumentException() {
         HttpServletRequest request = mock(HttpServletRequest.class);
 
-        when(authentication.isAuthenticated()).thenReturn(true);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        setAuthenticated(true);
         when(jwtService.extractUserID(null)).thenReturn("1");
         when(pickUpService.getPickupStatus(1L)).thenThrow(IllegalArgumentException.class);
 
@@ -187,8 +186,7 @@ public class PickupControllerTest {
     public void testGetPickupStatus_WithException() {
         HttpServletRequest request = mock(HttpServletRequest.class);
 
-        when(authentication.isAuthenticated()).thenReturn(true);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        setAuthenticated(true);
         when(jwtService.extractUserID(null)).thenReturn("1");
         when(pickUpService.getPickupStatus(1L)).thenThrow(RuntimeException.class);
 
@@ -205,5 +203,15 @@ public class PickupControllerTest {
 
         assertDoesNotThrow(() -> pickupController.completePickup(pickupActionRequest));
         verify(pickUpService, times(1)).completePickup(1L);
+    }
+
+    private void authenticate(User user){
+        when(authentication.getPrincipal()).thenReturn(user);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+    }
+
+    private void setAuthenticated(boolean isAuthenticated){
+        when(authentication.isAuthenticated()).thenReturn(isAuthenticated);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
     }
 }

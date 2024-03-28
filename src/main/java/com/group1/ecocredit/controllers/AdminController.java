@@ -8,6 +8,8 @@ import com.group1.ecocredit.models.Bid;
 import com.group1.ecocredit.enums.Role;
 import com.group1.ecocredit.models.User;
 import com.group1.ecocredit.services.BidService;
+import com.group1.ecocredit.services.PickupAdminService;
+import com.group1.ecocredit.services.WasteService;
 import com.group1.ecocredit.services.implementations.PickupAdminServiceImpl;
 import com.group1.ecocredit.services.implementations.WasteServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +29,8 @@ import java.util.NoSuchElementException;
 
 public class AdminController {
 
-    private final PickupAdminServiceImpl pickupAdminService;
-    private final WasteServiceImpl wasteService;
+    private final PickupAdminService pickupAdminService;
+    private final WasteService wasteService;
     private final BidService bidService;
 
     @GetMapping("/scheduled-pickups")
