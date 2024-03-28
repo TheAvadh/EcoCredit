@@ -10,10 +10,9 @@ import {
   RecyclerDashboard,
   ProfilePage,
   AdminDashboard,
-  PaymentFailurePage
+  PaymentFailurePage,
 } from "./pages";
 
-// import CheckoutComponent from "./pages/Payment/Payment";
 import PickupSchedule from "./pages/PickupSchedule/PickupSchedule";
 import SuccessPage from "./pages/success/success";
 
@@ -32,7 +31,6 @@ function App() {
         <Route path="/admin/*" element={<AdminDashboard />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/failure" element={<PaymentFailurePage />} />
-
       </Routes>
     </BrowserRouter>
   );

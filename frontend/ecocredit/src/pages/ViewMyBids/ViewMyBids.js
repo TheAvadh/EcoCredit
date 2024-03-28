@@ -39,10 +39,12 @@ const ViewMyBids = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const parsedBids = data.map((bid) => ({
-          ...bid,
-          date: moment(bid.date, "YYYYMMDDHHmm").toISOString(),
-        }));
+        const parsedBids = data
+          .map((bid) => ({
+            ...bid,
+            date: moment(bid.date, "YYYYMMDDHHmm").toISOString(),
+          }))
+          .sort((a, b) => moment(b.date).unix() - moment(a.date).unix());
         setBids(parsedBids);
       })
       .catch((error) => console.error("Failed to fetch bids:", error));
@@ -88,7 +90,7 @@ const ViewMyBids = () => {
                   <div className="text-end">
                     <Button
                       variant="ec-dark-green"
-                      onClick={() => redirectToBidPage(bid.id)}
+                      onClick={() => redirectToBidPage(bid.bid.id)}
                     >
                       Place a Bid
                     </Button>

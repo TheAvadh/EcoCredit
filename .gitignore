@@ -37,7 +37,7 @@ build/
 
 
 ### Custom Launcher ###
-ecocredit_launcher*
+ecocredit_environment_setup*
 
 ### env ###
 *.env

@@ -39,10 +39,12 @@ const ActiveBids = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const parsedBids = data.map((bid) => ({
-          ...bid,
-          date: moment(bid.date, "YYYYMMDDHHmm").toISOString(),
-        }));
+        const parsedBids = data
+          .map((bid) => ({
+            ...bid,
+            date: moment(bid.date, "YYYYMMDDHHmm").toISOString(),
+          }))
+          .sort((a, b) => moment(a.date).unix() - moment(b.date).unix());
         setBids(parsedBids);
       })
       .catch((error) =>
