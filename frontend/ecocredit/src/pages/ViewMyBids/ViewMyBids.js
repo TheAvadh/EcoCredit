@@ -71,7 +71,7 @@ const ViewMyBids = () => {
                   <dt className="col-sm-5">Current Highest Bid</dt>
                   <dd className="col-sm-7">{bid.highest_bid} CAD</dd>
 
-                  <dt className="col-sm-5">Starting Bid</dt>
+                  <dt className="col-sm-5">My Bid Amount</dt>
                   <dd className="col-sm-7">{bid.bid_amount} CAD</dd>
 
                   <dt className="col-sm-5">Status</dt>
