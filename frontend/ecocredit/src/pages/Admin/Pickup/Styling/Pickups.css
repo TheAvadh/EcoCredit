@@ -1,12 +1,12 @@
 .completed-pickups-table-wrapper {
-    max-height: calc(100vh - 550px);
+    max-height: calc(100vh - 100px);
     overflow-y: auto;
     display:inline-block;
     width: 100%;
   }
 
 .scheduled-pickups-table-wrapper {
-    max-height: calc(100vh - 300px);
+    max-height: calc(100vh - 470px);
     overflow-y: auto;
     display:inline-block;
     width: 100%;
