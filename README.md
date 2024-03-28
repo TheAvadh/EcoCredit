@@ -89,16 +89,16 @@ To build in `dev` environment, type `npm start`.
 ### Backend
 
 Clean Build:
+
 ```
 mvn clean package -DskipTests
 ```
 
 Tests:
+
 ```
 mvn test
 ```
-
-
 
 ## User Scenarios
 
@@ -106,13 +106,37 @@ mvn test
 
 #### Signup
 
+The SignUp functionality allows new users to create an account by providing their personal information, including their name, email address, password, and physical address.  
+Upon successful account creation, a verification email is sent to the user's provided email address with a confirmation token.
+
+Input from the User:
+
+- Email
+- ⁠Password
+- First Name
+- ⁠Last Name
+- ⁠Address (Street, City, Province, Postal Code)
+
 #### Login
+
+The Login functionality allows existing users to log into their accounts.
+
+Input from the User:
+
+- ⁠Email
+- ⁠Password
 
 **Forget password**
 
+Allows users to request a password reset. By entering their registered email, they receive a link to securely create a new password.
+
 **Reset password**
 
+Accessed via the received email link, this page prompts users to enter and confirm a new password, effectively updating their account security.
+
 #### Role Selection
+
+Upon successful login, users can select their role Customer or Recycler to be directed to the respective dashboard with tailored functionalities.
 
 ### [Homepage](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/19)
 
@@ -123,10 +147,14 @@ Upon selecting the customer role, users access the Customer Dashboard. Here, the
 #### [Pickup Scheduling](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/13)
 
 **Pickup schedule**
+This page allows users to arrange waste collection by choosing a date, time, and waste types.  
+If the user's EcoCredit balance is insufficient for the service fees, they are redirected to a payment gateway to complete the transaction.
 
 #### [Payment for Pickup Service](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/55)
 
 **Payment for pickup service**
+Users enter credit card details to pay for their scheduled pickup service.  
+Upon successful payment, the pickup is confirmed, and users are redirected to their Pickup Schedule page.
 
 #### [Pickup Status Tracking](https://git.cs.dal.ca/courses/2024-winter/csci5308/Group01/-/issues/14)
 
