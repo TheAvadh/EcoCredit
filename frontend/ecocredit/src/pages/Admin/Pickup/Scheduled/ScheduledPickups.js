@@ -38,7 +38,6 @@ const ScheduledPickups = () => {
       };
 
       const completePickup = async (pickupId) => {
-        console.log(pickupId);
         try {
           const response = await fetch(
             `${process.env.REACT_APP_BASE_URL}/pickups/complete`,
